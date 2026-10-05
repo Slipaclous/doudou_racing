@@ -1,0 +1,81 @@
+.stats {
+  position: relative;
+  background: var(--black);
+  overflow: hidden;
+  padding: var(--s-12) var(--gutter);
+}
+.label { position: relative; z-index: 2; color: var(--grey); font-size: 0.875rem; margin-bottom: var(--s-6); }
+
+/* ---------- Circuit ---------- */
+.circuit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.asphalt { fill: none; stroke: #1d1d1d; stroke-width: 34; stroke-linejoin: round; }
+.kerbs { fill: none; stroke: #2e2e2e; stroke-width: 34; stroke-dasharray: 6 10; stroke-linejoin: round; mask: none; opacity: 0.6; }
+.lap { fill: none; stroke: var(--red); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.startLine { stroke: var(--white); stroke-width: 6; stroke-dasharray: 4 4; }
+
+.sector { --on: 0; }
+.sector circle { stroke: var(--grey); stroke-width: 3; }
+.sector text { font-family: var(--font-mono), monospace; font-size: 22px; fill: var(--grey); }
+.sector circle { fill: color-mix(in srgb, var(--red) calc(var(--on) * 100%), var(--black)); }
+
+.kart polygon { fill: var(--white); stroke: var(--red); stroke-width: 3; stroke-linejoin: round; }
+
+/* ---------- Numbers ---------- */
+.list { position: relative; z-index: 1; display: grid; gap: var(--s-12); }
+.stat { display: flex; flex-direction: column; }
+
+.sectorTag { color: var(--red); font-size: 0.875rem; margin-bottom: var(--s-2); }
+.value {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(10rem, 34vw, 34rem);
+  line-height: 0.8;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+.name {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 7vw, 8rem);
+  line-height: 0.9;
+}
+
+.details {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--s-1) var(--s-3);
+  max-width: 44rem;
+  margin-top: var(--s-4);
+  font-size: 0.875rem;
+  color: var(--white);
+}
+.detail { border-top: 1px solid #2a2a2a; padding-top: var(--s-1); }
+.detailIndex { color: var(--red); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .stats { height: 100svh; padding: 0; }
+  .label { position: absolute; z-index: 5; top: var(--s-4); left: var(--gutter); margin: 0; }
+  .circuit { opacity: 0.9; }
+  .list { position: absolute; inset: 0; display: block; }
+  .stat {
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    padding: var(--s-8) var(--gutter);
+    /* Readable over the circuit */
+    background: linear-gradient(to right, var(--black) 0%, color-mix(in srgb, var(--black) 75%, transparent) 45%, transparent 75%);
+  }
+  .stat:not(:first-child) { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+  /* Circuit on the right, numbers on the left */
+  .circuit { inset: 8% 0 8% 38%; width: 62%; height: 84%; }
+}

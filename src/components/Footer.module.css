@@ -1,0 +1,18 @@
+.footer { background: var(--black); padding: var(--s-8) var(--gutter) var(--s-4); overflow: hidden; }
+.number {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(10rem, 48vw, 56rem);
+  line-height: 0.75;
+  color: var(--red);
+  text-align: center;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  font-size: 0.875rem;
+  color: var(--grey);
+}
+.meta a:hover { color: var(--white); }

@@ -1,0 +1,67 @@
+"use server";
+
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Indiquez votre nom.").max(100),
+  company: z.string().trim().min(2, "Indiquez votre entreprise.").max(120),
+  email: z.string().trim().email("Adresse e-mail invalide.").max(200),
+  message: z.string().trim().min(10, "Quelques mots de plus ?").max(3000),
+  // Honeypot: real users never see or fill this field.
+  website: z.string().max(0).optional(),
+});
+
+export type ContactState =
+  | { status: "idle" }
+  | { status: "success" }
+  | { status: "error"; message: string; fieldErrors?: Partial<Record<keyof z.infer<typeof contactSchema>, string>> };
+
+const escapeHtml = (v: string) =>
+  v.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+export async function sendContact(_prev: ContactState, formData: FormData): Promise<ContactState> {
+  const parsed = contactSchema.safeParse(Object.fromEntries(formData));
+
+  if (!parsed.success) {
+    const fieldErrors: Record<string, string> = {};
+    for (const issue of parsed.error.issues) {
+      const key = String(issue.path[0]);
+      fieldErrors[key] ??= issue.message;
+    }
+    // A filled honeypot means a bot: pretend it worked.
+    if (fieldErrors.website) return { status: "success" };
+    return { status: "error", message: "Certains champs sont à corriger.", fieldErrors };
+  }
+
+  const { name, company, email, message } = parsed.data;
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.CONTACT_TO;
+
+  if (!apiKey || !to) {
+    if (process.env.NODE_ENV !== "production") {
+      console.info("[contact] RESEND_API_KEY / CONTACT_TO missing, message not sent:", parsed.data);
+      return { status: "success" };
+    }
+    console.error("[contact] RESEND_API_KEY / CONTACT_TO missing");
+    return { status: "error", message: "L'envoi est momentanément indisponible. Écrivez-nous directement par e-mail." };
+  }
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: process.env.CONTACT_FROM ?? "Site #105 <onboarding@resend.dev>",
+      to: [to],
+      reply_to: email,
+      subject: `Partenariat — ${company}`,
+      html: `<p><strong>${escapeHtml(name)}</strong> (${escapeHtml(company)}, ${escapeHtml(email)})</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error("[contact] Resend error", res.status, await res.text());
+    return { status: "error", message: "L'envoi a échoué. Réessayez dans un instant." };
+  }
+
+  return { status: "success" };
+}

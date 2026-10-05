@@ -1,0 +1,57 @@
+.contact {
+  position: relative;
+  display: grid;
+  gap: var(--s-8);
+  padding: var(--s-12) var(--gutter);
+  background: var(--red);
+  clip-path: polygon(0 0, 100% var(--cut), 100% 100%, 0 100%);
+}
+.title { font-size: var(--t-h2); color: var(--black); }
+
+.form { display: grid; gap: var(--s-4); }
+.field { display: grid; gap: var(--s-1); }
+.input {
+  font: inherit;
+  font-size: var(--t-lead);
+  font-weight: 600;
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid var(--black);
+  border-radius: 0;
+  padding: var(--s-1) 0;
+  resize: vertical;
+}
+.input:focus { outline: none; border-bottom-color: var(--white); }
+.input[aria-invalid="true"] { border-bottom-color: var(--white); }
+
+.error { font-weight: 700; color: var(--white); background: var(--black); justify-self: start; padding: 0.25rem var(--s-1); }
+
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4); }
+.submit {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  color: var(--white);
+  background: var(--black);
+  border: 0;
+  padding: var(--s-2) var(--s-6) var(--s-2) var(--s-4);
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--s-4)) 100%, 0 100%);
+  transition: padding-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.15s;
+}
+.submit:hover { padding-left: var(--s-8); background: var(--white); color: var(--black); }
+.submit:focus-visible { outline: 3px solid var(--white); outline-offset: 4px; }
+.submit:disabled { cursor: wait; }
+
+.mail { margin-left: auto; text-decoration: underline; text-underline-offset: 0.3em; }
+
+.success { font-size: var(--t-lead); font-weight: 700; align-self: end; }
+
+@media (min-width: 768px) {
+  .form { grid-template-columns: 1fr 1fr; gap: var(--s-6) var(--s-4); }
+  .full { grid-column: 1 / -1; }
+}

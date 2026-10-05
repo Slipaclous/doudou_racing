@@ -1,0 +1,66 @@
+.partners { position: relative; background: var(--black-2); }
+
+.showcase {
+  display: grid;
+  gap: var(--s-6);
+  padding: var(--s-12) var(--gutter);
+}
+.title { font-size: var(--t-h2); }
+.accent { color: var(--red); }
+
+.kart { width: 100%; height: auto; }
+.zone { fill: #2a2a2a; stroke: var(--white); stroke-width: 3; stroke-dasharray: 10 8; }
+.plateNum {
+  font-family: var(--font-display), sans-serif;
+  font-size: 44px;
+  fill: var(--white);
+  stroke: none;
+  writing-mode: vertical-rl;
+}
+
+.zones { list-style: none; display: grid; gap: var(--s-3); }
+.zoneItem { display: grid; gap: var(--s-1); border-left: 6px solid var(--red); padding-left: var(--s-3); }
+.zoneLabel { font-size: clamp(2rem, 4vw, 4rem); }
+
+.current { padding: var(--s-8) var(--gutter) var(--s-12); border-top: 1px solid #2a2a2a; }
+.currentLabel { color: var(--grey); font-size: 0.875rem; margin-bottom: var(--s-4); }
+.list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: var(--s-2);
+}
+.partner {
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-3);
+  background: var(--black);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+}
+.featured { background: var(--red); }
+.featured .partnerRole { color: var(--white); }
+.partnerMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-2); font-size: 0.8rem; color: var(--grey); }
+.featured .partnerMeta { color: var(--white); }
+.partnerRole { color: var(--red); font-weight: 700; }
+.partnerName { font-size: clamp(2.25rem, 4vw, 4rem); line-height: 0.9; }
+.partnerText { font-size: var(--t-body); line-height: 1.35; }
+.partnerLink { justify-self: start; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 0.3em; }
+.logo { width: auto; height: clamp(3rem, 7vw, 7rem); object-fit: contain; filter: grayscale(1) brightness(1.6); }
+
+@media (min-width: 768px) {
+  .showcase {
+    height: 100svh;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    padding-block: var(--s-6);
+  }
+  .title { grid-column: 1 / -1; font-size: clamp(4rem, 9vw, 10rem); }
+  .zoneItem { opacity: 0.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zone { fill: var(--red); }
+  .zoneItem { opacity: 1; }
+  .showcase { height: auto; }
+}

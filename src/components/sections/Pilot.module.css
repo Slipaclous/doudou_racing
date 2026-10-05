@@ -1,0 +1,33 @@
+.pilot {
+  position: relative;
+  padding: var(--s-12) var(--gutter);
+  background: var(--black);
+}
+
+.title {
+  font-size: var(--t-h2);
+  color: var(--red);
+  margin-bottom: var(--s-8);
+}
+
+.text {
+  font-size: var(--t-lead);
+  line-height: 1.15;
+  font-weight: 600;
+  max-width: 28ch;
+  margin-left: auto;
+}
+.word { color: var(--white); }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin-top: var(--s-12);
+  border-top: 2px solid var(--red);
+}
+.fact {
+  padding: var(--s-3) var(--s-2) var(--s-3) 0;
+  border-bottom: 1px solid #2a2a2a;
+}
+.fact dt { font-size: 0.875rem; color: var(--grey); margin-bottom: var(--s-1); }
+.fact dd { font-size: clamp(2.5rem, 5vw, 5rem); }
