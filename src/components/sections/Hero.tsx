@@ -12,6 +12,10 @@ export function Hero({ pilot }: { pilot: Site["pilot"] }) {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
+      // Autoplay ignores reduced motion: stop the video ourselves.
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        root.current?.querySelector("video")?.pause();
+      });
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({
           scrollTrigger: { trigger: root.current, start: "top top", end: "+=150%", scrub: 0.6, pin: true },
@@ -37,7 +41,7 @@ export function Hero({ pilot }: { pilot: Site["pilot"] }) {
     <section ref={root} className={s.hero} aria-label="Introduction">
       <div className={s.visor}>
         {pilot.heroVideo ? (
-          <video className={s.media} src={pilot.heroVideo} poster={pilot.heroPoster} autoPlay muted loop playsInline />
+          <video className={s.media} src={pilot.heroVideo} poster={pilot.heroPoster} preload="metadata" autoPlay muted loop playsInline />
         ) : (
           <Image className={s.media} src={pilot.heroPoster} alt="" fill priority sizes="100vw" />
         )}

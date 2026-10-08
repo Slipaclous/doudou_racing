@@ -62,3 +62,10 @@ img, video { display: block; max-width: 100%; }
 }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Hover text roll (components/motion/Roll.tsx), triggered by the hovered link or button. */
+.roll { position: relative; display: inline-block; overflow: hidden; vertical-align: bottom; }
+.roll-a, .roll-b { display: block; transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1); }
+.roll-b { position: absolute; inset: 0; transform: translateY(105%); }
+:is(a, button):is(:hover, :focus-visible) .roll-a { transform: translateY(-105%); }
+:is(a, button):is(:hover, :focus-visible) .roll-b { transform: translateY(0); }

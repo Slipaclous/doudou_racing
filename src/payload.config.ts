@@ -16,8 +16,9 @@ import { PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, SettingsGlobal } fr
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-if (!process.env.PAYLOAD_SECRET && process.env.NODE_ENV === "production") {
-  throw new Error("PAYLOAD_SECRET is required in production");
+// Any real database (prod, preview, shared dev) needs a real secret: the fallback is public.
+if (!process.env.PAYLOAD_SECRET && (process.env.NODE_ENV === "production" || process.env.DATABASE_URL)) {
+  throw new Error("PAYLOAD_SECRET is required when DATABASE_URL is set or in production");
 }
 
 export default buildConfig({

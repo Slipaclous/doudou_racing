@@ -3,6 +3,7 @@
 import { useRef, useSyncExternalStore } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Race } from "@/content/schema";
+import { Lines } from "@/components/motion/Lines";
 import s from "./Races.module.css";
 
 const DAY = 86_400_000;
@@ -53,11 +54,7 @@ export function Races({ races }: { races: Race[] }) {
   return (
     <section ref={root} id="courses" className={s.races} aria-labelledby="races-title">
       <header className={s.head}>
-        <h2 id="races-title" className={s.title}>
-          Prochaines
-          <br />
-          courses
-        </h2>
+        <Lines as="h2" id="races-title" className={s.title} lines={["Prochaines", "courses"]} />
         {daysToNext !== null && (
           <p className={s.countdown}>
             <span className={s.days}>J-{daysToNext}</span>

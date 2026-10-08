@@ -19,15 +19,39 @@
 }
 .word { color: var(--white); }
 
-.facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  margin-top: var(--s-12);
-  border-top: 2px solid var(--red);
+.sheet { margin-top: var(--s-12); }
+
+.tabs { display: flex; gap: var(--s-4); border-bottom: 2px solid var(--red); }
+.tab {
+  position: relative;
+  padding: var(--s-2) 0;
+  background: none;
+  border: 0;
+  color: var(--grey);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s;
 }
-.fact {
-  padding: var(--s-3) var(--s-2) var(--s-3) 0;
-  border-bottom: 1px solid #2a2a2a;
+.tab::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px;
+  height: 6px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.fact dt { font-size: 0.875rem; color: var(--grey); margin-bottom: var(--s-1); }
-.fact dd { font-size: clamp(2.5rem, 5vw, 5rem); }
+.tab:hover, .tab[aria-selected="true"] { color: var(--white); }
+.tab[aria-selected="true"]::after { transform: scaleX(1); }
+.tab:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); column-gap: var(--s-4); }
+.facts[hidden] { display: none; }
+.fact { padding: var(--s-4) 0; border-bottom: 1px solid #2a2a2a; }
+.fact dt { font-size: 0.875rem; color: var(--grey); margin-bottom: var(--s-2); }
+/* Display type is set tight (0.85); values can wrap, so give them room. */
+.value { display: block; overflow: hidden; font-size: clamp(2rem, 3.4vw, 3.75rem); line-height: 1; text-wrap: balance; }
+/* On tab change each value slides up from behind its own mask, one after the other. */
+.value span { display: block; animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: calc(var(--i) * 60ms); }
+@keyframes rise { from { transform: translateY(105%); } }

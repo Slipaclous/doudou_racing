@@ -38,6 +38,13 @@ export const Partners: CollectionConfig = {
       ],
     },
     { name: "logo", label: "Logo", type: "upload", relationTo: "media" },
-    { name: "url", label: "Site web", type: "text", admin: { placeholder: "https://" } },
+    {
+      name: "url",
+      label: "Site web",
+      type: "text",
+      admin: { placeholder: "https://" },
+      // Rendered as a link on the public site: only http(s), never javascript: or data:.
+      validate: (v: string | null | undefined) => !v || /^https?:\/\//i.test(v.trim()) || "L'adresse doit commencer par https://",
+    },
   ],
 };

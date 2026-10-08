@@ -75,7 +75,7 @@ export async function getSite(): Promise<Site> {
       sector: clean(p.sector),
       description: clean(p.description),
       logo: mediaUrl(p.logo),
-      url: clean(p.url),
+      url: /^https?:\/\//i.test(p.url?.trim() ?? "") ? clean(p.url) : undefined,
     })),
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,

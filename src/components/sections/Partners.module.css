@@ -22,31 +22,91 @@
 .zoneItem { display: grid; gap: var(--s-1); border-left: 6px solid var(--red); padding-left: var(--s-3); }
 .zoneLabel { font-size: clamp(2rem, 4vw, 4rem); }
 
-.current { padding: var(--s-8) var(--gutter) var(--s-12); border-top: 1px solid #2a2a2a; }
-.currentLabel { color: var(--grey); font-size: 0.875rem; margin-bottom: var(--s-4); }
-.list {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
-  gap: var(--s-2);
+.current { display: grid; gap: var(--s-8); padding: var(--s-12) 0; border-top: 1px solid #2a2a2a; }
+
+/* Logos: JPGs on white. Invert + screen turns the white box into nothing and the ink into white. */
+.trackLogo, .rowLogo { filter: grayscale(1) invert(1) contrast(1.4); mix-blend-mode: screen; object-fit: contain; }
+/* Hover: a light plate slides in and the logo gets its real colours back (multiply drops the white box). */
+.trackItem, .rowLogo, .trackLogo { transition: filter 0.3s, background-color 0.3s, opacity 0.2s; }
+.trackItem:hover { background: var(--white); }
+.trackItem:hover .trackLogo { filter: none; mix-blend-mode: multiply; }
+/* In a row the plate is the image's own background, so no blend: the logo shows as-is on white. */
+.rowInner:hover .rowLogo, .rowInner:focus-visible .rowLogo { filter: none; mix-blend-mode: normal; background: #fff; }
+.logoText { filter: none; mix-blend-mode: normal; font-family: var(--font-display), sans-serif; text-transform: uppercase; color: var(--white); }
+
+/* Edge fade as overlays: a mask would isolate the strip and break the logos' screen blend. */
+.marquee { position: relative; display: flex; overflow: hidden; }
+.marquee::before, .marquee::after { content: ""; position: absolute; inset-block: 0; z-index: 1; width: 12%; pointer-events: none; }
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--black-2), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--black-2), transparent); }
+.track { list-style: none; display: flex; flex-shrink: 0; align-items: center; animation: marquee 60s linear infinite; }
+.marquee:hover .track { animation-play-state: paused; }
+.trackItem { display: grid; place-items: center; width: clamp(9rem, 16vw, 15rem); aspect-ratio: 244 / 110; padding-inline: var(--s-3); }
+.trackLogo { width: 100%; height: 100%; }
+.trackLogo.logoText { height: auto; font-size: clamp(1.25rem, 2vw, 2rem); text-align: center; }
+@keyframes marquee { to { transform: translateX(-100%); } }
+
+.cta {
+  justify-self: center;
+  padding: var(--s-2) var(--s-4);
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
+  transition: background-color 0.2s, transform 0.2s;
 }
-.partner {
-  display: grid;
-  align-content: start;
-  gap: var(--s-2);
-  padding: var(--s-4) var(--s-3);
-  background: var(--black);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+.cta:hover { background: var(--red-deep); transform: translateX(0.25rem); }
+
+.roster { display: grid; gap: var(--s-4); padding-inline: var(--gutter); }
+.rosterLabel { font-size: 0.875rem; text-transform: uppercase; color: var(--grey); }
+.count { color: var(--red); }
+.lists { display: grid; gap: var(--s-6); }
+.rows { list-style: none; border-top: 1px solid #2a2a2a; }
+
+/* Index: hairline grid, 2 columns on phones, 3 from tablet. Lines drawn by each cell so a short last row stays clean. */
+.index { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid #2a2a2a; }
+.cell { border-bottom: 1px solid #2a2a2a; }
+.cell:not(:nth-child(2n)) { border-right: 1px solid #2a2a2a; }
+.cell .rowInner { grid-template-columns: 1fr; grid-template-areas: "tier" "name"; align-content: center; row-gap: var(--s-1); min-height: 7rem; padding: var(--s-3) var(--s-2); }
+.cell .rowName { font-size: clamp(1.5rem, 2.2vw, 2.25rem); }
+.cell .rowArrow { top: var(--s-2); right: var(--s-2); font-size: 1rem; }
+@media (min-width: 768px) {
+  .index { grid-template-columns: repeat(3, 1fr); }
+  .cell:not(:nth-child(2n)) { border-right: 0; }
+  .cell:not(:nth-child(3n)) { border-right: 1px solid #2a2a2a; }
 }
-.featured { background: var(--red); }
-.featured .partnerRole { color: var(--white); }
-.partnerMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-2); font-size: 0.8rem; color: var(--grey); }
-.featured .partnerMeta { color: var(--white); }
-.partnerRole { color: var(--red); font-weight: 700; }
-.partnerName { font-size: clamp(2.25rem, 4vw, 4rem); line-height: 0.9; }
-.partnerText { font-size: var(--t-body); line-height: 1.35; }
-.partnerLink { justify-self: start; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 0.3em; }
-.logo { width: auto; height: clamp(3rem, 7vw, 7rem); object-fit: contain; filter: grayscale(1) brightness(1.6); }
+.row { border-bottom: 1px solid #2a2a2a; }
+.rowInner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "tier logo" "name logo" "sector logo";
+  align-items: center;
+  column-gap: var(--s-3);
+  padding: var(--s-3) 0;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+}
+.rowTier { grid-area: tier; font-size: 0.75rem; text-transform: uppercase; color: var(--grey); }
+.rowPrincipal .rowTier { color: var(--red); }
+.rowName { grid-area: name; font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: clamp(2rem, 4.5vw, 4.5rem); line-height: 0.95; transition: color 0.2s, transform 0.3s; }
+.rowPrincipal .rowName { font-size: clamp(2.75rem, 7vw, 7rem); }
+.rowSector { grid-area: sector; font-size: 0.8rem; color: var(--grey); }
+.rowLogo { grid-area: logo; width: clamp(5rem, 10vw, 9rem); height: clamp(3rem, 5vw, 4.5rem); padding: 0.4rem; opacity: 0.35; }
+.rowLogo.logoText { display: none; }
+.rowArrow { position: absolute; top: var(--s-3); right: 0; color: var(--red); font-size: 1.25rem; }
+a.rowInner:hover .rowName, a.rowInner:focus-visible .rowName { color: var(--red); transform: translateX(0.5rem); }
+.rowInner:hover .rowLogo { opacity: 1; }
+a.rowInner:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+
+@media (min-width: 1024px) {
+  /* Label pinned on the left while the roster scrolls, as on the reference. */
+  .roster { grid-template-columns: 1fr 2fr; align-items: start; }
+  .rosterLabel { position: sticky; top: var(--s-12); }
+}
 
 @media (min-width: 768px) {
   .showcase {
@@ -60,6 +120,9 @@
   .zoneItem { opacity: 0.25; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; }
+  .track { animation: none; }
+  .track[aria-hidden] { display: none; }
   .zone { fill: var(--red); }
   .zoneItem { opacity: 1; }
   .showcase { height: auto; }

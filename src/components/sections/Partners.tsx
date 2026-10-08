@@ -4,13 +4,51 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Site, Zone } from "@/content/schema";
+import { Lines } from "@/components/motion/Lines";
+import { Roll } from "@/components/motion/Roll";
 import s from "./Partners.module.css";
 
-const tierLabel: Record<Site["partners"][number]["tier"], string> = {
+type Partner = Site["partners"][number];
+
+const tierLabel: Record<Partner["tier"], string> = {
   principal: "Partenaire principal",
   officiel: "Partenaire officiel",
   fournisseur: "Fournisseur",
 };
+
+/** Partner logo turned white on the dark page: client logos are JPGs with a white box. */
+function Logo({ partner, className }: { partner: Partner; className: string }) {
+  return partner.logo ? (
+    <Image src={partner.logo} alt="" width={320} height={180} className={className} />
+  ) : (
+    <span className={`${className} ${s.logoText}`}>{partner.name}</span>
+  );
+}
+
+function PartnerRow({ partner: p, className, compact = false }: { partner: Partner; className: string; compact?: boolean }) {
+  const inner = (
+    <>
+      {/* In the index "officiel" is the default: only other tiers or a custom role get a label. */}
+      {(!compact || p.role || p.tier !== "officiel") && <span className={`${s.rowTier} mono`}>{p.role ?? tierLabel[p.tier]}</span>}
+      <span className={s.rowName}>{p.name}</span>
+      {p.sector && <span className={`${s.rowSector} mono`}>{p.sector}</span>}
+      {!compact && <Logo partner={p} className={s.rowLogo} />}
+      {p.url && <span className={s.rowArrow} aria-hidden>↗</span>}
+    </>
+  );
+  return (
+    <li className={className}>
+      {p.url ? (
+        <a href={p.url} target="_blank" rel="noopener noreferrer" className={s.rowInner}>
+          {inner}
+          <span className="sr-only"> (site web, nouvel onglet)</span>
+        </a>
+      ) : (
+        <div className={s.rowInner}>{inner}</div>
+      )}
+    </li>
+  );
+}
 
 /** Top view of a kart, nose to the right. Sponsor zones carry data-zone. */
 function Kart({ number }: { number: number }) {
@@ -54,6 +92,7 @@ function Kart({ number }: { number: number }) {
 
 export function Partners({ partners, zones, number }: { partners: Site["partners"]; zones: Zone[]; number: number }) {
   const root = useRef<HTMLElement>(null);
+  const ordered = [...partners].sort((x, y) => (x.tier === "principal" ? 0 : 1) - (y.tier === "principal" ? 0 : 1));
 
   useGSAP(
     () => {
@@ -80,11 +119,7 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
   return (
     <section ref={root} id="partenaires" className={s.partners} aria-labelledby="partners-title">
       <div className={s.showcase}>
-        <h2 id="partners-title" className={s.title}>
-          Votre logo
-          <br />
-          <span className={s.accent}>en piste</span>
-        </h2>
+        <Lines as="h2" id="partners-title" className={s.title} lines={["Votre logo", "en piste"]} accent={1} />
         <Kart number={number} />
         <ol className={s.zones}>
           {zones.map((zone) => (
@@ -97,29 +132,42 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
       </div>
 
       <div className={s.current}>
-        <p className={`${s.currentLabel} mono`}>Ils roulent déjà avec nous</p>
-        <ul className={s.list}>
-          {partners.map((p) => (
-            <li key={p.name} className={`${s.partner} ${p.tier === "principal" ? s.featured : ""}`}>
-              <div className={`${s.partnerMeta} mono`}>
-                <span className={s.partnerRole}>{p.role ?? tierLabel[p.tier]}</span>
-                {p.sector && <span>{p.sector}</span>}
-              </div>
-              {p.logo ? (
-                <Image src={p.logo} alt={p.name} width={320} height={120} className={s.logo} />
-              ) : (
-                <h3 className={s.partnerName}>{p.name}</h3>
-              )}
-              {p.description && <p className={s.partnerText}>{p.description}</p>}
-              {p.url && (
-                <a href={p.url} target="_blank" rel="noopener noreferrer" className={`${s.partnerLink} mono`}>
-                  Site web <span aria-hidden>↗</span>
-                  <span className="sr-only"> de {p.name}</span>
-                </a>
-              )}
-            </li>
+        {/* Endless logo strip. The second copy only closes the loop, so screen readers skip it. */}
+        <div className={s.marquee}>
+          {[0, 1].map((copy) => (
+            <ul key={copy} className={s.track} aria-hidden={copy === 1 || undefined}>
+              {ordered.map((p) => (
+                <li key={p.name} className={s.trackItem}>
+                  <Logo partner={p} className={s.trackLogo} />
+                  {copy === 0 && <span className="sr-only">{p.name}</span>}
+                </li>
+              ))}
+            </ul>
           ))}
-        </ul>
+        </div>
+
+        <a href="#contact" className={`${s.cta} mono`}>
+          <Roll>{`Rejoindre l'équipe #${number}`}</Roll> <span aria-hidden>→</span>
+        </a>
+
+        <div className={s.roster}>
+          <p className={`${s.rosterLabel} mono`}>
+            Partenaires actuels <span className={s.count}>{partners.length}</span>
+          </p>
+          <div className={s.lists}>
+            <ul className={s.rows}>
+              {ordered.filter((p) => p.tier === "principal").map((p) => (
+                <PartnerRow key={p.name} partner={p} className={`${s.row} ${s.rowPrincipal}`} />
+              ))}
+            </ul>
+            {/* Everyone else as a compact index, not one tall list. */}
+            <ul className={s.index}>
+              {ordered.filter((p) => p.tier !== "principal").map((p) => (
+                <PartnerRow key={p.name} partner={p} className={s.cell} compact />
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

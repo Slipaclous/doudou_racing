@@ -1,3 +1,4 @@
+import { Roll } from "@/components/motion/Roll";
 import s from "./Footer.module.css";
 
 export function Footer({ number, name, email }: { number: number; name: string; email: string }) {
@@ -10,7 +11,9 @@ export function Footer({ number, name, email }: { number: number; name: string; 
         <span>
           © {new Date().getFullYear()} {name}
         </span>
-        <a href={`mailto:${email}`}>{email}</a>
+        <a href={`mailto:${email}`}>
+          <Roll>{email}</Roll>
+        </a>
       </div>
     </footer>
   );

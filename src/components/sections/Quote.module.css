@@ -1,0 +1,33 @@
+.quote {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 100svh;
+  padding: var(--s-12) var(--gutter);
+  background: var(--black);
+  overflow: hidden;
+}
+
+.year {
+  position: absolute;
+  bottom: -0.12em;
+  right: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(12rem, 42vw, 48rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 2px #262626;
+  pointer-events: none;
+  user-select: none;
+}
+
+.figure { position: relative; display: grid; gap: var(--s-4); }
+.text {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 8.5vw, 10rem);
+  line-height: 0.9;
+}
+.rule { display: block; width: min(100%, 24rem); height: 4px; background: var(--red); transform-origin: left; }
+.caption { display: grid; gap: var(--s-1); font-size: 0.875rem; }
+.context { color: var(--grey); }

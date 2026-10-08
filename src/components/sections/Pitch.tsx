@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Site } from "@/content/schema";
+import { Lines } from "@/components/motion/Lines";
 import s from "./Pitch.module.css";
 
 // Fallback visuals when no photo is set, all borrowed from the track.
@@ -40,11 +41,7 @@ export function Pitch({ pitch, nickname }: { pitch: Site["pitch"]; nickname: str
 
   return (
     <section ref={root} id="pourquoi" className={s.pitch} aria-labelledby="pitch-title">
-      <h2 id="pitch-title" className={s.title}>
-        Pourquoi
-        <br />
-        <span className={s.accent}>{nickname}</span>
-      </h2>
+      <Lines as="h2" id="pitch-title" className={s.title} lines={["Pourquoi", nickname]} accent={1} />
 
       <div className={s.stack}>
         {pitch.map((item, i) => (

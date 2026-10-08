@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import { sendContact, type ContactState } from "@/actions/contact";
+import { Lines } from "@/components/motion/Lines";
+import { Roll } from "@/components/motion/Roll";
 import s from "./Contact.module.css";
 
 const initial: ContactState = { status: "idle" };
@@ -18,13 +20,7 @@ export function Contact({ email }: { email: string }) {
 
   return (
     <section id="contact" className={s.contact} aria-labelledby="contact-title">
-      <h2 id="contact-title" className={s.title}>
-        Prenez
-        <br />
-        le départ
-        <br />
-        avec nous
-      </h2>
+      <Lines as="h2" id="contact-title" className={s.title} lines={["Prenez", "le départ", "avec nous"]} />
 
       {state.status === "success" ? (
         <p className={s.success} role="status">
@@ -55,7 +51,7 @@ export function Contact({ email }: { email: string }) {
 
           <div className={`${s.actions} ${s.full}`}>
             <button type="submit" className={s.submit} disabled={pending}>
-              {pending ? "Envoi…" : "Envoyer"}
+              {pending ? "Envoi…" : <Roll>Envoyer</Roll>}
             </button>
             {state.status === "error" && (
               <p className={s.error} role="alert">
@@ -63,7 +59,7 @@ export function Contact({ email }: { email: string }) {
               </p>
             )}
             <a href={`mailto:${email}`} className={`${s.mail} mono`}>
-              {email}
+              <Roll>{email}</Roll>
             </a>
           </div>
         </form>
