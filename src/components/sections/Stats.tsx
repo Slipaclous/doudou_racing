@@ -66,9 +66,11 @@ export function Stats({ stats }: { stats: Site["stats"] }) {
                 },
               },
               i + 0.15,
-            )
-            // The proof stacks up while the number climbs.
-            .fromTo(items, { autoAlpha: 0, x: -16 }, { autoAlpha: 1, x: 0, stagger: 0.6 / Math.max(items.length, 1), duration: 0.05 }, i + 0.15);
+            );
+          // The proof stacks up while the number climbs (some stats have no details).
+          if (items.length) {
+            tl.fromTo(items, { autoAlpha: 0, x: -16 }, { autoAlpha: 1, x: 0, stagger: 0.6 / items.length, duration: 0.05 }, i + 0.15);
+          }
         });
       });
     },
