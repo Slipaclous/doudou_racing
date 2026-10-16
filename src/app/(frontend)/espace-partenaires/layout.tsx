@@ -21,6 +21,7 @@ export default async function PartnerAreaLayout({ children }: LayoutProps<"/espa
           {member ? (
             <>
               <Link href="/espace-partenaires">Annuaire</Link>
+              <Link href="/espace-partenaires/courses">Courses</Link>
               <Link href="/espace-partenaires/profil">Mon profil</Link>
               <form action={logout}>
                 <button type="submit" className={`${s.linkButton} mono`}>Déconnexion</button>

@@ -4,6 +4,7 @@ import { useActionState, type ReactNode } from "react";
 import {
   contactPartner,
   login,
+  registerForRace,
   requestPasswordReset,
   setPassword,
   updateProfile,
@@ -114,6 +115,16 @@ export function ContactPartnerForm({ partnerId, partnerName }: { partnerId: numb
     <Form action={contactPartner} submit="Envoyer" hideOnSuccess>
       <input type="hidden" name="partnerId" value={partnerId} />
       <Area label={`Votre message à ${partnerName}`} name="message" rows={3} required hint="Il recevra votre nom et votre e-mail pour vous répondre." />
+    </Form>
+  );
+}
+
+export function RaceRegistrationForm({ raceId, guests, note, registered }: { raceId: number; guests: number; note: string; registered: boolean }) {
+  return (
+    <Form action={registerForRace} submit={registered ? "Mettre à jour" : "Je serai présent"}>
+      <input type="hidden" name="raceId" value={raceId} />
+      <Field label="Invités (en plus de vous)" name="guests" type="number" min={0} max={10} defaultValue={guests} required />
+      <Area label="Un mot pour l'équipe" name="note" rows={2} defaultValue={note} hint="Facultatif : heure d'arrivée, besoins particuliers…" />
     </Form>
   );
 }

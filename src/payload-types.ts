@@ -72,6 +72,7 @@ export interface Config {
     races: Race;
     partners: Partner;
     members: Member;
+    'race-registrations': RaceRegistration;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -79,12 +80,17 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    races: {
+      registrations: 'race-registrations';
+    };
+  };
   collectionsSelect: {
     seasons: SeasonsSelect<false> | SeasonsSelect<true>;
     races: RacesSelect<false> | RacesSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
+    'race-registrations': RaceRegistrationsSelect<false> | RaceRegistrationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -211,34 +217,32 @@ export interface Race {
   circuit: string;
   country: string;
   category: string;
+  partnersWelcome?: boolean | null;
+  welcomeInfo?: string | null;
+  /**
+   * Laissez vide pour ne pas limiter.
+   */
+  capacity?: number | null;
+  registrations?: {
+    docs?: (number | RaceRegistration)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Les partenaires s'inscrivent eux-mêmes depuis l'espace partenaires. Retrouvez aussi la liste sur chaque course.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners".
+ * via the `definition` "race-registrations".
  */
-export interface Partner {
+export interface RaceRegistration {
   id: number;
-  name: string;
-  /**
-   * En rouge au-dessus du nom.
-   */
-  role?: string | null;
-  sector?: string | null;
-  description?: string | null;
-  /**
-   * Plus petit = affiché en premier.
-   */
-  order?: number | null;
-  /**
-   * « Principal » est mis en avant sur le site.
-   */
-  tier: 'principal' | 'officiel' | 'fournisseur';
-  offer?: string | null;
-  lookingFor?: string | null;
-  logo?: (number | null) | Media;
-  url?: string | null;
+  race: number | Race;
+  member: number | Member;
+  guests: number;
+  note?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -272,6 +276,34 @@ export interface Member {
     | null;
   password?: string | null;
   collection: 'members';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: number;
+  name: string;
+  /**
+   * En rouge au-dessus du nom.
+   */
+  role?: string | null;
+  sector?: string | null;
+  description?: string | null;
+  /**
+   * Plus petit = affiché en premier.
+   */
+  order?: number | null;
+  /**
+   * « Principal » est mis en avant sur le site.
+   */
+  tier: 'principal' | 'officiel' | 'fournisseur';
+  offer?: string | null;
+  lookingFor?: string | null;
+  logo?: (number | null) | Media;
+  url?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -338,6 +370,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'members';
         value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'race-registrations';
+        value: number | RaceRegistration;
       } | null)
     | ({
         relationTo: 'media';
@@ -423,6 +459,10 @@ export interface RacesSelect<T extends boolean = true> {
   circuit?: T;
   country?: T;
   category?: T;
+  partnersWelcome?: T;
+  welcomeInfo?: T;
+  capacity?: T;
+  registrations?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -469,6 +509,18 @@ export interface MembersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "race-registrations_select".
+ */
+export interface RaceRegistrationsSelect<T extends boolean = true> {
+  race?: T;
+  member?: T;
+  guests?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

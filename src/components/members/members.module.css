@@ -69,3 +69,15 @@
 .contact summary::after { content: " →"; }
 .contact[open] summary::after { content: " ↓"; }
 .contact[open] { display: grid; gap: var(--s-2); }
+
+/* Races */
+.races { list-style: none; display: grid; gap: var(--s-4); }
+.race { display: grid; gap: var(--s-3); padding: var(--s-4); background: var(--black-2); border-left: 4px solid var(--red); }
+@media (min-width: 900px) { .race { grid-template-columns: 1.2fr 1fr; align-items: start; } }
+.raceInfo { display: grid; gap: var(--s-2); }
+.date { color: var(--touch); font-size: 0.875rem; }
+.raceName { font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: clamp(2rem, 4vw, 3rem); line-height: 0.95; }
+.welcome { white-space: pre-line; font-size: 0.95rem; }
+.badge { justify-self: start; font-size: 0.75rem; padding: 0.25rem var(--s-1); background: var(--touch); color: var(--black); }
+.side { display: grid; gap: var(--s-2); padding-top: var(--s-2); border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .side { padding: 0 0 0 var(--s-4); border-top: 0; border-left: 1px solid var(--line); } }

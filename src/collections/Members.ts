@@ -1,4 +1,4 @@
-import type { Access, CollectionAfterChangeHook, CollectionConfig } from "payload";
+import type { Access, CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionConfig } from "payload";
 import { isAdmin } from "@/access";
 import { sendInvitation } from "@/members/invite";
 
@@ -8,6 +8,11 @@ const adminOrSelf: Access = ({ req }) =>
 // A new member gets an e-mail to choose their password: admins never pick or share one.
 const inviteOnCreate: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   if (operation === "create") await sendInvitation(req.payload, doc.email, { req });
+};
+
+// Their race registrations go with them.
+const removeRegistrations: CollectionAfterDeleteHook = async ({ id, req }) => {
+  await req.payload.delete({ collection: "race-registrations", where: { member: { equals: id } }, req });
 };
 
 /**
@@ -35,7 +40,7 @@ export const Members: CollectionConfig = {
     update: adminOrSelf,
     delete: isAdmin,
   },
-  hooks: { afterChange: [inviteOnCreate] },
+  hooks: { afterChange: [inviteOnCreate], afterDelete: [removeRegistrations] },
   fields: [
     {
       type: "row",
@@ -52,6 +57,11 @@ export const Members: CollectionConfig = {
       required: true,
       // A member can't move themselves to another sponsor.
       access: { update: ({ req }) => req.user?.collection === "users" },
+    },
+    {
+      name: "resendInvitation",
+      type: "ui",
+      admin: { position: "sidebar", components: { Field: "/components/admin/ResendInvitation#ResendInvitation" } },
     },
   ],
 };

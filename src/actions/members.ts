@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { escapeHtml, sendEmail } from "@/lib/email";
@@ -154,4 +155,85 @@ export async function contactPartner(_prev: FormState, formData: FormData): Prom
   return sent
     ? { status: "success", message: `Message envoyé à ${target.name}. La réponse arrivera dans votre boîte mail.` }
     : { status: "error", message: "L'envoi a échoué. Réessayez dans un instant." };
+}
+
+const today = () => new Date(new Date().toISOString().slice(0, 10)).toISOString();
+
+export async function registerForRace(_prev: FormState, formData: FormData): Promise<FormState> {
+  const member = await requireMember();
+  const parsed = z
+    .object({
+      raceId: z.coerce.number().int().positive(),
+      guests: z.coerce.number().int().min(0, "Nombre d'invités invalide.").max(10, "10 invités maximum."),
+      note: z.string().trim().max(500).optional().transform((v) => v || null),
+    })
+    .safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: parsed.error.issues[0].message };
+  const { raceId, guests, note } = parsed.data;
+
+  const payload = await getPayloadClient();
+  const race = await payload.findByID({ collection: "races", id: raceId, depth: 0 }).catch(() => null);
+  if (!race || !race.partnersWelcome || race.date < today()) {
+    return { status: "error", message: "Les inscriptions ne sont pas ouvertes pour cette course." };
+  }
+
+  const existing = await payload.find({
+    collection: "race-registrations",
+    where: { race: { equals: raceId } },
+    depth: 0,
+    limit: 500,
+    pagination: false,
+  });
+  const mine = existing.docs.find((r) => r.member === member.id);
+  if (race.capacity) {
+    const taken = existing.docs.filter((r) => r !== mine).reduce((n, r) => n + 1 + r.guests, 0);
+    const left = race.capacity - taken;
+    if (1 + guests > left) {
+      return { status: "error", message: left > 0 ? `Il reste ${left} place${left > 1 ? "s" : ""} (vous compris).` : "C'est complet." };
+    }
+  }
+
+  const data = { race: raceId, member: member.id, guests, note };
+  if (mine) await payload.update({ collection: "race-registrations", id: mine.id, data });
+  else await payload.create({ collection: "race-registrations", data });
+
+  const to = process.env.CONTACT_TO;
+  if (to) {
+    const partner = await payload.findByID({ collection: "partners", id: memberPartnerId(member), depth: 0 });
+    await sendEmail({
+      to: [to],
+      replyTo: member.email,
+      subject: `${mine ? "Inscription modifiée" : "Nouvelle inscription"} — ${race.name}`,
+      html: `<p><strong>${escapeHtml(member.name)}</strong> (${escapeHtml(partner.name)}) sera présent à <strong>${escapeHtml(race.name)}</strong>${guests ? ` avec ${guests} invité${guests > 1 ? "s" : ""}` : ""}.</p>${note ? `<p>${escapeHtml(note).replace(/\n/g, "<br>")}</p>` : ""}`,
+    });
+  }
+
+  revalidatePath("/espace-partenaires/courses");
+  return { status: "success", message: mine ? "Inscription mise à jour." : "C'est noté, à bientôt sur le circuit !" };
+}
+
+export async function cancelRaceRegistration(formData: FormData) {
+  const member = await requireMember();
+  const raceId = z.coerce.number().int().positive().safeParse(formData.get("raceId"));
+  if (!raceId.success) return;
+  const payload = await getPayloadClient();
+  await payload.delete({
+    collection: "race-registrations",
+    where: { and: [{ race: { equals: raceId.data } }, { member: { equals: member.id } }] },
+  });
+  revalidatePath("/espace-partenaires/courses");
+}
+
+/** Admin button on a member's page (/admin): sends a fresh invitation link. */
+export async function resendInvitation(memberId: number): Promise<FormState> {
+  const payload = await getPayloadClient();
+  const { user } = await payload.auth({ headers: await headers() });
+  if (user?.collection !== "users") return { status: "error", message: "Réservé aux administrateurs." };
+
+  const member = await payload.findByID({ collection: "members", id: memberId, depth: 0 }).catch(() => null);
+  if (!member) return { status: "error", message: "Membre introuvable." };
+  const sent = await sendInvitation(payload, member.email);
+  return sent
+    ? { status: "success", message: `Invitation envoyée à ${member.email}.` }
+    : { status: "error", message: "L'envoi a échoué (vérifiez la configuration Resend)." };
 }
