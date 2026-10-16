@@ -48,6 +48,18 @@ export const Partners: CollectionConfig = {
         { name: "lookingFor", label: "Ce que nous recherchons", type: "textarea", admin: { rows: 3 } },
       ],
     },
+    {
+      name: "kartZone",
+      label: "Emplacement sur le kart",
+      type: "select",
+      admin: { position: "sidebar", description: "Son logo apparaît sur cette zone du kart, section « Votre logo en piste »." },
+      options: [
+        { label: "Nez", value: "nose" },
+        { label: "Pontons latéraux", value: "pods" },
+        { label: "Plaque numéro", value: "plate" },
+        { label: "Arrière", value: "rear" },
+      ],
+    },
     { name: "logo", label: "Logo", type: "upload", relationTo: "media" },
     {
       name: "url",

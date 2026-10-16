@@ -48,7 +48,7 @@ body {
   overflow-x: clip;
 }
 
-h1, h2, h3, .display {
+h1, h2, .display {
   font-family: var(--font-display), sans-serif;
   font-weight: 400;
   text-transform: uppercase;
@@ -56,10 +56,38 @@ h1, h2, h3, .display {
   letter-spacing: -0.01em;
 }
 
+/* Mid-level titles: Archivo stretched wide and heavy, the motorsport-livery look, between the condensed giants and the text. */
+h3 {
+  font-family: var(--font-body), sans-serif;
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
 .mono { font-family: var(--font-mono), monospace; letter-spacing: 0.05em; text-transform: uppercase; }
 
 a { color: inherit; text-decoration: none; }
 img, video { display: block; max-width: 100%; }
+
+/* Film grain over the whole site: gives the flat colours some texture, like printed race posters. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.8s steps(4) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); }
+  75% { transform: translate(-2%, -1%); }
+}
 
 ::selection { background: var(--red); color: var(--on-red); }
 

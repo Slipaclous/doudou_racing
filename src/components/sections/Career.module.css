@@ -21,48 +21,60 @@
 
 .panel {
   position: relative;
-  padding: var(--s-8) var(--gutter);
+  padding: var(--s-6) var(--gutter);
   display: grid;
-  gap: var(--s-4);
+  gap: var(--s-3);
 }
 
 .year {
   font-family: var(--font-display), sans-serif;
-  font-size: var(--t-mega);
+  font-size: clamp(4.5rem, 26vw, 10rem);
   line-height: 0.8;
   color: transparent;
   -webkit-text-stroke: 2px var(--black);
+  /* Sits on the top edge of the photo instead of taking a screen of its own. */
+  margin-bottom: -0.45em;
+  position: relative;
+  z-index: 1;
 }
 
 .frame {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--black);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
 }
 .frame img { object-fit: cover; scale: 1.3; filter: grayscale(1) contrast(1.15); }
 
-.body { display: grid; gap: var(--s-2); max-width: 32ch; }
-.headline { font-size: clamp(3rem, 7vw, 8rem); color: var(--black); }
+.body { display: grid; gap: var(--s-2); max-width: 40ch; }
+.headline { font-size: clamp(1.5rem, 6.5vw, 2.5rem); color: var(--black); overflow-wrap: anywhere; hyphens: auto; }
 .result {
   justify-self: start;
   background: var(--black);
+  color: var(--white);
   padding: var(--s-1) var(--s-2);
 }
 
-@media (min-width: 768px) {
+/* Tablets (and short landscape screens): photo and text side by side, still scrolling vertically. */
+@media (min-width: 600px) {
+  .panel { grid-template-columns: 1fr 1fr; column-gap: var(--s-4); align-items: end; padding-block: var(--s-8); }
+  .year { grid-column: 1 / -1; margin-bottom: -0.35em; }
+  .headline { font-size: clamp(1.75rem, 3.6vw, 2.75rem); }
+}
+
+/* Large screens: horizontal pinned scroll, everything sized to fit the screen height. */
+@media (min-width: 1024px) and (min-height: 600px) {
   .career { height: 100svh; }
   .track { flex-direction: row; height: 100%; width: max-content; }
   .intro { width: 70vw; }
   .panel {
     width: 90vw;
     height: 100%;
-    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr;
-    align-items: end;
     padding-block: var(--s-6);
   }
-  .year { grid-column: 1 / -1; align-self: start; }
+  .year { align-self: start; font-size: min(var(--t-mega), 30svh); margin-bottom: 0; }
   .frame { aspect-ratio: auto; height: 100%; max-height: 55svh; }
+  .headline { font-size: min(clamp(2rem, 3.8vw, 4.25rem), 7svh); }
 }

@@ -1,0 +1,27 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--touch);
+  pointer-events: none;
+  opacity: 0;
+  transition: width 0.25s, height 0.25s, margin 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.2s, scale 0.15s;
+  border: 2px solid transparent;
+}
+.cursor[data-visible="true"] { opacity: 1; }
+.cursor[data-hover="true"] {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  background: transparent;
+  border-color: var(--touch);
+}
+.cursor[data-down="true"] { scale: 0.8; }
+
+/* Only text fields keep a visible system cursor (the caret matters there). */
+:global(html.has-cursor), :global(html.has-cursor) :is(a, button, summary, label) { cursor: none; }

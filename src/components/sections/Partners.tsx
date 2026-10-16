@@ -50,8 +50,43 @@ function PartnerRow({ partner: p, className, compact = false }: { partner: Partn
   );
 }
 
-/** Top view of a kart, nose to the right. Sponsor zones carry data-zone. */
-function Kart({ number }: { number: number }) {
+type KartZone = NonNullable<Partner["kartZone"]>;
+
+// Where a sponsor logo sits inside each zone (kart viewBox units): centre, rotation, plate size.
+const logoSpots: Record<KartZone, { x: number; y: number; rotate: number; w: number; h: number }[]> = {
+  rear: [{ x: 75, y: 260, rotate: -90, w: 200, h: 56 }],
+  pods: [
+    { x: 515, y: 135, rotate: 0, w: 250, h: 40 },
+    { x: 515, y: 385, rotate: 0, w: 250, h: 40 },
+  ],
+  nose: [{ x: 868, y: 260, rotate: 0, w: 140, h: 100 }],
+  plate: [{ x: 720, y: 260, rotate: -90, w: 100, h: 70 }],
+};
+
+/** A sponsor logo on its white plate, fitted into one spot of a zone. */
+function ZoneLogo({ src, spot }: { src: string; spot: (typeof logoSpots)[KartZone][number] }) {
+  const { x, y, rotate, w, h } = spot;
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rotate})`}>
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx="4" fill="#fff" />
+      <image href={src} x={-w / 2 + 4} y={-h / 2 + 4} width={w - 8} height={h - 8} preserveAspectRatio="xMidYMid meet" />
+    </g>
+  );
+}
+
+/** Top view of a kart, nose to the right. Sponsor zones carry data-zone; occupied ones show their partner's logo. */
+function Kart({ number, owners }: { number: number; owners: Partial<Record<KartZone, Partner>> }) {
+  const logo = (zone: KartZone) => {
+    const src = owners[zone]?.logo;
+    return src ? (
+      <g className={s.zoneLogo} data-zone={zone}>
+        {logoSpots[zone].map((spot, i) => (
+          <ZoneLogo key={i} src={src} spot={spot} />
+        ))}
+      </g>
+    ) : null;
+  };
+
   return (
     <svg className={s.kart} viewBox="0 0 1000 520" role="img" aria-label="Vue du dessus du kart et des emplacements sponsor">
       {/* Chassis tubes */}
@@ -86,6 +121,12 @@ function Kart({ number }: { number: number }) {
           {number}
         </text>
       </g>
+
+      {/* Logos on top of the zones, outside their groups: the zone fill animation must not tint them. */}
+      {logo("rear")}
+      {logo("pods")}
+      {logo("nose")}
+      {logo("plate")}
     </svg>
   );
 }
@@ -93,6 +134,9 @@ function Kart({ number }: { number: number }) {
 export function Partners({ partners, zones, number }: { partners: Site["partners"]; zones: Zone[]; number: number }) {
   const root = useRef<HTMLElement>(null);
   const ordered = [...partners].sort((x, y) => (x.tier === "principal" ? 0 : 1) - (y.tier === "principal" ? 0 : 1));
+  // One partner per zone; if several picked the same one, the first in display order wins.
+  const owners: Partial<Record<KartZone, Partner>> = {};
+  for (const p of ordered) if (p.kartZone && !owners[p.kartZone]) owners[p.kartZone] = p;
 
   useGSAP(
     () => {
@@ -104,13 +148,17 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
           scrollTrigger: { trigger: `.${s.showcase}`, start: "top top", end: `+=${zones.length * 60}%`, scrub: 0.4, pin: true },
         });
         // Light up one zone at a time, synced with its description.
+        // The partner's logo lands on its zone while it is lit.
         zones.forEach((zone, i) => {
           const shape = `.${s.zone}[data-zone="${zone.id}"]`;
           const item = `.${s.zoneItem}[data-zone="${zone.id}"]`;
+          const logo = root.current!.querySelector(`.${s.zoneLogo}[data-zone="${zone.id}"]`);
           tl.to(shape, { fill: accent, ease: "none", duration: 0.3 }, i)
             .fromTo(item, { opacity: 0.25, x: 0 }, { opacity: 1, x: 24, ease: "none", duration: 0.3 }, i);
+          if (logo) tl.fromTo(logo, { autoAlpha: 0, scale: 0.6, transformOrigin: "50% 50%" }, { autoAlpha: 1, scale: 1, ease: "back.out(2)", duration: 0.3 }, i + 0.1);
           if (i < zones.length - 1) {
             tl.to(shape, { fill: line, duration: 0.2 }, i + 0.8).to(item, { opacity: 0.25, x: 0, duration: 0.2 }, i + 0.8);
+            if (logo) tl.to(logo, { autoAlpha: 0, duration: 0.2 }, i + 0.8);
           }
         });
       });
@@ -122,12 +170,21 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
     <section ref={root} id="partenaires" className={s.partners} aria-labelledby="partners-title">
       <div className={s.showcase}>
         <Lines as="h2" id="partners-title" className={s.title} lines={["Votre logo", "en piste"]} accent={1} />
-        <Kart number={number} />
+        <Kart number={number} owners={owners} />
         <ol className={s.zones}>
           {zones.map((zone) => (
             <li key={zone.id} className={s.zoneItem} data-zone={zone.id}>
               <h3 className={s.zoneLabel}>{zone.label}</h3>
               <p>{zone.text}</p>
+              <p className={`${s.zoneOwner} mono`}>
+                {owners[zone.id] ? (
+                  <>
+                    Aujourd&apos;hui : <strong>{owners[zone.id]!.name}</strong>
+                  </>
+                ) : (
+                  "Emplacement disponible"
+                )}
+              </p>
             </li>
           ))}
         </ol>

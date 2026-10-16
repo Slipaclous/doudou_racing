@@ -11,6 +11,9 @@ export function Footer({ number, name, email }: { number: number; name: string; 
         <span>
           © {new Date().getFullYear()} {name}
         </span>
+        <a href="/espace-partenaires">
+          <Roll>Espace partenaires</Roll>
+        </a>
         <a href={`mailto:${email}`}>
           <Roll>{email}</Roll>
         </a>

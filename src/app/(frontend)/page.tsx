@@ -11,6 +11,7 @@ import { Pitch } from "@/components/sections/Pitch";
 import { Partners } from "@/components/sections/Partners";
 import { Contact } from "@/components/sections/Contact";
 import { Quote } from "@/components/sections/Quote";
+import { Banner } from "@/components/motion/Banner";
 import { quotes } from "@/content/story";
 
 // Content edits revalidate instantly (Payload hooks); the daily pass drops races that are over.
@@ -26,6 +27,7 @@ export default async function Home() {
       <main id="top">
         <Hero pilot={pilot} />
         <Pilot pilot={pilot} />
+        <Banner items={[`#${pilot.number}`, `${pilot.firstName} « ${pilot.nickname} »`, pilot.category, pilot.team, pilot.nationality]} />
         <Career seasons={site.seasons} />
         <Quote quote={quotes[0]} />
         <Stats stats={site.stats} />

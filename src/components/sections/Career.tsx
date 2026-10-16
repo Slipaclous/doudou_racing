@@ -7,6 +7,9 @@ import type { Season } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
 import s from "./Career.module.css";
 
+// Horizontal pinned scroll only where a whole season fits on screen; keep in sync with Career.module.css.
+const HORIZONTAL = "((min-width: 1024px) and (min-height: 600px))";
+
 export function Career({ seasons }: { seasons: Season[] }) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
@@ -14,7 +17,7 @@ export function Career({ seasons }: { seasons: Season[] }) {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference) and (min-width: 768px)", () => {
+      mm.add(`(prefers-reduced-motion: no-preference) and ${HORIZONTAL}`, () => {
         const el = track.current!;
         const distance = () => el.scrollWidth - window.innerWidth;
 
@@ -53,8 +56,8 @@ export function Career({ seasons }: { seasons: Season[] }) {
         });
       });
 
-      // Phones: vertical stack, same colour pass as each photo crosses the screen.
-      mm.add("(prefers-reduced-motion: no-preference) and (max-width: 767px)", () => {
+      // Phones, tablets, short screens: vertical stack, same colour pass as each photo crosses the screen.
+      mm.add(`(prefers-reduced-motion: no-preference) and (not ${HORIZONTAL})`, () => {
         gsap.utils.toArray<HTMLElement>(`.${s.frame} img`).forEach((img) => {
           gsap
             .timeline({ scrollTrigger: { trigger: img, start: "top 85%", end: "bottom 15%", scrub: true } })
@@ -85,7 +88,7 @@ export function Career({ seasons }: { seasons: Season[] }) {
                 src={season.image}
                 alt=""
 fill
-                sizes="(min-width: 768px) 45vw, 100vw"
+                sizes="(min-width: 1024px) 45vw, (min-width: 600px) 50vw, 100vw"
                 unoptimized={season.image.endsWith(".svg")}
               />
             </div>

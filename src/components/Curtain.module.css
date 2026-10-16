@@ -1,0 +1,28 @@
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  pointer-events: none;
+  overflow: hidden;
+}
+.curtain[data-state="cover"] { pointer-events: auto; }
+
+/* Wider than the screen and skewed, so the leading edge stays angled while it crosses. */
+.flag {
+  position: absolute;
+  inset: 0 -25vw;
+  background:
+    repeating-conic-gradient(var(--black) 0 25%, var(--white) 0 50%) 0 0 / clamp(40px, 6vw, 72px) clamp(40px, 6vw, 72px);
+  transform: skewX(-12deg) translateX(-130%);
+  visibility: hidden;
+}
+.curtain[data-state="cover"] .flag {
+  visibility: visible;
+  transform: skewX(-12deg) translateX(0);
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.curtain[data-state="reveal"] .flag {
+  visibility: visible;
+  transform: skewX(-12deg) translateX(130%);
+  transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+}

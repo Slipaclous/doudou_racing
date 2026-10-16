@@ -20,7 +20,9 @@
 
 .zones { list-style: none; display: grid; gap: var(--s-3); }
 .zoneItem { display: grid; gap: var(--s-1); border-left: 6px solid var(--touch); padding-left: var(--s-3); }
-.zoneLabel { font-size: clamp(2rem, 4vw, 4rem); }
+.zoneLabel { font-size: clamp(1.25rem, 2.2vw, 2rem); }
+.zoneOwner { font-size: 0.8rem; color: var(--grey); }
+.zoneOwner strong { color: var(--touch); font-weight: 600; }
 
 .current { display: grid; gap: var(--s-8); padding: var(--s-12) 0; border-top: 1px solid var(--line); }
 

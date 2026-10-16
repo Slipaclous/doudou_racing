@@ -58,4 +58,4 @@
 }
 
 .info { display: grid; gap: var(--s-1); }
-.name { font-size: clamp(2rem, 5vw, 5.5rem); }
+.name { font-size: clamp(1.4rem, 3.2vw, 3.25rem); }

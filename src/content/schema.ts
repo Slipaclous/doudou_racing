@@ -52,6 +52,7 @@ export const partnerSchema = z.object({
   description: z.string().optional(),
   logo: z.string().optional(),
   url: z.string().url().optional(),
+  kartZone: z.enum(["nose", "pods", "plate", "rear"]).optional(),
 });
 
 export const zoneSchema = z.object({

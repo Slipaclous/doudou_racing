@@ -7,6 +7,7 @@ import * as migration_20261016_134154_theme_on_accent from './20261016_134154_th
 import * as migration_20261016_134509_theme_touch from './20261016_134509_theme_touch';
 import * as migration_20261016_142009_partner_area from './20261016_142009_partner_area';
 import * as migration_20261016_143123_race_registrations from './20261016_143123_race_registrations';
+import * as migration_20261016_222817_partner_kart_zone from './20261016_222817_partner_kart_zone';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261016_143123_race_registrations.up,
     down: migration_20261016_143123_race_registrations.down,
-    name: '20261016_143123_race_registrations'
+    name: '20261016_143123_race_registrations',
+  },
+  {
+    up: migration_20261016_222817_partner_kart_zone.up,
+    down: migration_20261016_222817_partner_kart_zone.down,
+    name: '20261016_222817_partner_kart_zone'
   },
 ];

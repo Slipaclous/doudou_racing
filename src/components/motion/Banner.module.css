@@ -1,0 +1,29 @@
+.banner {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  /* Light band: stands out between dark and accent-coloured sections, whatever the theme. */
+  background: var(--white);
+  color: var(--black);
+  padding-block: clamp(0.5rem, 1.2vw, 1rem);
+  /* Slight tilt, like a banner hung across the paddock. */
+  transform: rotate(-2deg) scale(1.04);
+  margin-block: calc(var(--s-4) * -1);
+}
+
+.track { display: flex; width: max-content; will-change: transform; }
+
+.item {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 7vw, 6.5rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.sep { font-size: 0.4em; margin-inline: 0.8em; color: var(--touch); -webkit-text-stroke: 1px var(--black); }
+
+@media (prefers-reduced-motion: reduce) {
+  .banner { overflow-x: auto; }
+}

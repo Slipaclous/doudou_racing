@@ -300,6 +300,10 @@ export interface Partner {
   tier: 'principal' | 'officiel' | 'fournisseur';
   offer?: string | null;
   lookingFor?: string | null;
+  /**
+   * Son logo apparaît sur cette zone du kart, section « Votre logo en piste ».
+   */
+  kartZone?: ('nose' | 'pods' | 'plate' | 'rear') | null;
   logo?: (number | null) | Media;
   url?: string | null;
   updatedAt: string;
@@ -479,6 +483,7 @@ export interface PartnersSelect<T extends boolean = true> {
   tier?: T;
   offer?: T;
   lookingFor?: T;
+  kartZone?: T;
   logo?: T;
   url?: T;
   updatedAt?: T;

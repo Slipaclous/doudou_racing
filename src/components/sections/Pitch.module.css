@@ -105,7 +105,7 @@
 
 .content { position: relative; z-index: 1; display: grid; gap: var(--s-3); max-width: 30ch; }
 .index { font-size: 0.875rem; }
-.cardTitle { font-size: clamp(3.5rem, 8vw, 9rem); }
+.cardTitle { font-size: clamp(2rem, 4.5vw, 4.75rem); }
 .text { font-size: var(--t-lead); line-height: 1.15; font-weight: 600; }
 
 @media (max-width: 767px) {
