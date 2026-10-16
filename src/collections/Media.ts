@@ -1,3 +1,4 @@
+import { adminOnly } from "@/access";
 import type { CollectionConfig } from "payload";
 import { revalidateHooks } from "@/hooks/revalidateSite";
 
@@ -6,7 +7,7 @@ export const Media: CollectionConfig = {
   labels: { singular: "Média", plural: "Médias" },
   admin: { group: "Médias" },
   // Files are shown on the public site, so anyone can read them.
-  access: { read: () => true },
+  access: { ...adminOnly, read: () => true },
   hooks: revalidateHooks,
   upload: {
     // No SVG: an uploaded SVG served from our origin can carry scripts (XSS).

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "@/hooks/revalidateSite";
 import { previewAt } from "@/admin/sections";
+import { adminOnlyGlobal } from "@/access";
 import { HEX, themeColors } from "@/content/theme";
 
 const hooks = { afterChange: [revalidateSite] };
@@ -8,6 +9,7 @@ const at = (anchor: string) => ({ preview: previewAt(anchor) });
 
 export const PilotGlobal: GlobalConfig = {
   slug: "pilot",
+  access: adminOnlyGlobal,
   label: "Pilote",
   admin: { ...at("top"), group: "Le site" },
   hooks,
@@ -73,6 +75,7 @@ export const PilotGlobal: GlobalConfig = {
 
 export const StatsGlobal: GlobalConfig = {
   slug: "stats",
+  access: adminOnlyGlobal,
   label: "Chiffres",
   admin: { ...at("chiffres"), group: "Le site" },
   hooks,
@@ -109,6 +112,7 @@ export const StatsGlobal: GlobalConfig = {
 
 export const PitchGlobal: GlobalConfig = {
   slug: "pitch",
+  access: adminOnlyGlobal,
   label: "Pourquoi le soutenir",
   admin: { ...at("pourquoi"), group: "Sponsors" },
   hooks,
@@ -136,6 +140,7 @@ export const PitchGlobal: GlobalConfig = {
 
 export const ZonesGlobal: GlobalConfig = {
   slug: "zones",
+  access: adminOnlyGlobal,
   label: "Emplacements sponsor",
   admin: { ...at("partenaires"), group: "Sponsors", description: "Les quatre zones mises en avant sur le schéma du kart." },
   hooks,
@@ -168,6 +173,7 @@ export const ZonesGlobal: GlobalConfig = {
 
 export const SettingsGlobal: GlobalConfig = {
   slug: "settings",
+  access: adminOnlyGlobal,
   label: "Réglages du site",
   admin: { ...at("contact"), group: "Réglages" },
   hooks,

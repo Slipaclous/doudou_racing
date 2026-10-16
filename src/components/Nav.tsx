@@ -49,9 +49,14 @@ export function Nav({ number }: { number: number }) {
           </a>
         ))}
       </nav>
-      <a href="#contact" className={s.cta}>
-        <Roll>Devenir partenaire</Roll>
-      </a>
+      <div className={s.end}>
+        <a href="/espace-partenaires" className={`${s.member} mono`}>
+          <Roll>Espace partenaires</Roll>
+        </a>
+        <a href="#contact" className={s.cta}>
+          <Roll>Devenir partenaire</Roll>
+        </a>
+      </div>
     </header>
   );
 }

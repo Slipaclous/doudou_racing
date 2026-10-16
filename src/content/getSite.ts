@@ -15,6 +15,14 @@ function mediaUrl(m: number | Media | null | undefined): string | undefined {
 
 const clean = (v: string | null | undefined) => v?.trim() || undefined;
 
+/** Back-office colors as a :root override, for every public page (home and partner area). */
+export async function getThemeCss(): Promise<string> {
+  if (!process.env.DATABASE_URL) return "";
+  const payload = await getPayload({ config });
+  const settings = await payload.findGlobal({ slug: "settings" });
+  return themeCss(settings.theme ?? {});
+}
+
 /** Reads all public content. Without a database (first local run), serves placeholder content. */
 export async function getSite(): Promise<Site> {
   if (!process.env.DATABASE_URL) return placeholderSite;
@@ -80,6 +88,5 @@ export async function getSite(): Promise<Site> {
     })),
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,
-    themeCss: themeCss(settings.theme ?? {}),
   });
 }

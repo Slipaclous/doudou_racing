@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { z } from "zod";
+import { escapeHtml, sendEmail } from "@/lib/email";
 
 // Best-effort limit, per server instance: 5 messages per IP per 10 minutes.
 // On Vercel each instance has its own memory; move to a shared store (Upstash) if spam persists.
@@ -33,9 +34,6 @@ export type ContactState =
   | { status: "success" }
   | { status: "error"; message: string; fieldErrors?: Partial<Record<keyof z.infer<typeof contactSchema>, string>> };
 
-const escapeHtml = (v: string) =>
-  v.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-
 export async function sendContact(_prev: ContactState, formData: FormData): Promise<ContactState> {
   const parsed = contactSchema.safeParse(Object.fromEntries(formData));
 
@@ -57,34 +55,23 @@ export async function sendContact(_prev: ContactState, formData: FormData): Prom
   }
 
   const { name, company, email, message } = parsed.data;
-  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO;
-
-  if (!apiKey || !to) {
+  if (!to) {
     if (process.env.NODE_ENV !== "production") {
-      console.info("[contact] RESEND_API_KEY / CONTACT_TO missing, message not sent:", parsed.data);
+      console.info("[contact] CONTACT_TO missing, message not sent:", parsed.data);
       return { status: "success" };
     }
-    console.error("[contact] RESEND_API_KEY / CONTACT_TO missing");
+    console.error("[contact] CONTACT_TO missing");
     return { status: "error", message: "L'envoi est momentanément indisponible. Écrivez-nous directement par e-mail." };
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.CONTACT_FROM ?? "Site #105 <onboarding@resend.dev>",
-      to: [to],
-      reply_to: email,
-      subject: `Partenariat — ${company}`,
-      html: `<p><strong>${escapeHtml(name)}</strong> (${escapeHtml(company)}, ${escapeHtml(email)})</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
-    }),
+  const sent = await sendEmail({
+    to: [to],
+    replyTo: email,
+    subject: `Partenariat — ${company}`,
+    html: `<p><strong>${escapeHtml(name)}</strong> (${escapeHtml(company)}, ${escapeHtml(email)})</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
   });
-
-  if (!res.ok) {
-    console.error("[contact] Resend error", res.status, await res.text());
-    return { status: "error", message: "L'envoi a échoué. Réessayez dans un instant." };
-  }
+  if (!sent) return { status: "error", message: "L'envoi a échoué. Réessayez dans un instant." };
 
   return { status: "success" };
 }

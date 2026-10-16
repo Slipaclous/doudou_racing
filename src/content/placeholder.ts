@@ -75,7 +75,6 @@ export const placeholderSite: Site = {
     { id: "rear", label: "Pare-chocs arrière", text: "Ce que voient les concurrents, tour après tour." },
   ],
   contactEmail: "partners@doudouracing.be",
-  themeCss: "",
 };
 
 

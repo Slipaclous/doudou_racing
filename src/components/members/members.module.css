@@ -1,0 +1,71 @@
+/* Partner area (/espace-partenaires): a calm, readable tool, not the scrollytelling of the home page. */
+.shell { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; background: var(--black); }
+
+.header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2);
+  padding: var(--s-2) var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+.brand { font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: 1.5rem; }
+.brand span { color: var(--touch); }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); font-size: 0.875rem; }
+.nav a, .linkButton { color: var(--white); }
+.nav a:hover, .linkButton:hover { color: var(--touch); }
+.linkButton { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+
+.main { width: 100%; max-width: 72rem; margin: 0 auto; padding: var(--s-8) var(--gutter); display: grid; gap: var(--s-6); align-content: start; }
+.narrow { max-width: 34rem; }
+.title { font-size: clamp(2.5rem, 7vw, 5rem); }
+.title span { color: var(--touch); }
+.lead { color: var(--grey); max-width: 40rem; }
+
+/* Forms */
+.form { display: grid; gap: var(--s-3); }
+.field { display: grid; gap: 0.375rem; font-size: 0.875rem; }
+.input {
+  font: inherit; font-size: 1rem; color: var(--white);
+  background: var(--black-2); border: 1px solid var(--line); border-radius: 0;
+  padding: 0.75rem var(--s-2);
+  resize: vertical;
+}
+.input:focus { outline: 2px solid var(--touch); outline-offset: 0; border-color: transparent; }
+.hint { color: var(--grey); font-size: 0.8rem; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.button {
+  font: inherit; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.875rem;
+  color: var(--on-red); background: var(--red); border: 0; padding: 0.875rem var(--s-4); cursor: pointer;
+  transition: background-color 0.15s;
+}
+.button:hover { background: var(--red-deep); }
+.button:disabled { opacity: 0.6; cursor: wait; }
+.button:focus-visible { outline: 2px solid var(--touch); outline-offset: 3px; }
+.notice { color: var(--touch); font-size: 0.9rem; }
+.error { color: var(--white); background: var(--red-deep); padding: 0.25rem var(--s-1); font-size: 0.9rem; }
+.small { font-size: 0.875rem; color: var(--grey); }
+.small a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Directory */
+.filters { display: flex; flex-wrap: wrap; gap: var(--s-1); }
+.filters a { font-size: 0.8rem; padding: 0.375rem var(--s-2); border: 1px solid var(--line); }
+.filters a[aria-current="true"] { background: var(--touch); color: var(--black); border-color: var(--touch); }
+
+.grid { list-style: none; display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }
+.card { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-3); background: var(--black-2); border-top: 4px solid var(--red); }
+.cardMine { border-top-color: var(--touch); }
+.cardHead { display: flex; gap: var(--s-2); align-items: center; }
+.logo { width: 4rem; height: 4rem; object-fit: contain; background: #fff; padding: 0.375rem; flex: none; }
+.logoText { width: 4rem; height: 4rem; display: grid; place-items: center; background: var(--line); font-family: var(--font-display), sans-serif; font-size: 1.5rem; flex: none; }
+.name { font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: 1.75rem; line-height: 1; }
+.meta { font-size: 0.75rem; color: var(--grey); }
+.tier { color: var(--touch); }
+.block { display: grid; gap: 0.25rem; font-size: 0.95rem; }
+.block h3 { font-family: var(--font-mono), monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--grey); line-height: 1.4; }
+.people { font-size: 0.875rem; color: var(--grey); }
+.people strong { color: var(--white); font-weight: 600; }
+.empty { color: var(--grey); font-style: italic; font-size: 0.9rem; }
+
+.contact summary { cursor: pointer; font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--touch); list-style: none; }
+.contact summary::-webkit-details-marker { display: none; }
+.contact summary::after { content: " →"; }
+.contact[open] summary::after { content: " ↓"; }
+.contact[open] { display: grid; gap: var(--s-2); }

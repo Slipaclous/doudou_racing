@@ -1,9 +1,11 @@
+import { adminOnly } from "@/access";
 import type { CollectionConfig } from "payload";
 import { revalidateHooks } from "@/hooks/revalidateSite";
 import { previewAt } from "@/admin/sections";
 
 export const Partners: CollectionConfig = {
   slug: "partners",
+  access: adminOnly,
   labels: { singular: "Partenaire", plural: "Partenaires" },
   admin: { preview: previewAt("partenaires"), useAsTitle: "name", defaultColumns: ["name", "role", "sector", "order"], group: "Le site" },
   hooks: revalidateHooks,
@@ -35,6 +37,15 @@ export const Partners: CollectionConfig = {
         { label: "Partenaire principal", value: "principal" },
         { label: "Partenaire officiel", value: "officiel" },
         { label: "Fournisseur", value: "fournisseur" },
+      ],
+    },
+    {
+      type: "collapsible",
+      label: "Espace partenaires (networking)",
+      admin: { description: "Visible uniquement des sponsors connectés. Les membres peuvent aussi le modifier eux-mêmes." },
+      fields: [
+        { name: "offer", label: "Ce que nous proposons", type: "textarea", admin: { rows: 3 } },
+        { name: "lookingFor", label: "Ce que nous recherchons", type: "textarea", admin: { rows: 3 } },
       ],
     },
     { name: "logo", label: "Logo", type: "upload", relationTo: "media" },

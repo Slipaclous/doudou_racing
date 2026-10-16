@@ -21,7 +21,6 @@ export default async function Home() {
   const { pilot } = site;
   return (
     <>
-      {site.themeCss && <style>{site.themeCss}</style>}
       <Intro number={pilot.number} />
       <Nav number={pilot.number} />
       <main id="top">

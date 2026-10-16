@@ -12,6 +12,7 @@ import { Media } from "./collections/Media";
 import { Seasons } from "./collections/Seasons";
 import { Races } from "./collections/Races";
 import { Partners } from "./collections/Partners";
+import { Members } from "./collections/Members";
 import { PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, SettingsGlobal } from "./globals";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,7 +41,7 @@ export default buildConfig({
     },
   },
   i18n: { supportedLanguages: { fr }, fallbackLanguage: "fr" },
-  collections: [Seasons, Races, Partners, Media, Users],
+  collections: [Seasons, Races, Partners, Members, Media, Users],
   globals: [PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, SettingsGlobal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "dev-only-secret-change-me",

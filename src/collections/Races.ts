@@ -1,9 +1,11 @@
+import { adminOnly } from "@/access";
 import type { CollectionConfig } from "payload";
 import { revalidateHooks } from "@/hooks/revalidateSite";
 import { previewAt } from "@/admin/sections";
 
 export const Races: CollectionConfig = {
   slug: "races",
+  access: adminOnly,
   labels: { singular: "Course", plural: "Calendrier" },
   defaultSort: "date",
   admin: { preview: previewAt("courses"), useAsTitle: "name", defaultColumns: ["date", "name", "circuit", "country"], group: "Le site" },

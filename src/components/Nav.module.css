@@ -40,6 +40,19 @@
   transition: background-color 0.15s, color 0.15s;
 }
 .cta:hover { background: var(--white); color: var(--black); }
+
+.end { display: flex; align-items: center; gap: var(--s-3); }
+/* Sponsors already on board: discreet, outlined, next to the main call to action. */
+.member {
+  font-size: 0.75rem;
+  color: var(--white);
+  padding: var(--s-1) var(--s-2);
+  border: 1px solid var(--touch);
+  transition: background-color 0.15s, color 0.15s;
+}
+.member:hover { background: var(--touch); color: var(--black); }
+.member:focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
+@media (max-width: 520px) { .member { font-size: 0.65rem; padding: 0.375rem var(--s-1); } .end { gap: var(--s-1); } }
 .logo:focus-visible, .links a:focus-visible, .cta:focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
 
 @media (min-width: 900px) {
