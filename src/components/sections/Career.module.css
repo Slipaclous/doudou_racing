@@ -1,7 +1,7 @@
 .career {
   position: relative;
   background: var(--red);
-  color: var(--white);
+  color: var(--on-red);
   overflow: hidden;
 }
 

@@ -69,6 +69,7 @@ export const siteSchema = z.object({
   partners: z.array(partnerSchema),
   zones: z.array(zoneSchema),
   contactEmail: z.string().email(),
+  themeCss: z.string(),
 });
 
 export type Site = z.infer<typeof siteSchema>;

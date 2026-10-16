@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { cssColor, gsap, useGSAP } from "@/lib/gsap";
 import type { Site } from "@/content/schema";
 import { pilotSheet } from "@/content/story";
 import { Lines } from "@/components/motion/Lines";
@@ -18,9 +18,9 @@ export function Pilot({ pilot }: { pilot: Site["pilot"] }) {
         // Words light up one by one: reading pace follows scroll pace.
         gsap.fromTo(
           `.${s.word}`,
-          { color: "#3a3a3a" },
+          { color: cssColor("--dim") },
           {
-            color: "#f5f3ef",
+            color: cssColor("--white"),
             stagger: 0.1,
             ease: "none",
             scrollTrigger: { trigger: `.${s.text}`, start: "top 75%", end: "bottom 45%", scrub: true },

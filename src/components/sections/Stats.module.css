@@ -17,26 +17,26 @@
 }
 .asphalt { fill: none; stroke: #1d1d1d; stroke-width: 34; stroke-linejoin: round; }
 .kerbs { fill: none; stroke: #2e2e2e; stroke-width: 34; stroke-dasharray: 6 10; stroke-linejoin: round; mask: none; opacity: 0.6; }
-.lap { fill: none; stroke: var(--red); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.lap { fill: none; stroke: var(--touch); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
 .startLine { stroke: var(--white); stroke-width: 6; stroke-dasharray: 4 4; }
 
 .sector { --on: 0; }
 .sector circle { stroke: var(--grey); stroke-width: 3; }
 .sector text { font-family: var(--font-mono), monospace; font-size: 22px; fill: var(--grey); }
-.sector circle { fill: color-mix(in srgb, var(--red) calc(var(--on) * 100%), var(--black)); }
+.sector circle { fill: color-mix(in srgb, var(--touch) calc(var(--on) * 100%), var(--black)); }
 
-.kart polygon { fill: var(--white); stroke: var(--red); stroke-width: 3; stroke-linejoin: round; }
+.kart polygon { fill: var(--white); stroke: var(--touch); stroke-width: 3; stroke-linejoin: round; }
 
 /* ---------- Numbers ---------- */
 .list { position: relative; z-index: 1; display: grid; gap: var(--s-12); }
 .stat { display: flex; flex-direction: column; }
 
-.sectorTag { color: var(--red); font-size: 0.875rem; margin-bottom: var(--s-2); }
+.sectorTag { color: var(--touch); font-size: 0.875rem; margin-bottom: var(--s-2); }
 .value {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(10rem, 34vw, 34rem);
   line-height: 0.8;
-  color: var(--red);
+  color: var(--touch);
   font-variant-numeric: tabular-nums;
 }
 .name {
@@ -56,8 +56,8 @@
   font-size: 0.875rem;
   color: var(--white);
 }
-.detail { border-top: 1px solid #2a2a2a; padding-top: var(--s-1); }
-.detailIndex { color: var(--red); }
+.detail { border-top: 1px solid var(--line); padding-top: var(--s-1); }
+.detailIndex { color: var(--touch); }
 
 @media (prefers-reduced-motion: no-preference) {
   .stats { height: 100svh; padding: 0; }

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { cssColor, gsap, useGSAP } from "@/lib/gsap";
 import type { Site, Zone } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
 import { Roll } from "@/components/motion/Roll";
@@ -98,6 +98,8 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference) and (min-width: 768px)", () => {
+        const accent = cssColor("--touch");
+        const line = cssColor("--line");
         const tl = gsap.timeline({
           scrollTrigger: { trigger: `.${s.showcase}`, start: "top top", end: `+=${zones.length * 60}%`, scrub: 0.4, pin: true },
         });
@@ -105,10 +107,10 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
         zones.forEach((zone, i) => {
           const shape = `.${s.zone}[data-zone="${zone.id}"]`;
           const item = `.${s.zoneItem}[data-zone="${zone.id}"]`;
-          tl.to(shape, { fill: "#e10600", ease: "none", duration: 0.3 }, i)
+          tl.to(shape, { fill: accent, ease: "none", duration: 0.3 }, i)
             .fromTo(item, { opacity: 0.25, x: 0 }, { opacity: 1, x: 24, ease: "none", duration: 0.3 }, i);
           if (i < zones.length - 1) {
-            tl.to(shape, { fill: "#2a2a2a", duration: 0.2 }, i + 0.8).to(item, { opacity: 0.25, x: 0, duration: 0.2 }, i + 0.8);
+            tl.to(shape, { fill: line, duration: 0.2 }, i + 0.8).to(item, { opacity: 0.25, x: 0, duration: 0.2 }, i + 0.8);
           }
         });
       });

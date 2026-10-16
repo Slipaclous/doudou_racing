@@ -5,6 +5,12 @@
   --red-deep: #9e0400;
   --white: #f5f3ef;
   --grey: #a8a29e;
+  --on-red: #f5f3ef;
+  /* Small highlights (titles, arrows, rules); same as the accent unless set in the back-office */
+  --touch: var(--red);
+  /* Derived from the editable colors above, so they follow the back-office theme */
+  --line: color-mix(in srgb, var(--white) 14%, var(--black));
+  --dim: color-mix(in srgb, var(--white) 20%, var(--black));
 
   /* Spacing scale (8px base) */
   --s-1: 0.5rem;
@@ -55,7 +61,7 @@ h1, h2, h3, .display {
 a { color: inherit; text-decoration: none; }
 img, video { display: block; max-width: 100%; }
 
-::selection { background: var(--red); color: var(--white); }
+::selection { background: var(--red); color: var(--on-red); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

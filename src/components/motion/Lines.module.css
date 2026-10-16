@@ -1,4 +1,4 @@
 /* Extra bottom room so descenders survive the clip; pulled back with a negative margin. */
 .mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .line { display: block; transform-origin: 0 100%; }
-.accent { color: var(--red); }
+.accent { color: var(--touch); }

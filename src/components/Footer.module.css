@@ -3,7 +3,7 @@
   font-family: var(--font-display), sans-serif;
   font-size: clamp(10rem, 48vw, 56rem);
   line-height: 0.75;
-  color: var(--red);
+  color: var(--touch);
   text-align: center;
 }
 .meta {

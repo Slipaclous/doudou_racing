@@ -7,7 +7,7 @@
 }
 
 .title { font-size: var(--t-h2); }
-.accent { color: var(--red); }
+.accent { color: var(--touch); }
 
 .stack { display: grid; gap: var(--s-3); }
 
@@ -15,9 +15,9 @@
 .card {
   --bg: var(--black-2);
   --fg: var(--white);
-  --tint: var(--red);
+  --tint: var(--touch);
   --stroke: var(--white);
-  --edge-a: var(--red);
+  --edge-a: var(--touch);
   --edge-b: var(--white);
 
   position: relative;
@@ -30,8 +30,8 @@
   color: var(--fg);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
 }
-.dark { --bg: var(--black-2); --fg: var(--white); --tint: var(--red); --stroke: var(--white); }
-.red { --bg: var(--red); --fg: var(--white); --tint: var(--white); --stroke: var(--black); --edge-a: var(--black); --edge-b: var(--white); }
+.dark { --bg: var(--black-2); --fg: var(--white); --tint: var(--touch); --stroke: var(--white); }
+.red { --bg: var(--red); --fg: var(--on-red); --tint: var(--touch); --stroke: var(--black); --edge-a: var(--black); --edge-b: var(--white); }
 .light { --bg: var(--white); --fg: var(--black); --tint: var(--red); --stroke: var(--red); --edge-a: var(--black); --edge-b: var(--red); }
 
 /* Visual panel: right side, cut on a diagonal so the text side stays clean. */

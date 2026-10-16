@@ -14,7 +14,7 @@
   font: inherit;
   font-size: var(--t-lead);
   font-weight: 600;
-  color: var(--white);
+  color: var(--on-red);
   background: transparent;
   border: 0;
   border-bottom: 3px solid var(--black);
@@ -22,8 +22,8 @@
   padding: var(--s-1) 0;
   resize: vertical;
 }
-.input:focus { outline: none; border-bottom-color: var(--white); }
-.input[aria-invalid="true"] { border-bottom-color: var(--white); }
+.input:focus { outline: none; border-bottom-color: var(--on-red); }
+.input[aria-invalid="true"] { border-bottom-color: var(--on-red); }
 
 .error { font-weight: 700; color: var(--white); background: var(--black); justify-self: start; padding: 0.25rem var(--s-1); }
 
@@ -44,7 +44,7 @@
   transition: padding-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.15s;
 }
 .submit:hover { padding-left: var(--s-8); background: var(--white); color: var(--black); }
-.submit:focus-visible { outline: 3px solid var(--white); outline-offset: 4px; }
+.submit:focus-visible { outline: 3px solid var(--on-red); outline-offset: 4px; }
 .submit:disabled { cursor: wait; }
 
 .mail { margin-left: auto; text-decoration: underline; text-underline-offset: 0.3em; }

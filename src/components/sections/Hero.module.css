@@ -30,7 +30,7 @@
   pointer-events: none;
 }
 .lineTop { color: var(--white); }
-.lineBottom { color: var(--red); margin-top: -0.05em; }
+.lineBottom { color: var(--touch); margin-top: -0.05em; }
 
 .numberWrap {
   position: absolute;
@@ -44,7 +44,7 @@
   font-family: var(--font-display), sans-serif;
   font-size: clamp(5rem, 16vw, 18rem);
   line-height: 0.85;
-  color: var(--red);
+  color: var(--touch);
   transform: translateY(110%);
 }
 
@@ -55,6 +55,7 @@
   bottom: var(--s-6);
   max-width: 22ch;
   background: var(--red);
+  color: var(--on-red);
   padding: var(--s-1) var(--s-2);
   clip-path: inset(0 100% 0 0);
 }

@@ -560,6 +560,19 @@ export interface Zone {
 export interface Setting {
   id: number;
   contactEmail: string;
+  /**
+   * Couleurs du site public. Videz un champ pour revenir à la couleur d'origine.
+   */
+  theme?: {
+    background?: string | null;
+    surface?: string | null;
+    accent?: string | null;
+    accentDeep?: string | null;
+    touch?: string | null;
+    onAccent?: string | null;
+    text?: string | null;
+    muted?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -646,6 +659,18 @@ export interface ZonesSelect<T extends boolean = true> {
  */
 export interface SettingsSelect<T extends boolean = true> {
   contactEmail?: T;
+  theme?:
+    | T
+    | {
+        background?: T;
+        surface?: T;
+        accent?: T;
+        accentDeep?: T;
+        touch?: T;
+        onAccent?: T;
+        text?: T;
+        muted?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

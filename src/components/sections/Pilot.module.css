@@ -6,7 +6,7 @@
 
 .title {
   font-size: var(--t-h2);
-  color: var(--red);
+  color: var(--touch);
   margin-bottom: var(--s-8);
 }
 
@@ -21,7 +21,7 @@
 
 .sheet { margin-top: var(--s-12); }
 
-.tabs { display: flex; gap: var(--s-4); border-bottom: 2px solid var(--red); }
+.tabs { display: flex; gap: var(--s-4); border-bottom: 2px solid var(--touch); }
 .tab {
   position: relative;
   padding: var(--s-2) 0;
@@ -44,11 +44,11 @@
 }
 .tab:hover, .tab[aria-selected="true"] { color: var(--white); }
 .tab[aria-selected="true"]::after { transform: scaleX(1); }
-.tab:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.tab:focus-visible { outline: 2px solid var(--touch); outline-offset: 4px; }
 
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); column-gap: var(--s-4); }
 .facts[hidden] { display: none; }
-.fact { padding: var(--s-4) 0; border-bottom: 1px solid #2a2a2a; }
+.fact { padding: var(--s-4) 0; border-bottom: 1px solid var(--line); }
 .fact dt { font-size: 0.875rem; color: var(--grey); margin-bottom: var(--s-2); }
 /* Display type is set tight (0.85); values can wrap, so give them room. */
 .value { display: block; overflow: hidden; font-size: clamp(2rem, 3.4vw, 3.75rem); line-height: 1; text-wrap: balance; }

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "@/hooks/revalidateSite";
 import { previewAt } from "@/admin/sections";
+import { HEX, themeColors } from "@/content/theme";
 
 const hooks = { afterChange: [revalidateSite] };
 const at = (anchor: string) => ({ preview: previewAt(anchor) });
@@ -170,5 +171,26 @@ export const SettingsGlobal: GlobalConfig = {
   label: "Réglages du site",
   admin: { ...at("contact"), group: "Réglages" },
   hooks,
-  fields: [{ name: "contactEmail", label: "E-mail de contact", type: "email", required: true }],
+  fields: [
+    { name: "contactEmail", label: "E-mail de contact", type: "email", required: true },
+    {
+      name: "theme",
+      label: "Couleurs",
+      type: "group",
+      admin: { description: "Couleurs du site public. Videz un champ pour revenir à la couleur d'origine." },
+      fields: [
+        {
+          type: "row",
+          fields: themeColors.map(({ name, label, default: d }) => ({
+            name,
+            label,
+            type: "text" as const,
+            defaultValue: d,
+            admin: { components: { Field: "/components/admin/ColorField#ColorField" } },
+            validate: (v: string | null | undefined) => !v || HEX.test(v) || "Format attendu : #rrggbb",
+          })),
+        },
+      ],
+    },
+  ],
 };

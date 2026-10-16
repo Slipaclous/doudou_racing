@@ -4,6 +4,7 @@ import config from "@payload-config";
 import type { Media } from "@/payload-types";
 import { siteSchema, type Site } from "./schema";
 import { placeholderSite } from "./placeholder";
+import { themeCss } from "./theme";
 
 const PHOTO_FALLBACK = "/placeholders/photo.svg";
 const HERO_FALLBACK = placeholderSite.pilot.heroPoster;
@@ -79,5 +80,6 @@ export async function getSite(): Promise<Site> {
     })),
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,
+    themeCss: themeCss(settings.theme ?? {}),
   });
 }
