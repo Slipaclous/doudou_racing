@@ -36,6 +36,8 @@
   font-family: var(--font-display), sans-serif;
   font-size: clamp(10rem, 34vw, 34rem);
   line-height: 0.8;
+  /* The digits rise above their tight line box: keep clear of the "Secteur" tag above. */
+  padding-top: 0.1em;
   color: var(--touch);
   font-variant-numeric: tabular-nums;
 }
@@ -61,14 +63,14 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .stats { height: 100svh; padding: 0; }
-  .label { position: absolute; z-index: 5; top: var(--s-4); left: var(--gutter); margin: 0; }
+  .label { position: absolute; z-index: 5; top: calc(var(--header-h) + var(--s-2)); left: var(--gutter); margin: 0; }
   .circuit { opacity: 0.9; }
   .list { position: absolute; inset: 0; display: block; }
   .stat {
     position: absolute;
     inset: 0;
     justify-content: center;
-    padding: var(--s-8) var(--gutter);
+    padding: calc(var(--header-h) + var(--s-6)) var(--gutter) var(--s-8);
     /* Readable over the circuit */
     background: linear-gradient(to right, var(--black) 0%, color-mix(in srgb, var(--black) 75%, transparent) 45%, transparent 75%);
   }

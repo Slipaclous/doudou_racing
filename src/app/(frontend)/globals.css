@@ -21,12 +21,14 @@
   --s-8: 4rem;
   --s-12: 6rem;
   --gutter: clamp(1rem, 4vw, 4rem);
+  /* Height of the always-visible header: pinned sections keep their content below it. */
+  --header-h: 5.25rem;
 
   /* Type scale: everything big */
   --t-body: clamp(1.125rem, 1.4vw, 1.5rem);
   --t-lead: clamp(1.5rem, 3vw, 3rem);
-  --t-h2: clamp(4rem, 12vw, 14rem);
-  --t-mega: clamp(6rem, 22vw, 26rem);
+  --t-h2: clamp(3.25rem, 9.5vw, 11rem);
+  --t-mega: clamp(4.5rem, 16vw, 19rem);
 
   /* Angled cut used across the site */
   --cut: clamp(1rem, 3vw, 3rem);

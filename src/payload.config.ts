@@ -14,7 +14,8 @@ import { Races } from "./collections/Races";
 import { Partners } from "./collections/Partners";
 import { Members } from "./collections/Members";
 import { RaceRegistrations } from "./collections/RaceRegistrations";
-import { PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, SettingsGlobal } from "./globals";
+import { PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, FutureGlobal, SettingsGlobal } from "./globals";
+import { Events } from "./collections/Events";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -42,8 +43,8 @@ export default buildConfig({
     },
   },
   i18n: { supportedLanguages: { fr }, fallbackLanguage: "fr" },
-  collections: [Seasons, Races, Partners, Members, RaceRegistrations, Media, Users],
-  globals: [PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, SettingsGlobal],
+  collections: [Seasons, Races, Events, Partners, Members, RaceRegistrations, Media, Users],
+  globals: [PilotGlobal, StatsGlobal, PitchGlobal, ZonesGlobal, FutureGlobal, SettingsGlobal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "dev-only-secret-change-me",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },

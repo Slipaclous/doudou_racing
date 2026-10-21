@@ -70,6 +70,7 @@ export interface Config {
   collections: {
     seasons: Season;
     races: Race;
+    events: Event;
     partners: Partner;
     members: Member;
     'race-registrations': RaceRegistration;
@@ -88,6 +89,7 @@ export interface Config {
   collectionsSelect: {
     seasons: SeasonsSelect<false> | SeasonsSelect<true>;
     races: RacesSelect<false> | RacesSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     'race-registrations': RaceRegistrationsSelect<false> | RaceRegistrationsSelect<true>;
@@ -107,6 +109,7 @@ export interface Config {
     stats: Stat;
     pitch: Pitch;
     zones: Zone;
+    future: Future;
     settings: Setting;
   };
   globalsSelect: {
@@ -114,6 +117,7 @@ export interface Config {
     stats: StatsSelect<false> | StatsSelect<true>;
     pitch: PitchSelect<false> | PitchSelect<true>;
     zones: ZonesSelect<false> | ZonesSelect<true>;
+    future: FutureSelect<false> | FutureSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: null;
@@ -310,6 +314,30 @@ export interface Partner {
   createdAt: string;
 }
 /**
+ * Les moments vécus avec les partenaires. Les plus récents s'affichent en premier sur le site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  type: 'rallye' | 'partenaires' | 'paddock' | 'clients';
+  date: string;
+  place?: string | null;
+  /**
+   * Affiché « 40 invités ».
+   */
+  guests?: number | null;
+  /**
+   * Deux ou trois phrases : ce qu'on y a vécu.
+   */
+  text: string;
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -366,6 +394,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'races';
         value: number | Race;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null)
     | ({
         relationTo: 'partners';
@@ -467,6 +499,21 @@ export interface RacesSelect<T extends boolean = true> {
   welcomeInfo?: T;
   capacity?: T;
   registrations?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  date?: T;
+  place?: T;
+  guests?: T;
+  text?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -708,6 +755,27 @@ export interface Zone {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "future".
+ */
+export interface Future {
+  id: number;
+  /**
+   * Les prochaines saisons et leurs objectifs, dans l'ordre.
+   */
+  items?:
+    | {
+        year: number;
+        category: string;
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings".
  */
 export interface Setting {
@@ -799,6 +867,24 @@ export interface ZonesSelect<T extends boolean = true> {
     | {
         zone?: T;
         label?: T;
+        text?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "future_select".
+ */
+export interface FutureSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        year?: T;
+        category?: T;
+        title?: T;
         text?: T;
         id?: T;
       };

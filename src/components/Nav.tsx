@@ -8,9 +8,10 @@ import s from "./Nav.module.css";
 const sections = [
   { href: "#pilote", label: "Le pilote" },
   { href: "#parcours", label: "Le parcours" },
+  { href: "#la-suite", label: "La suite" },
   { href: "#chiffres", label: "En chiffres" },
   { href: "#courses", label: "Courses" },
-  { href: "#pourquoi", label: "Pourquoi nous" },
+  { href: "#aventure", label: "L'aventure" },
   { href: "#partenaires", label: "Partenaires" },
   { href: "#contact", label: "Contact" },
 ];

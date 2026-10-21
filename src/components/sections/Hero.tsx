@@ -23,7 +23,7 @@ export function Hero({ pilot }: { pilot: Site["pilot"] }) {
         // The image opens like a helmet visor, while the name splits apart.
         tl.fromTo(
           `.${s.visor}`,
-          { clipPath: "polygon(0 30%, 100% 24%, 100% 70%, 0 76%)" },
+          { clipPath: "polygon(0 6%, 100% 2%, 100% 98%, 0 94%)" },
           { clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)", ease: "none" },
           0,
         )

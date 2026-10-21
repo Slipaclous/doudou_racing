@@ -8,6 +8,7 @@ import * as migration_20261016_134509_theme_touch from './20261016_134509_theme_
 import * as migration_20261016_142009_partner_area from './20261016_142009_partner_area';
 import * as migration_20261016_143123_race_registrations from './20261016_143123_race_registrations';
 import * as migration_20261016_222817_partner_kart_zone from './20261016_222817_partner_kart_zone';
+import * as migration_20261019_143813_events_future from './20261019_143813_events_future';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20261016_222817_partner_kart_zone.up,
     down: migration_20261016_222817_partner_kart_zone.down,
-    name: '20261016_222817_partner_kart_zone'
+    name: '20261016_222817_partner_kart_zone',
+  },
+  {
+    up: migration_20261019_143813_events_future.up,
+    down: migration_20261019_143813_events_future.down,
+    name: '20261019_143813_events_future'
   },
 ];

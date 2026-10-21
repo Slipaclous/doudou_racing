@@ -17,10 +17,14 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     // The full-screen menu freezes the page behind it.
     const lock = () => lenis.stop();
     const unlock = () => lenis.start();
+    // Programmatic smooth scroll (e.g. the career guide's year shortcuts).
+    const to = (e: Event) => lenis.scrollTo((e as CustomEvent<number>).detail, { duration: 1.4 });
+    window.addEventListener("scroll:to", to);
     window.addEventListener("scroll:lock", lock);
     window.addEventListener("scroll:unlock", unlock);
 
     return () => {
+      window.removeEventListener("scroll:to", to);
       window.removeEventListener("scroll:lock", lock);
       window.removeEventListener("scroll:unlock", unlock);
       gsap.ticker.remove(tick);

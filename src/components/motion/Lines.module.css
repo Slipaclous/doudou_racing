@@ -1,4 +1,4 @@
-/* Extra bottom room so descenders survive the clip; pulled back with a negative margin. */
-.mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+/* Extra room above and below so cap tops, accents and descenders survive the clip; pulled back with negative margins. */
+.mask { display: block; overflow: hidden; padding-block: 0.12em 0.08em; margin-block: -0.12em -0.08em; }
 .line { display: block; transform-origin: 0 100%; }
 .accent { color: var(--touch); }

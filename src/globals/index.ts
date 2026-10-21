@@ -114,7 +114,8 @@ export const PitchGlobal: GlobalConfig = {
   slug: "pitch",
   access: adminOnlyGlobal,
   label: "Pourquoi le soutenir",
-  admin: { ...at("pourquoi"), group: "Sponsors" },
+  // Section removed from the site (merged into "L'aventure"); data kept, hidden from the admin.
+  admin: { hidden: true, ...at("pourquoi"), group: "Sponsors" },
   hooks,
   fields: [
     {
@@ -166,6 +167,34 @@ export const ZonesGlobal: GlobalConfig = {
         },
         { name: "label", label: "Titre", type: "text", required: true },
         { name: "text", label: "Texte", type: "textarea", required: true },
+      ],
+    },
+  ],
+};
+
+export const FutureGlobal: GlobalConfig = {
+  slug: "future",
+  access: adminOnlyGlobal,
+  label: "La suite (objectifs)",
+  admin: { ...at("la-suite"), group: "Le site" },
+  hooks,
+  fields: [
+    {
+      name: "items",
+      label: "Étapes à venir",
+      type: "array",
+      labels: { singular: "Étape", plural: "Étapes" },
+      admin: { description: "Les prochaines saisons et leurs objectifs, dans l'ordre." },
+      fields: [
+        {
+          type: "row",
+          fields: [
+            { name: "year", label: "Année", type: "number", required: true, min: 2000, max: 2100 },
+            { name: "category", label: "Catégorie visée", type: "text", required: true, admin: { placeholder: "OK Senior" } },
+          ],
+        },
+        { name: "title", label: "Objectif", type: "text", required: true, admin: { placeholder: "Le championnat d'Europe" } },
+        { name: "text", label: "Texte", type: "textarea", required: true, admin: { rows: 2 } },
       ],
     },
   ],

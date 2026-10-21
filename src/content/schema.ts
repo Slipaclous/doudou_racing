@@ -38,6 +38,23 @@ export const raceSchema = z.object({
   category: z.string(),
 });
 
+export const eventSchema = z.object({
+  title: z.string(),
+  type: z.enum(["rallye", "partenaires", "paddock", "clients"]),
+  date: z.string(),
+  place: z.string().optional(),
+  guests: z.number().int().optional(),
+  text: z.string(),
+  image: z.string(),
+});
+
+export const goalSchema = z.object({
+  year: z.number().int(),
+  category: z.string(),
+  title: z.string(),
+  text: z.string(),
+});
+
 export const pitchSchema = z.object({
   title: z.string(),
   text: z.string(),
@@ -67,6 +84,8 @@ export const siteSchema = z.object({
   stats: z.array(statSchema),
   races: z.array(raceSchema),
   pitch: z.array(pitchSchema),
+  events: z.array(eventSchema),
+  future: z.array(goalSchema),
   partners: z.array(partnerSchema),
   zones: z.array(zoneSchema),
   contactEmail: z.string().email(),
@@ -75,4 +94,6 @@ export const siteSchema = z.object({
 export type Site = z.infer<typeof siteSchema>;
 export type Season = z.infer<typeof seasonSchema>;
 export type Race = z.infer<typeof raceSchema>;
+export type SiteEvent = z.infer<typeof eventSchema>;
+export type Goal = z.infer<typeof goalSchema>;
 export type Zone = z.infer<typeof zoneSchema>;

@@ -36,6 +36,18 @@ export const placeholderSite: Site = {
     { value: 1, label: "Titre national", details: ["Champion de Belgique Mini 2023"] },
     { value: 10, label: "Années au volant", details: ["Premier kart à 4 ans, en 2016"] },
   ],
+  // Sample content: replace in /admin ("L'aventure" and "La suite").
+  events: [
+    { title: "Le rallye #105", type: "rallye", date: "2026-06-14", place: "Ardennes belges", guests: 60, text: "Une journée sur les routes des Ardennes avec les partenaires et leurs invités, arrivée au circuit et repas au paddock.", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=80" },
+    { title: "Journée partenaires", type: "partenaires", date: "2026-05-02", place: "Karting des Fagnes, Mariembourg", guests: 35, text: "Les partenaires prennent le volant : séances chronométrées, briefing avec Doudou et remise des prix.", image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1600&q=80" },
+    { title: "Dans les coulisses du paddock", type: "paddock", date: "2026-04-11", place: "Genk", guests: 12, text: "Accueil sous la tente #105, visite du stand, du camion et de la grille avant le départ.", image: "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=1600&q=80" },
+    { title: "Soirée clients", type: "clients", date: "2026-03-20", place: "Charleroi", guests: 80, text: "Les partenaires invitent leurs clients à une soirée autour du kart et de la saison à venir.", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80" },
+  ],
+  future: [
+    { year: 2027, category: "X30 Junior", title: "Le podium européen", text: "Une saison complète en IAME Euro Series, avec l'objectif de monter sur le podium final." },
+    { year: 2028, category: "OK Senior", title: "Le grand saut", text: "Passage en catégorie reine du karting, face aux meilleurs pilotes européens." },
+    { year: 2029, category: "Monoplace", title: "Les premiers tours en F4", text: "Les premiers essais en monoplace, la marche suivante vers le sport automobile." },
+  ],
   // The client calendar is empty: add the 2027 races in /admin.
   races: [],
   pitch: [

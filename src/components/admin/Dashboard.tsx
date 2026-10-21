@@ -12,16 +12,17 @@ const dateFmt = new Intl.DateTimeFormat("fr-BE", { day: "numeric", month: "long"
 export async function Dashboard({ payload, user }: ServerProps) {
   const today = new Date(new Date().toISOString().slice(0, 10)).toISOString();
 
-  const [pilot, stats, pitch, zones, settings, seasons, seasonsNoPhoto, races, partners] = await Promise.all([
+  const [pilot, stats, zones, settings, seasons, seasonsNoPhoto, races, partners, future, events] = await Promise.all([
     payload.findGlobal({ slug: "pilot", depth: 0 }),
     payload.findGlobal({ slug: "stats" }),
-    payload.findGlobal({ slug: "pitch" }),
     payload.findGlobal({ slug: "zones" }),
     payload.findGlobal({ slug: "settings" }),
     payload.count({ collection: "seasons" }),
     payload.count({ collection: "seasons", where: { image: { exists: false } } }),
     payload.find({ collection: "races", where: { date: { greater_than_equal: today } }, sort: "date", limit: 1 }),
     payload.count({ collection: "partners" }),
+    payload.findGlobal({ slug: "future" }),
+    payload.count({ collection: "events" }),
   ]);
 
   const next = races.docs[0];
@@ -31,9 +32,10 @@ export async function Dashboard({ payload, user }: ServerProps) {
     { text: `${pilot.firstName ?? "—"} « ${pilot.nickname ?? "—"} » #${pilot.number ?? "—"}`, todo: pilot.heroImage ? undefined : "Photo d'ouverture à ajouter" },
     { text: `${pilot.age ?? "—"} ans · ${pilot.category ?? "—"} · ${pilot.team ?? "—"}` },
     { text: plural(seasons.totalDocs, "saison", "saisons"), todo: seasonsNoPhoto.totalDocs ? `${plural(seasonsNoPhoto.totalDocs, "photo", "photos")} à ajouter` : undefined },
+    { text: plural(future.items?.length ?? 0, "étape", "étapes"), todo: future.items?.length ? undefined : "Objectifs à renseigner" },
     { text: plural(stats.items?.length ?? 0, "chiffre", "chiffres") },
     { text: next ? `Prochaine : ${next.name}` : "Aucune course à venir", todo: next ? undefined : "Ajouter une course" },
-    { text: plural(pitch.items?.length ?? 0, "argument", "arguments") },
+    { text: plural(events.totalDocs, "événement", "événements"), todo: events.totalDocs ? undefined : "Ajouter un événement" },
     { text: `${plural(zones.items?.length ?? 0, "zone", "zones")} · ${plural(partners.totalDocs, "partenaire", "partenaires")}` },
     { text: settings.contactEmail ?? "—", todo: settings.contactEmail ? undefined : "E-mail à renseigner" },
   ];

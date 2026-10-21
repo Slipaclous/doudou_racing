@@ -30,7 +30,7 @@ export async function getSite(): Promise<Site> {
   const payload = await getPayload({ config });
   const today = new Date(new Date().toISOString().slice(0, 10)).toISOString();
 
-  const [pilot, stats, pitch, zones, settings, seasons, races, partners] = await Promise.all([
+  const [pilot, stats, pitch, zones, settings, seasons, races, partners, events, future] = await Promise.all([
     payload.findGlobal({ slug: "pilot", depth: 1 }),
     payload.findGlobal({ slug: "stats" }),
     payload.findGlobal({ slug: "pitch", depth: 1 }),
@@ -39,7 +39,11 @@ export async function getSite(): Promise<Site> {
     payload.find({ collection: "seasons", sort: "year", limit: 50, depth: 1, pagination: false }),
     payload.find({ collection: "races", sort: "date", where: { date: { greater_than_equal: today } }, limit: 20, pagination: false }),
     payload.find({ collection: "partners", sort: "order", limit: 50, depth: 1, pagination: false }),
+    payload.find({ collection: "events", sort: "-date", limit: 8, depth: 1, pagination: false }),
+    payload.findGlobal({ slug: "future" }),
   ]);
+  // Until the client fills them in, development shows sample events and goals; production shows nothing.
+  const samples = process.env.NODE_ENV !== "production";
 
   if (!pilot.firstName) {
     throw new Error("Contenu manquant : remplissez la fiche « Pilote » dans /admin (ou lancez `npm run seed`).");
@@ -87,6 +91,20 @@ export async function getSite(): Promise<Site> {
       url: /^https?:\/\//i.test(p.url?.trim() ?? "") ? clean(p.url) : undefined,
       kartZone: p.kartZone ?? undefined,
     })),
+    events: events.docs.length
+      ? events.docs.map((e) => ({
+          title: e.title,
+          type: e.type,
+          date: e.date.slice(0, 10),
+          place: clean(e.place),
+          guests: e.guests ?? undefined,
+          text: e.text,
+          image: mediaUrl(e.image) ?? PHOTO_FALLBACK,
+        }))
+      : samples ? placeholderSite.events : [],
+    future: future.items?.length
+      ? future.items.map(({ year, category, title, text }) => ({ year, category, title, text }))
+      : samples ? placeholderSite.future : [],
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,
   });

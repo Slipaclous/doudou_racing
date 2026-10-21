@@ -1,29 +1,28 @@
 .intro {
   position: fixed;
-  /* Wider than the viewport: skewed bars would leave the corners uncovered. */
-  inset: 0 -20vw;
+  inset: 0;
   z-index: 10000;
   display: flex;
+  flex-direction: column;
   pointer-events: none;
   overflow: hidden;
-  animation: done 0s linear 1.9s forwards;
+  animation: done 0s linear 2.1s forwards;
 }
 
-/* Bars are wider than their slot and skewed, so the edges stay angled while they leave. */
+/* Horizontal bands that split apart, alternately to the left and to the right, uncovering the hero photo. */
 .bar {
   flex: 1;
-  margin-inline: -2px;
+  margin-block: -1px;
   background: var(--black);
-  transform: skewX(-14deg) scaleX(1.25);
-  transform-origin: bottom;
-  animation: wipe 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
-  animation-delay: calc(0.65s + var(--i) * 0.07s);
+  /* Keyframe names written out (not through a variable): CSS Modules renames them. */
+  animation: toLeft 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  animation-delay: calc(0.75s + var(--i) * 0.06s);
 }
-.bar:nth-child(odd) { background: var(--red); }
+.bar:nth-child(even) { animation-name: toRight; background: var(--red); }
 
 .number {
   position: absolute;
-  inset: 0 20vw;
+  inset: 0;
   display: grid;
   place-items: center;
   font-family: var(--font-display), sans-serif;
@@ -33,7 +32,8 @@
   animation: out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.45s forwards;
 }
 
-@keyframes wipe { to { transform: skewX(-14deg) scaleX(1.25) translateY(-105%); } }
+@keyframes toLeft { to { transform: translateX(-102%); } }
+@keyframes toRight { to { transform: translateX(102%); } }
 @keyframes out { to { transform: translateY(-40%); opacity: 0; } }
 @keyframes done { to { visibility: hidden; } }
 

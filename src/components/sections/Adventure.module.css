@@ -1,0 +1,179 @@
+.adventure {
+  position: relative;
+  background: var(--black);
+  padding: var(--s-12) var(--gutter);
+}
+
+.head { display: grid; gap: var(--s-2); margin-bottom: var(--s-8); }
+.kicker { color: var(--touch); font-size: 0.875rem; }
+.title { font-size: var(--t-h2); }
+.title span { display: block; color: var(--touch); }
+
+.layout { display: grid; gap: var(--s-8); }
+
+/* ---------- The pass ---------- */
+.passCol { display: grid; justify-items: center; perspective: 1200px; }
+.hanger {
+  --sway: 0deg;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  transform-origin: 50% 0;
+  rotate: var(--sway);
+}
+.lanyard {
+  display: block;
+  width: 26px;
+  height: clamp(4rem, 12vh, 8rem);
+  background: repeating-linear-gradient(to bottom, var(--touch) 0 14px, var(--black) 14px 18px);
+}
+.clip {
+  display: block;
+  width: 34px;
+  height: 18px;
+  margin-top: -2px;
+  border: 3px solid var(--grey);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+}
+
+.pass {
+  position: relative;
+  width: min(80vw, 20rem);
+  margin-top: -4px;
+  padding: var(--s-2);
+  display: grid;
+  gap: var(--s-1);
+  background: var(--white);
+  color: var(--black);
+  border-radius: 14px;
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.7);
+  transform-style: preserve-3d;
+}
+.passTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: calc(var(--s-2) * -1) calc(var(--s-2) * -1) 0;
+  padding: var(--s-4) var(--s-2) var(--s-1);
+  background: var(--red);
+  color: var(--on-red);
+  border-radius: 14px 14px 0 0;
+}
+/* Punched hole for the clip. */
+.passTop::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 40px;
+  height: 10px;
+  translate: -50% 0;
+  border-radius: 6px;
+  background: var(--black);
+}
+.passNum { font-family: var(--font-display), sans-serif; font-size: 3rem; line-height: 0.8; }
+.passSeason { font-size: 0.7rem; }
+.passPhoto { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--black-2); }
+.passPhoto img { object-fit: cover; }
+.passRole {
+  font-family: var(--font-body), sans-serif;
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  line-height: 1;
+  margin-top: var(--s-1);
+}
+.passName { font-size: 0.7rem; color: color-mix(in srgb, var(--black) 60%, transparent); }
+
+/* Four stamp spots, filled as the privileges scroll by. */
+.stamps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  min-height: 6.5rem;
+  padding: 0.4rem;
+  border: 1px dashed color-mix(in srgb, var(--black) 30%, transparent);
+}
+.stamp {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  padding: 0.3rem;
+  border: 2px solid var(--red-deep);
+  border-radius: 6px;
+  color: var(--red-deep);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  mix-blend-mode: multiply;
+  rotate: -8deg;
+}
+.stamp:nth-child(even) { rotate: 8deg; }
+.stamp small { font-size: 0.55rem; font-weight: 400; opacity: 0.8; }
+
+.barcode { display: flex; gap: 2px; height: 28px; margin-top: var(--s-1); }
+.barcode span { background: var(--black); }
+.barcode span:nth-child(3n) { background: transparent; }
+.passFoot { font-size: 0.6rem; text-align: center; letter-spacing: 0.2em; }
+
+/* ---------- Privileges ---------- */
+.perks { list-style: none; display: grid; gap: var(--s-12); }
+.perk { display: grid; gap: var(--s-2); }
+.perkNum { color: var(--touch); font-size: 0.8rem; }
+.wordMask { display: block; overflow: hidden; }
+.word {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(4rem, 12vw, 10rem);
+  line-height: 0.85;
+}
+.perk:nth-child(even) .word { color: var(--touch); }
+.perkText { max-width: 30rem; font-size: clamp(1.05rem, 1.5vw, 1.35rem); color: var(--grey); }
+.photo { position: relative; aspect-ratio: 16 / 9; overflow: hidden; margin-top: var(--s-2); background: var(--black-2); }
+.photo img { object-fit: cover; }
+.caption {
+  position: absolute;
+  left: var(--s-1);
+  bottom: var(--s-1);
+  font-size: 0.65rem;
+  color: var(--white);
+  background: color-mix(in srgb, var(--black) 70%, transparent);
+  padding: 0.2rem 0.4rem;
+}
+
+/* Large screens: the pass stays beside the list while the privileges scroll by. */
+@media (min-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: start; column-gap: var(--s-12); }
+  .passCol { position: sticky; top: calc(var(--s-12) + var(--s-2)); }
+  .perks { padding-block: 10vh 20vh; }
+}
+
+/* ---------- Closing ---------- */
+.closing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: var(--s-12);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--line);
+}
+.closingText { font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: 0.9; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.cta {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  color: var(--on-red);
+  background: var(--red);
+  padding: var(--s-1) var(--s-4) var(--s-1) var(--s-3);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
+  transition: background-color 0.15s, color 0.15s;
+}
+.cta:hover { background: var(--white); color: var(--black); }
+.link { font-size: 0.75rem; color: var(--white); border-bottom: 1px solid var(--touch); padding-bottom: 2px; }
+.link:hover { color: var(--touch); }

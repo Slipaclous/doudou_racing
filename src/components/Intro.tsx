@@ -1,9 +1,9 @@
 import s from "./Intro.module.css";
 
-const BARS = 7;
+const BARS = 8;
 
 /**
- * Opening wipe: skewed red and black bars sweep off the screen, revealing the hero.
+ * Opening: horizontal bands split apart to the left and right, uncovering the whole hero photo.
  * Pure CSS, so it plays before hydration and can never stay stuck if JS fails.
  */
 export function Intro({ number }: { number: number }) {

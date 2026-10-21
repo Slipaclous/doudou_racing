@@ -1,0 +1,93 @@
+.future {
+  position: relative;
+  background: var(--black);
+  padding: var(--s-12) var(--gutter);
+  overflow: hidden;
+}
+
+.head { display: grid; gap: var(--s-2); margin-bottom: var(--s-8); }
+.kicker { color: var(--touch); font-size: 0.875rem; }
+.title { font-size: var(--t-h2); }
+
+/* ---------- Timeline ---------- */
+.timeline { --rail: clamp(1rem, 3vw, 2.5rem); position: relative; }
+.steps {
+  list-style: none;
+  display: grid;
+  gap: var(--s-12);
+  padding-left: calc(var(--rail) + var(--s-4));
+}
+/* Dashed rail behind, the solid road drawn over it as you scroll. */
+.timeline::before,
+.road {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--rail);
+  width: 3px;
+}
+.timeline::before { background: repeating-linear-gradient(to bottom, var(--line) 0 10px, transparent 10px 20px); }
+.road { display: block; background: var(--touch); transform-origin: top; }
+
+.step { position: relative; display: grid; gap: var(--s-2); }
+.dot {
+  position: absolute;
+  top: 1.5rem;
+  left: calc(-1 * var(--s-4) - 9px);
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 4px solid var(--touch);
+}
+
+.year { display: block; width: min(100%, 34rem); }
+.year svg { display: block; width: 100%; height: auto; overflow: visible; }
+.year text {
+  font-family: var(--font-display), sans-serif;
+  font-size: 150px;
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 7;
+}
+
+.goal { display: grid; gap: var(--s-2); max-width: 36rem; }
+.meta { color: var(--touch); font-size: 0.8rem; }
+.name { font-size: clamp(1.6rem, 3.4vw, 3rem); }
+
+@media (min-width: 900px) {
+  .step { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; column-gap: var(--s-6); }
+  .dot { top: 50%; translate: 0 -50%; }
+}
+
+/* ---------- Closing ---------- */
+.closing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: var(--s-12);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--line);
+}
+.closingText {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  line-height: 0.9;
+}
+.closingText span { color: var(--touch); }
+.cta {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  color: var(--on-red);
+  background: var(--red);
+  padding: var(--s-1) var(--s-4) var(--s-1) var(--s-3);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
+  transition: background-color 0.15s, color 0.15s;
+}
+.cta:hover { background: var(--white); color: var(--black); }
