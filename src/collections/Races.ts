@@ -6,9 +6,9 @@ import { previewAt } from "@/admin/sections";
 export const Races: CollectionConfig = {
   slug: "races",
   access: adminOnly,
-  labels: { singular: "Course", plural: "Calendrier" },
+  labels: { singular: "Course", plural: "Courses · calendrier" },
   defaultSort: "date",
-  admin: { preview: previewAt("courses"), useAsTitle: "name", defaultColumns: ["date", "name", "circuit", "country"], group: "Le site" },
+  admin: { preview: previewAt("courses"), useAsTitle: "name", defaultColumns: ["date", "name", "circuit", "country"], group: false },
   hooks: revalidateHooks,
   fields: [
     {

@@ -718,7 +718,7 @@ export interface Pilot {
   createdAt?: string | null;
 }
 /**
- * Les titres de la section. Les saisons elles-mêmes se gèrent dans « Le site › Saisons ».
+ * Les titres de la section. Les saisons elles-mêmes se gèrent dans « Le parcours › Saisons ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "careerTexts".
@@ -825,7 +825,7 @@ export interface Stat {
   createdAt?: string | null;
 }
 /**
- * Les titres de la section. Les courses elles-mêmes se gèrent dans « Le site › Calendrier ».
+ * Les titres de la section. Les courses elles-mêmes se gèrent dans « Courses › Calendrier ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "upcomingTexts".
@@ -841,7 +841,7 @@ export interface UpcomingText {
   createdAt?: string | null;
 }
 /**
- * Les titres, le pass et les avantages. Les événements et leurs photos se gèrent dans « Le site › Événements ».
+ * Les titres, le pass et les avantages. Les événements et leurs photos se gèrent dans « L'aventure › Événements et photos ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "adventureTexts".
@@ -875,7 +875,7 @@ export interface AdventureText {
   createdAt?: string | null;
 }
 /**
- * Les textes de la page /galerie. Les photos se gèrent dans chaque événement (« Le site › Événements »).
+ * Les textes de la page /galerie. Les photos se gèrent dans chaque événement (« L'aventure › Événements et photos »).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "galleryTexts".

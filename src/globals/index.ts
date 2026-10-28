@@ -8,7 +8,7 @@ import { defaultQuotes, defaultTexts as d, textFields } from "@/content/texts";
 const hooks = { afterChange: [revalidateSite] };
 const at = (anchor: string) => ({ preview: previewAt(anchor) });
 
-const TEXTS_HINT = "Titres, boutons et libellés affichés sur le site. Un champ vidé reprend le texte d'origine.";
+const KEEP = " Un champ vidé reprend le texte d'origine.";
 
 /** Short fields side by side, a few per line, instead of one long row. */
 const rows = (fields: Field[], size = 3): Field[] =>
@@ -18,12 +18,12 @@ const rows = (fields: Field[], size = 3): Field[] =>
 const texts = (fields: Field[]) => ({ name: "texts", label: false, type: "group", fields }) satisfies Field;
 
 /** Every section page reads the same way: what the section shows, then its wording. Unnamed tabs: no schema change. */
-const sectionTabs = (content: Field[], wording: Field[]): Field[] => [
+const sectionTabs = (content: Field[], wording: Field[], hint: string): Field[] => [
   {
     type: "tabs",
     tabs: [
       { label: "Contenu", fields: content },
-      { label: "Textes", description: TEXTS_HINT, fields: [texts(wording)] },
+      { label: "Textes", description: hint + KEEP, fields: [texts(wording)] },
     ],
   },
 ];
@@ -31,8 +31,8 @@ const sectionTabs = (content: Field[], wording: Field[]): Field[] => [
 export const PilotGlobal: GlobalConfig = {
   slug: "pilot",
   access: adminOnlyGlobal,
-  label: "Pilote",
-  admin: { ...at("top"), group: "Le site" },
+  label: "Ouverture et pilote",
+  admin: { ...at("top"), group: false },
   hooks,
   // Unnamed tabs only group fields in the UI: the database schema is unchanged.
   fields: [
@@ -112,7 +112,7 @@ export const PilotGlobal: GlobalConfig = {
         },
         {
           label: "Textes",
-          description: TEXTS_HINT,
+          description: `Le titre de la section « Le pilote » et le nom des deux onglets de sa fiche.${KEEP}`,
           fields: [texts(rows(textFields(d.pilot, { title: "Titre de la section", tabInfo: "Onglet 1 de la fiche", tabRace: "Onglet 2 de la fiche" })))],
         },
       ],
@@ -123,8 +123,8 @@ export const PilotGlobal: GlobalConfig = {
 export const StatsGlobal: GlobalConfig = {
   slug: "stats",
   access: adminOnlyGlobal,
-  label: "Chiffres",
-  admin: { ...at("chiffres"), group: "Le site" },
+  label: "En chiffres",
+  admin: { ...at("chiffres"), group: false },
   hooks,
   fields: sectionTabs(
     [
@@ -157,6 +157,7 @@ export const StatsGlobal: GlobalConfig = {
     },
     ],
     textFields(d.stats, { title: "Titre de la section" }),
+    "Le petit titre affiché au-dessus du circuit et des chiffres.",
   ),
 };
 
@@ -165,7 +166,7 @@ export const PitchGlobal: GlobalConfig = {
   access: adminOnlyGlobal,
   label: "Pourquoi le soutenir",
   // Section removed from the site (merged into "L'aventure"); data kept, hidden from the admin.
-  admin: { hidden: true, ...at("pourquoi"), group: "Sponsors" },
+  admin: { hidden: true, ...at("pourquoi"), group: false },
   hooks,
   fields: [
     {
@@ -192,8 +193,8 @@ export const PitchGlobal: GlobalConfig = {
 export const ZonesGlobal: GlobalConfig = {
   slug: "zones",
   access: adminOnlyGlobal,
-  label: "Votre logo en piste",
-  admin: { ...at("partenaires"), group: "Sponsors", description: "Les quatre zones mises en avant sur le schéma du kart." },
+  label: "Partenaires · zones du kart",
+  admin: { ...at("partenaires"), group: false, description: "Les quatre zones mises en avant sur le schéma du kart." },
   hooks,
   fields: sectionTabs(
     [
@@ -229,14 +230,15 @@ export const ZonesGlobal: GlobalConfig = {
       ),
       2,
     ),
+    "Le titre au-dessus du kart, le bouton sous la bande de logos et les mentions des zones libres.",
   ),
 };
 
 export const FutureGlobal: GlobalConfig = {
   slug: "future",
   access: adminOnlyGlobal,
-  label: "La suite (objectifs)",
-  admin: { ...at("la-suite"), group: "Le site" },
+  label: "La suite",
+  admin: { ...at("la-suite"), group: false },
   hooks,
   fields: sectionTabs(
     [
@@ -267,6 +269,7 @@ export const FutureGlobal: GlobalConfig = {
       ),
       2,
     ),
+    "Le titre au-dessus de la frise des objectifs, puis la phrase et le bouton qui la concluent.",
   ),
 };
 
@@ -275,8 +278,8 @@ export const FutureGlobal: GlobalConfig = {
 export const CareerTextsGlobal: GlobalConfig = {
   slug: "careerTexts",
   access: adminOnlyGlobal,
-  label: "Le parcours",
-  admin: { ...at("parcours"), group: "Textes des sections", description: "Les titres de la section. Les saisons elles-mêmes se gèrent dans « Le site › Saisons »." },
+  label: "Le parcours · textes",
+  admin: { ...at("parcours"), group: false, description: "Les titres de la section. Les saisons elles-mêmes se gèrent dans « Le parcours › Saisons »." },
   hooks,
   fields: textFields(d.career, { title: "Titre", since: "Après la première année", hint: "Aide au défilement" }, { since: "Affiché après l'année de la première saison : « 2017 → aujourd'hui »." }),
 };
@@ -284,8 +287,8 @@ export const CareerTextsGlobal: GlobalConfig = {
 export const RacesTextsGlobal: GlobalConfig = {
   slug: "upcomingTexts",
   access: adminOnlyGlobal,
-  label: "Prochaines courses",
-  admin: { ...at("courses"), group: "Textes des sections", description: "Les titres de la section. Les courses elles-mêmes se gèrent dans « Le site › Calendrier »." },
+  label: "Courses · textes",
+  admin: { ...at("courses"), group: false, description: "Les titres de la section. Les courses elles-mêmes se gèrent dans « Courses › Calendrier »." },
   hooks,
   fields: textFields(d.races, { title: "Titre", countdown: "Sous le compte à rebours" }),
 };
@@ -293,11 +296,11 @@ export const RacesTextsGlobal: GlobalConfig = {
 export const AdventureTextsGlobal: GlobalConfig = {
   slug: "adventureTexts",
   access: adminOnlyGlobal,
-  label: "L'aventure",
+  label: "L'aventure · textes",
   admin: {
     ...at("aventure"),
-    group: "Textes des sections",
-    description: "Les titres, le pass et les avantages. Les événements et leurs photos se gèrent dans « Le site › Événements ».",
+    group: false,
+    description: "Les titres, le pass et les avantages. Les événements et leurs photos se gèrent dans « L'aventure › Événements et photos ».",
   },
   hooks,
   // Unnamed tabs: fields keep their place in the database.
@@ -307,7 +310,7 @@ export const AdventureTextsGlobal: GlobalConfig = {
       tabs: [
         {
           label: "En-tête",
-          description: TEXTS_HINT,
+          description: `Le haut de la section, au-dessus du pass et des avantages.${KEEP}`,
           fields: rows(
             textFields(
               { kicker: d.adventure.kicker, title: d.adventure.title },
@@ -363,7 +366,7 @@ export const AdventureTextsGlobal: GlobalConfig = {
         },
         {
           label: "Fin de section",
-          description: TEXTS_HINT,
+          description: `Sous la liste des avantages : la phrase de conclusion, le bouton et les deux liens.${KEEP}`,
           fields: rows(
             textFields(
               { closing: d.adventure.closing, cta: d.adventure.cta, galleryLink: d.adventure.galleryLink, memberLink: d.adventure.memberLink },
@@ -380,11 +383,11 @@ export const AdventureTextsGlobal: GlobalConfig = {
 export const GalleryTextsGlobal: GlobalConfig = {
   slug: "galleryTexts",
   access: adminOnlyGlobal,
-  label: "Page Galerie",
+  label: "Galerie · textes",
   admin: {
     preview: () => "/galerie",
-    group: "Textes des sections",
-    description: "Les textes de la page /galerie. Les photos se gèrent dans chaque événement (« Le site › Événements »).",
+    group: false,
+    description: "Les textes de la page /galerie. Les photos se gèrent dans chaque événement (« L'aventure › Événements et photos »).",
   },
   hooks,
   fields: (() => {
@@ -404,7 +407,7 @@ export const QuotesGlobal: GlobalConfig = {
   slug: "quotes",
   access: adminOnlyGlobal,
   label: "Citations",
-  admin: { ...at("chiffres"), group: "Le site", description: "Les deux citations plein écran : la première avant « En chiffres », la seconde après." },
+  admin: { ...at("chiffres"), group: false, description: "Les deux citations plein écran : la première avant « En chiffres », la seconde après." },
   hooks,
   fields: [
     {
@@ -434,7 +437,7 @@ export const SettingsGlobal: GlobalConfig = {
   slug: "settings",
   access: adminOnlyGlobal,
   label: "Réglages du site",
-  admin: { ...at("contact"), group: "Réglages" },
+  admin: { ...at("contact"), group: false },
   hooks,
   // Unnamed tabs: fields keep their place in the database.
   fields: [

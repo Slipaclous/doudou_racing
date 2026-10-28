@@ -7,13 +7,13 @@ import { previewAt } from "@/admin/sections";
 export const Events: CollectionConfig = {
   slug: "events",
   access: adminOnly,
-  labels: { singular: "Événement", plural: "L'aventure (événements)" },
+  labels: { singular: "Événement", plural: "L'aventure · événements" },
   defaultSort: "-date",
   admin: {
     preview: previewAt("aventure"),
     useAsTitle: "title",
     defaultColumns: ["date", "title", "type", "place"],
-    group: "Le site",
+    group: false,
     description: "Les moments vécus avec les partenaires. Les plus récents s'affichent en premier sur le site.",
   },
   hooks: revalidateHooks,

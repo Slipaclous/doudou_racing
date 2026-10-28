@@ -6,9 +6,9 @@ import { previewAt } from "@/admin/sections";
 export const Seasons: CollectionConfig = {
   slug: "seasons",
   access: adminOnly,
-  labels: { singular: "Saison", plural: "Parcours (saisons)" },
+  labels: { singular: "Saison", plural: "Le parcours · saisons" },
   defaultSort: "year",
-  admin: { preview: previewAt("parcours"), useAsTitle: "headline", defaultColumns: ["year", "headline", "category", "result"], group: "Le site" },
+  admin: { preview: previewAt("parcours"), useAsTitle: "headline", defaultColumns: ["year", "headline", "category", "result"], group: false },
   hooks: revalidateHooks,
   fields: [
     {

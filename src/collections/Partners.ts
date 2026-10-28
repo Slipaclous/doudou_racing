@@ -7,7 +7,7 @@ export const Partners: CollectionConfig = {
   slug: "partners",
   access: adminOnly,
   labels: { singular: "Partenaire", plural: "Partenaires" },
-  admin: { preview: previewAt("partenaires"), useAsTitle: "name", defaultColumns: ["name", "role", "sector", "order"], group: "Le site" },
+  admin: { preview: previewAt("partenaires"), useAsTitle: "name", defaultColumns: ["name", "role", "sector", "order"], group: false },
   hooks: revalidateHooks,
   fields: [
     { name: "name", label: "Nom", type: "text", required: true },

@@ -48,7 +48,7 @@ export default buildConfig({
         Icon: "/components/admin/Brand#Icon",
       },
       actions: ["/components/admin/ViewSite#ViewSiteAction"],
-      beforeNavLinks: ["/components/admin/ViewSite#ViewSiteNavLink"],
+      beforeNavLinks: ["/components/admin/ViewSite#ViewSiteNavLink", "/components/admin/SiteNav#SiteNav"],
       views: {
         dashboard: { Component: "/components/admin/Dashboard#Dashboard" },
       },

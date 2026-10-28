@@ -10,5 +10,5 @@ export function Logo() {
 
 /** Small mark in the nav / header. */
 export function Icon() {
-  return <span className="doudou-icon">105</span>;
+  return <span className="doudou-icon">#</span>;
 }
