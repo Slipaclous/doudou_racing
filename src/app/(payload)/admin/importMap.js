@@ -1,4 +1,6 @@
 import { ResendInvitation as ResendInvitation_950afa66721c956b514266ffd20a2de9 } from '../../../components/admin/ResendInvitation'
+import { QuoteRowLabel as QuoteRowLabel_a22f15833f5c099d83eec5874403c04c } from '../../../components/admin/RowLabel'
+import { PerkRowLabel as PerkRowLabel_a22f15833f5c099d83eec5874403c04c } from '../../../components/admin/RowLabel'
 import { ColorField as ColorField_f18d715b9f5ea63091d1361f9c46fa22 } from '../../../components/admin/ColorField'
 import { Icon as Icon_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
 import { Logo as Logo_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
@@ -11,6 +13,8 @@ import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e
 /** @type import('payload').ImportMap */
 export const importMap = {
   "/components/admin/ResendInvitation#ResendInvitation": ResendInvitation_950afa66721c956b514266ffd20a2de9,
+  "/components/admin/RowLabel#QuoteRowLabel": QuoteRowLabel_a22f15833f5c099d83eec5874403c04c,
+  "/components/admin/RowLabel#PerkRowLabel": PerkRowLabel_a22f15833f5c099d83eec5874403c04c,
   "/components/admin/ColorField#ColorField": ColorField_f18d715b9f5ea63091d1361f9c46fa22,
   "/components/admin/Brand#Icon": Icon_81fda60f3e3709e861f40982a767707d,
   "/components/admin/Brand#Logo": Logo_81fda60f3e3709e861f40982a767707d,

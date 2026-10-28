@@ -709,9 +709,6 @@ export interface Pilot {
     weight?: string | null;
     mentor?: string | null;
   };
-  /**
-   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
-   */
   texts?: {
     title?: string | null;
     tabInfo?: string | null;
@@ -721,7 +718,7 @@ export interface Pilot {
   createdAt?: string | null;
 }
 /**
- * Les saisons se gèrent dans « Saisons ».
+ * Les titres de la section. Les saisons elles-mêmes se gèrent dans « Le site › Saisons ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "careerTexts".
@@ -758,9 +755,6 @@ export interface Future {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
-   */
   texts?: {
     kicker?: string | null;
     /**
@@ -824,9 +818,6 @@ export interface Stat {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
-   */
   texts?: {
     title?: string | null;
   };
@@ -834,7 +825,7 @@ export interface Stat {
   createdAt?: string | null;
 }
 /**
- * Les courses se gèrent dans « Courses ».
+ * Les titres de la section. Les courses elles-mêmes se gèrent dans « Le site › Calendrier ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "upcomingTexts".
@@ -850,7 +841,7 @@ export interface UpcomingText {
   createdAt?: string | null;
 }
 /**
- * Les événements et leurs photos se gèrent dans « Événements ».
+ * Les titres, le pass et les avantages. Les événements et leurs photos se gèrent dans « Le site › Événements ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "adventureTexts".
@@ -862,18 +853,12 @@ export interface AdventureText {
    * Une ligne par retour à la ligne ; la dernière est mise en couleur.
    */
   title?: string | null;
-  /**
-   * Le badge illustré à côté de la liste. Pensez à changer la saison chaque année.
-   */
   pass?: {
     passSeason?: string | null;
     passRole?: string | null;
     passName?: string | null;
     passFoot?: string | null;
   };
-  /**
-   * Chacun s'affiche avec une photo d'événement et appose un tampon sur le pass.
-   */
   perks?:
     | {
         word: string;
@@ -890,7 +875,7 @@ export interface AdventureText {
   createdAt?: string | null;
 }
 /**
- * La page /galerie. Les photos se gèrent dans « Événements ».
+ * Les textes de la page /galerie. Les photos se gèrent dans chaque événement (« Le site › Événements »).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "galleryTexts".
@@ -898,6 +883,7 @@ export interface AdventureText {
 export interface GalleryText {
   id: number;
   kicker?: string | null;
+  back?: string | null;
   /**
    * Une ligne par retour à la ligne ; la dernière est mise en couleur.
    */
@@ -909,7 +895,6 @@ export interface GalleryText {
    */
   closing?: string | null;
   cta?: string | null;
-  back?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -949,9 +934,6 @@ export interface Zone {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
-   */
   texts?: {
     /**
      * Une ligne par retour à la ligne.
@@ -974,9 +956,6 @@ export interface Zone {
 export interface Setting {
   id: number;
   contactEmail: string;
-  /**
-   * Textes de la section Contact.
-   */
   texts?: {
     /**
      * Une ligne par retour à la ligne.
@@ -986,9 +965,6 @@ export interface Setting {
     submit?: string | null;
     success?: string | null;
   };
-  /**
-   * Le nom de chaque section dans le menu, et les deux boutons toujours visibles.
-   */
   menu?: {
     pilote?: string | null;
     parcours?: string | null;
@@ -1002,19 +978,13 @@ export interface Setting {
     cta?: string | null;
     member?: string | null;
   };
-  /**
-   * Le titre et la description affichés par Google et lors d'un partage du lien.
-   */
   seo?: {
     /**
-     * Vide : « Prénom « Surnom » #numéro — Pilote de karting », d'après la fiche Pilote.
+     * Laissez vide pour « Prénom « Surnom » #numéro — Pilote de karting », tiré de la fiche Pilote.
      */
     title?: string | null;
     description?: string | null;
   };
-  /**
-   * Couleurs du site public. Videz un champ pour revenir à la couleur d'origine.
-   */
   theme?: {
     background?: string | null;
     surface?: string | null;
@@ -1197,12 +1167,12 @@ export interface AdventureTextsSelect<T extends boolean = true> {
  */
 export interface GalleryTextsSelect<T extends boolean = true> {
   kicker?: T;
+  back?: T;
   title?: T;
   lead?: T;
   empty?: T;
   closing?: T;
   cta?: T;
-  back?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

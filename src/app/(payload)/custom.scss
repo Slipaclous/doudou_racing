@@ -36,6 +36,50 @@ h1, .doc-header__title { letter-spacing: -0.02em; }
 .nav-group__toggle { font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.75rem; }
 .nav__link--active, .nav__link[aria-current="page"] { box-shadow: inset 3px 0 0 var(--doudou-red); font-weight: 600; }
 
+// ---------- Forms: one section of the site per page, read top to bottom ----------
+
+// Long lines are hard to read: the form keeps a comfortable width on large screens.
+.document-fields__main .tabs-field,
+.document-fields__main > .document-fields__edit > .render-fields { max-width: 60rem; }
+.render-fields { --spacing-field: 1.5rem; }
+
+// Tabs read as the page's chapters: larger, with the active one underlined in red.
+.tabs-field__tabs { gap: 0.25rem 1.75rem; border-bottom: 1px solid var(--theme-elevation-150); }
+.tabs-field__tab-button {
+  padding: 0.75rem 0 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--theme-elevation-600);
+  box-shadow: inset 0 -3px 0 transparent;
+  &:hover { color: var(--theme-elevation-900); }
+}
+.tabs-field__tab-button--active { color: var(--theme-elevation-1000); box-shadow: inset 0 -3px 0 var(--doudou-red); }
+
+// What a tab is for, as a note above its fields rather than small grey text.
+.tabs-field__description {
+  margin: 1.5rem 0 1.75rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--doudou-red);
+  background: var(--theme-elevation-50);
+  color: var(--theme-elevation-800);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+// Collapsible blocks and array rows: titles you can scan.
+.collapsible__toggle { font-size: 0.95rem; font-weight: 700; }
+.array-field__header { margin-bottom: 0.75rem; }
+.array-field__title { font-size: 1.15rem; }
+
+// Multi-line titles: the line breaks are what the site shows, so the field shows them at body size.
+.field-type.textarea textarea { font-size: 1rem; line-height: 1.5; }
+
+// Page description under the title: same weight as the rest of the help text, a bit more air.
+.doc-header + .render-title, .custom-view-description, .view-description { max-width: 60rem; font-size: 0.95rem; color: var(--theme-elevation-700); }
+
+// Nav: a little space between groups so "Le site", "Textes des sections"… read as blocks.
+.nav-group { margin-bottom: 0.75rem; }
+
 // ---------- Brand ----------
 .doudou-logo { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
 .doudou-logo__num { font-size: 4rem; font-weight: 900; line-height: 1; color: var(--doudou-red); letter-spacing: -0.04em; }
