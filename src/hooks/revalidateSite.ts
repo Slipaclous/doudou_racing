@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 export function revalidateSite() {
   try {
     revalidatePath("/");
+    revalidatePath("/galerie");
   } catch {
     // Not running inside Next: ignore.
   }

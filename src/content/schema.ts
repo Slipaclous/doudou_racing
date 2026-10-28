@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Texts } from "./texts";
 
 export const pilotSchema = z.object({
   firstName: z.string(),
@@ -46,6 +47,8 @@ export const eventSchema = z.object({
   guests: z.number().int().optional(),
   text: z.string(),
   image: z.string(),
+  // Main photo first, then the gallery.
+  photos: z.array(z.string()),
 });
 
 export const goalSchema = z.object({
@@ -78,6 +81,13 @@ export const zoneSchema = z.object({
   text: z.string(),
 });
 
+export const quoteSchema = z.object({
+  lines: z.array(z.string()).min(1),
+  author: z.string(),
+  context: z.string().optional(),
+  year: z.number().int().optional(),
+});
+
 export const siteSchema = z.object({
   pilot: pilotSchema,
   seasons: z.array(seasonSchema),
@@ -89,6 +99,9 @@ export const siteSchema = z.object({
   partners: z.array(partnerSchema),
   zones: z.array(zoneSchema),
   contactEmail: z.string().email(),
+  quotes: z.array(quoteSchema),
+  // Typed by its defaults (texts.ts): every key is always filled.
+  texts: z.custom<Texts>(),
 });
 
 export type Site = z.infer<typeof siteSchema>;
@@ -97,3 +110,4 @@ export type Race = z.infer<typeof raceSchema>;
 export type SiteEvent = z.infer<typeof eventSchema>;
 export type Goal = z.infer<typeof goalSchema>;
 export type Zone = z.infer<typeof zoneSchema>;
+export type Quote = z.infer<typeof quoteSchema>;

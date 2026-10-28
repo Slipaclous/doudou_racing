@@ -6,6 +6,7 @@ import { cssColor, gsap, useGSAP } from "@/lib/gsap";
 import type { Site, Zone } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
 import { Roll } from "@/components/motion/Roll";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Partners.module.css";
 
 type Partner = Site["partners"][number];
@@ -131,7 +132,8 @@ function Kart({ number, owners }: { number: number; owners: Partial<Record<KartZ
   );
 }
 
-export function Partners({ partners, zones, number }: { partners: Site["partners"]; zones: Zone[]; number: number }) {
+export function Partners({ partners, zones, number, texts }: { partners: Site["partners"]; zones: Zone[]; number: number; texts: Texts["partners"] }) {
+  const title = lines(texts.title);
   const root = useRef<HTMLElement>(null);
   const ordered = [...partners].sort((x, y) => (x.tier === "principal" ? 0 : 1) - (y.tier === "principal" ? 0 : 1));
   // One partner per zone; if several picked the same one, the first in display order wins.
@@ -169,7 +171,7 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
   return (
     <section ref={root} id="partenaires" className={s.partners} aria-labelledby="partners-title">
       <div className={s.showcase}>
-        <Lines as="h2" id="partners-title" className={s.title} lines={["Votre logo", "en piste"]} accent={1} />
+        <Lines as="h2" id="partners-title" className={s.title} lines={title} accent={title.length - 1} />
         <Kart number={number} owners={owners} />
         <ol className={s.zones}>
           {zones.map((zone) => (
@@ -182,7 +184,7 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
                     Aujourd&apos;hui : <strong>{owners[zone.id]!.name}</strong>
                   </>
                 ) : (
-                  "Emplacement disponible"
+                  texts.available
                 )}
               </p>
             </li>
@@ -206,12 +208,12 @@ export function Partners({ partners, zones, number }: { partners: Site["partners
         </div>
 
         <a href="#contact" className={`${s.cta} mono`}>
-          <Roll>{`Rejoindre l'équipe #${number}`}</Roll> <span aria-hidden>→</span>
+          <Roll>{`${texts.cta} #${number}`}</Roll> <span aria-hidden>→</span>
         </a>
 
         <div className={s.roster}>
           <p className={`${s.rosterLabel} mono`}>
-            Partenaires actuels <span className={s.count}>{partners.length}</span>
+            {texts.roster} <span className={s.count}>{partners.length}</span>
           </p>
           <div className={s.lists}>
             <ul className={s.rows}>

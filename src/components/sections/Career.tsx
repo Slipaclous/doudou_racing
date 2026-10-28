@@ -5,12 +5,13 @@ import Image from "next/image";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import type { Season } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Career.module.css";
 
 // Horizontal pinned scroll only where a whole season fits on screen; keep in sync with Career.module.css.
 const HORIZONTAL = "((min-width: 1024px) and (min-height: 600px))";
 
-export function Career({ seasons }: { seasons: Season[] }) {
+export function Career({ seasons, texts }: { seasons: Season[]; texts: Texts["career"] }) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -115,8 +116,8 @@ export function Career({ seasons }: { seasons: Season[] }) {
     <section ref={root} id="parcours" className={s.career} aria-labelledby="career-title">
       <div ref={track} className={s.track}>
         <div className={s.intro}>
-          <Lines as="h2" id="career-title" className={s.title} lines={["Le", "parcours"]} />
-          <p className="mono">{seasons[0]?.year} → aujourd&apos;hui</p>
+          <Lines as="h2" id="career-title" className={s.title} lines={lines(texts.title)} />
+          <p className="mono">{seasons[0]?.year} {texts.since}</p>
         </div>
 
         {seasons.map((season) => (
@@ -148,7 +149,7 @@ fill
       {/* Scroll guide (large screens, where the section scrolls sideways): where you are, and a shortcut to each season. */}
       <nav className={s.guide} aria-label="Saisons du parcours">
         <p className={`${s.hint} mono`} aria-hidden>
-          Faites défiler <span>→</span>
+          {texts.hint} <span>→</span>
         </p>
         <div className={s.rail}>
           <span className={s.fill} aria-hidden />

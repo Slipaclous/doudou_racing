@@ -2,18 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Roll } from "@/components/motion/Roll";
+import type { Texts } from "@/content/texts";
 import s from "./Nav.module.css";
 
-// Full-screen menu: every section of the page, in reading order.
-const sections = [
-  { href: "#pilote", label: "Le pilote" },
-  { href: "#parcours", label: "Le parcours" },
-  { href: "#la-suite", label: "La suite" },
-  { href: "#chiffres", label: "En chiffres" },
-  { href: "#courses", label: "Courses" },
-  { href: "#aventure", label: "L'aventure" },
-  { href: "#partenaires", label: "Partenaires" },
-  { href: "#contact", label: "Contact" },
+// Full-screen menu: every section of the page, in reading order. Labels come from "Réglages du site".
+const sections: { href: string; key: keyof Texts["menu"] }[] = [
+  { href: "#pilote", key: "pilote" },
+  { href: "#parcours", key: "parcours" },
+  { href: "#la-suite", key: "suite" },
+  { href: "#chiffres", key: "chiffres" },
+  { href: "#courses", key: "courses" },
+  { href: "#aventure", key: "aventure" },
+  { href: "/galerie", key: "galerie" },
+  { href: "#partenaires", key: "partenaires" },
+  { href: "#contact", key: "contact" },
 ];
 
 type Mode = "top" | "shown";
@@ -21,7 +23,7 @@ type Mode = "top" | "shown";
 // SmoothScroll (Lenis) listens to these: the page must not scroll behind the open menu.
 const setScrollLock = (locked: boolean) => window.dispatchEvent(new Event(locked ? "scroll:lock" : "scroll:unlock"));
 
-export function Nav({ number }: { number: number }) {
+export function Nav({ number, texts }: { number: number; texts: Texts["menu"] }) {
   const [mode, setMode] = useState<Mode>("top");
   const [open, setOpen] = useState(false);
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -62,10 +64,10 @@ export function Nav({ number }: { number: number }) {
         </a>
         <div className={s.end}>
           <a href="/espace-partenaires" className={`${s.member} mono`}>
-            <Roll>Espace partenaires</Roll>
+            <Roll>{texts.member}</Roll>
           </a>
           <a href="#contact" className={s.cta}>
-            <Roll>Devenir partenaire</Roll>
+            <Roll>{texts.cta}</Roll>
           </a>
           <button
             type="button"
@@ -87,7 +89,7 @@ export function Nav({ number }: { number: number }) {
               <li key={l.href} style={{ "--i": i } as React.CSSProperties}>
                 <a ref={i === 0 ? firstLink : undefined} href={l.href} className={s.menuLink} onClick={() => setOpen(false)}>
                   <span className={`${s.menuIndex} mono`}>{String(i + 1).padStart(2, "0")}</span>
-                  <Roll>{l.label}</Roll>
+                  <Roll>{texts[l.key]}</Roll>
                 </a>
               </li>
             ))}
@@ -95,10 +97,10 @@ export function Nav({ number }: { number: number }) {
         </nav>
         <div className={s.menuFoot}>
           <a href="#contact" className={s.cta} onClick={() => setOpen(false)}>
-            <Roll>Devenir partenaire</Roll>
+            <Roll>{texts.cta}</Roll>
           </a>
           <a href="/espace-partenaires" className={`${s.member} ${s.memberAlways} mono`}>
-            <Roll>Espace partenaires</Roll>
+            <Roll>{texts.member}</Roll>
           </a>
         </div>
         <span className={s.menuNumber} aria-hidden>

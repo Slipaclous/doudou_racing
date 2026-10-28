@@ -1,0 +1,117 @@
+.gallery { min-height: 100svh; background: var(--black); padding: 0 var(--gutter) var(--s-8); }
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--s-2) var(--gutter);
+  background: var(--black);
+  border-bottom: 1px solid var(--line);
+}
+.logo { font-family: var(--font-display), sans-serif; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1; }
+.back { font-size: 0.8rem; }
+.back:hover { color: var(--touch); }
+
+.head { display: grid; gap: var(--s-3); padding-block: var(--s-12) var(--s-8); }
+.kicker { color: var(--touch); font-size: 0.875rem; }
+.title { font-size: var(--t-h2); }
+.lead { max-width: 36rem; color: var(--grey); font-size: clamp(1.05rem, 1.5vw, 1.35rem); }
+.empty { color: var(--grey); padding-block: var(--s-8); }
+
+/* ---------- One event ---------- */
+.event { display: grid; gap: var(--s-4); padding-block: var(--s-8); border-top: 1px solid var(--line); }
+.eventHead { display: grid; gap: var(--s-2); max-width: 48rem; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); font-size: 0.75rem; color: var(--grey); }
+.type { background: var(--touch); color: var(--black); padding: 0.2rem 0.5rem; margin-right: var(--s-1); }
+.eventTitle {
+  font-family: var(--font-body), sans-serif;
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.eventText { color: var(--grey); max-width: 40rem; }
+
+/* Grid of tiles in varied shapes; dense flow fills the gaps. */
+.grid {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: clamp(9rem, 22vw, 16rem);
+  grid-auto-flow: dense;
+}
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+.tile { position: relative; overflow: hidden; background: var(--black-2); }
+.big { grid-column: span 2; grid-row: span 2; }
+.tall { grid-row: span 2; }
+.wide { grid-column: span 2; }
+.open { position: absolute; inset: 0; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.open img { object-fit: cover; transition: filter 0.3s; }
+.open:hover img, .open:focus-visible img { filter: brightness(1.1); }
+.open:focus-visible { outline: 3px solid var(--touch); outline-offset: -3px; }
+
+/* ---------- Closing ---------- */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--line);
+}
+.footText { font-family: var(--font-display), sans-serif; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: 0.9; }
+.footText span { display: block; color: var(--touch); }
+.cta {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  color: var(--on-red);
+  background: var(--red);
+  padding: var(--s-1) var(--s-4) var(--s-1) var(--s-3);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
+  transition: background-color 0.15s, color 0.15s;
+}
+.cta:hover { background: var(--white); color: var(--black); }
+
+/* ---------- Full-screen viewer ---------- */
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--black) 94%, transparent);
+  animation: fade 0.3s ease-out;
+}
+.viewerImg { position: relative; width: min(92vw, 1400px); height: min(80svh, 900px); animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.viewerImg img { object-fit: contain; }
+.viewerCaption { position: absolute; left: var(--gutter); bottom: var(--s-3); font-size: 0.8rem; color: var(--grey); }
+.nav, .close {
+  position: absolute;
+  font: inherit;
+  color: var(--white);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.nav { top: 50%; translate: 0 -50%; font-family: var(--font-display), sans-serif; font-size: 2.5rem; padding: var(--s-2); }
+.nav:hover, .close:hover { color: var(--touch); }
+.prev { left: var(--s-1); }
+.next { right: var(--s-1); }
+.close { top: var(--s-3); right: var(--gutter); font-size: 0.8rem; }
+.nav:focus-visible, .close:focus-visible { outline: 2px solid var(--touch); }
+
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.94); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer, .viewerImg { animation: none; }
+}

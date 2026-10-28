@@ -106,18 +106,28 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     pilot: Pilot;
+    careerTexts: CareerText;
+    future: Future;
+    quotes: Quote;
     stats: Stat;
+    racesTexts: RacesText;
+    adventureTexts: AdventureText;
+    galleryTexts: GalleryText;
     pitch: Pitch;
     zones: Zone;
-    future: Future;
     settings: Setting;
   };
   globalsSelect: {
     pilot: PilotSelect<false> | PilotSelect<true>;
+    careerTexts: CareerTextsSelect<false> | CareerTextsSelect<true>;
+    future: FutureSelect<false> | FutureSelect<true>;
+    quotes: QuotesSelect<false> | QuotesSelect<true>;
     stats: StatsSelect<false> | StatsSelect<true>;
+    racesTexts: RacesTextsSelect<false> | RacesTextsSelect<true>;
+    adventureTexts: AdventureTextsSelect<false> | AdventureTextsSelect<true>;
+    galleryTexts: GalleryTextsSelect<false> | GalleryTextsSelect<true>;
     pitch: PitchSelect<false> | PitchSelect<true>;
     zones: ZonesSelect<false> | ZonesSelect<true>;
-    future: FutureSelect<false> | FutureSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: null;
@@ -334,6 +344,10 @@ export interface Event {
    */
   text: string;
   image?: (number | null) | Media;
+  /**
+   * Toutes les photos de l'événement, affichées sur la page Galerie (la photo principale y est déjà).
+   */
+  gallery?: (number | Media)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -514,6 +528,7 @@ export interface EventsSelect<T extends boolean = true> {
   guests?: T;
   text?: T;
   image?: T;
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -686,6 +701,104 @@ export interface Pilot {
    * Séparer les paragraphes par une ligne vide.
    */
   bio: string;
+  sheet?: {
+    birth?: string | null;
+    birthplace?: string | null;
+    firstKart?: string | null;
+    height?: string | null;
+    weight?: string | null;
+    mentor?: string | null;
+  };
+  /**
+   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
+   */
+  texts?: {
+    title?: string | null;
+    tabInfo?: string | null;
+    tabRace?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Les saisons se gèrent dans « Saisons ».
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "careerTexts".
+ */
+export interface CareerText {
+  id: number;
+  /**
+   * Une ligne par retour à la ligne.
+   */
+  title?: string | null;
+  /**
+   * Affiché après l'année de la première saison : « 2017 → aujourd'hui ».
+   */
+  since?: string | null;
+  hint?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "future".
+ */
+export interface Future {
+  id: number;
+  /**
+   * Les prochaines saisons et leurs objectifs, dans l'ordre.
+   */
+  items?:
+    | {
+        year: number;
+        category: string;
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
+   */
+  texts?: {
+    kicker?: string | null;
+    /**
+     * Une ligne par retour à la ligne.
+     */
+    title?: string | null;
+    /**
+     * La dernière ligne est mise en couleur.
+     */
+    closing?: string | null;
+    /**
+     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ».
+     */
+    cta?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Les deux citations plein écran : la première avant « En chiffres », la seconde après.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quotes".
+ */
+export interface Quote {
+  id: number;
+  items?:
+    | {
+        /**
+         * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+         */
+        text: string;
+        author: string;
+        context?: string | null;
+        year?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -711,6 +824,92 @@ export interface Stat {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
+   */
+  texts?: {
+    title?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Les courses se gèrent dans « Courses ».
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "racesTexts".
+ */
+export interface RacesText {
+  id: number;
+  /**
+   * Une ligne par retour à la ligne.
+   */
+  title?: string | null;
+  countdown?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Les événements et leurs photos se gèrent dans « Événements ».
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adventureTexts".
+ */
+export interface AdventureText {
+  id: number;
+  kicker?: string | null;
+  /**
+   * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+   */
+  title?: string | null;
+  /**
+   * Le badge illustré à côté de la liste. Pensez à changer la saison chaque année.
+   */
+  pass?: {
+    passSeason?: string | null;
+    passRole?: string | null;
+    passName?: string | null;
+    passFoot?: string | null;
+  };
+  /**
+   * Chacun s'affiche avec une photo d'événement et appose un tampon sur le pass.
+   */
+  perks?:
+    | {
+        word: string;
+        stamp: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  closing?: string | null;
+  cta?: string | null;
+  galleryLink?: string | null;
+  memberLink?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * La page /galerie. Les photos se gèrent dans « Événements ».
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleryTexts".
+ */
+export interface GalleryText {
+  id: number;
+  kicker?: string | null;
+  /**
+   * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+   */
+  title?: string | null;
+  lead?: string | null;
+  empty?: string | null;
+  /**
+   * La dernière ligne est mise en couleur.
+   */
+  closing?: string | null;
+  cta?: string | null;
+  back?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -750,27 +949,21 @@ export interface Zone {
         id?: string | null;
       }[]
     | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "future".
- */
-export interface Future {
-  id: number;
   /**
-   * Les prochaines saisons et leurs objectifs, dans l'ordre.
+   * Titres et boutons de la section. Un champ vidé reprend le texte d'origine.
    */
-  items?:
-    | {
-        year: number;
-        category: string;
-        title: string;
-        text: string;
-        id?: string | null;
-      }[]
-    | null;
+  texts?: {
+    /**
+     * Une ligne par retour à la ligne.
+     */
+    title?: string | null;
+    available?: string | null;
+    /**
+     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ».
+     */
+    cta?: string | null;
+    roster?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -781,6 +974,44 @@ export interface Future {
 export interface Setting {
   id: number;
   contactEmail: string;
+  /**
+   * Textes de la section Contact.
+   */
+  texts?: {
+    /**
+     * Une ligne par retour à la ligne.
+     */
+    title?: string | null;
+    message?: string | null;
+    submit?: string | null;
+    success?: string | null;
+  };
+  /**
+   * Le nom de chaque section dans le menu, et les deux boutons toujours visibles.
+   */
+  menu?: {
+    pilote?: string | null;
+    parcours?: string | null;
+    suite?: string | null;
+    chiffres?: string | null;
+    courses?: string | null;
+    aventure?: string | null;
+    galerie?: string | null;
+    partenaires?: string | null;
+    contact?: string | null;
+    cta?: string | null;
+    member?: string | null;
+  };
+  /**
+   * Le titre et la description affichés par Google et lors d'un partage du lien.
+   */
+  seo?: {
+    /**
+     * Vide : « Prénom « Surnom » #numéro — Pilote de karting », d'après la fiche Pilote.
+     */
+    title?: string | null;
+    description?: string | null;
+  };
   /**
    * Couleurs du site public. Videz un champ pour revenir à la couleur d'origine.
    */
@@ -814,6 +1045,79 @@ export interface PilotSelect<T extends boolean = true> {
   heroImage?: T;
   heroVideo?: T;
   bio?: T;
+  sheet?:
+    | T
+    | {
+        birth?: T;
+        birthplace?: T;
+        firstKart?: T;
+        height?: T;
+        weight?: T;
+        mentor?: T;
+      };
+  texts?:
+    | T
+    | {
+        title?: T;
+        tabInfo?: T;
+        tabRace?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "careerTexts_select".
+ */
+export interface CareerTextsSelect<T extends boolean = true> {
+  title?: T;
+  since?: T;
+  hint?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "future_select".
+ */
+export interface FutureSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        year?: T;
+        category?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  texts?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        closing?: T;
+        cta?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quotes_select".
+ */
+export interface QuotesSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        text?: T;
+        author?: T;
+        context?: T;
+        year?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -836,6 +1140,69 @@ export interface StatsSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  texts?:
+    | T
+    | {
+        title?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "racesTexts_select".
+ */
+export interface RacesTextsSelect<T extends boolean = true> {
+  title?: T;
+  countdown?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adventureTexts_select".
+ */
+export interface AdventureTextsSelect<T extends boolean = true> {
+  kicker?: T;
+  title?: T;
+  pass?:
+    | T
+    | {
+        passSeason?: T;
+        passRole?: T;
+        passName?: T;
+        passFoot?: T;
+      };
+  perks?:
+    | T
+    | {
+        word?: T;
+        stamp?: T;
+        text?: T;
+        id?: T;
+      };
+  closing?: T;
+  cta?: T;
+  galleryLink?: T;
+  memberLink?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleryTexts_select".
+ */
+export interface GalleryTextsSelect<T extends boolean = true> {
+  kicker?: T;
+  title?: T;
+  lead?: T;
+  empty?: T;
+  closing?: T;
+  cta?: T;
+  back?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -870,23 +1237,13 @@ export interface ZonesSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "future_select".
- */
-export interface FutureSelect<T extends boolean = true> {
-  items?:
+  texts?:
     | T
     | {
-        year?: T;
-        category?: T;
         title?: T;
-        text?: T;
-        id?: T;
+        available?: T;
+        cta?: T;
+        roster?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -898,6 +1255,35 @@ export interface FutureSelect<T extends boolean = true> {
  */
 export interface SettingsSelect<T extends boolean = true> {
   contactEmail?: T;
+  texts?:
+    | T
+    | {
+        title?: T;
+        message?: T;
+        submit?: T;
+        success?: T;
+      };
+  menu?:
+    | T
+    | {
+        pilote?: T;
+        parcours?: T;
+        suite?: T;
+        chiffres?: T;
+        courses?: T;
+        aventure?: T;
+        galerie?: T;
+        partenaires?: T;
+        contact?: T;
+        cta?: T;
+        member?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
   theme?:
     | T
     | {

@@ -3,11 +3,11 @@
 import { useRef, useState, type KeyboardEvent } from "react";
 import { cssColor, gsap, useGSAP } from "@/lib/gsap";
 import type { Site } from "@/content/schema";
-import { pilotSheet } from "@/content/story";
+import { lines, type Texts } from "@/content/texts";
 import { Lines } from "@/components/motion/Lines";
 import s from "./Pilot.module.css";
 
-export function Pilot({ pilot }: { pilot: Site["pilot"] }) {
+export function Pilot({ pilot, texts, sheet }: { pilot: Site["pilot"]; texts: Texts["pilot"]; sheet: Texts["sheet"] }) {
   const root = useRef<HTMLElement>(null);
   const words = pilot.bio.join(" ").split(" ");
 
@@ -34,25 +34,25 @@ export function Pilot({ pilot }: { pilot: Site["pilot"] }) {
   const tabs: { id: string; label: string; facts: [string, string][] }[] = [
     {
       id: "infos",
-      label: "Infos générales",
+      label: texts.tabInfo,
       facts: [
-        ["Date de naissance", pilotSheet.birth],
-        ["Ville natale", pilotSheet.birthplace],
+        ["Date de naissance", sheet.birth],
+        ["Ville natale", sheet.birthplace],
         ["Nationalité", pilot.nationality],
-        ["Premier kart", pilotSheet.firstKart],
-        ["Taille", pilotSheet.height],
-        ["Poids", pilotSheet.weight],
+        ["Premier kart", sheet.firstKart],
+        ["Taille", sheet.height],
+        ["Poids", sheet.weight],
       ],
     },
     {
       id: "course",
-      label: "En course",
+      label: texts.tabRace,
       facts: [
         ["Numéro", `#${pilot.number}`],
         ["Catégorie", pilot.category],
         ["Équipe", pilot.team],
         ["Âge", `${pilot.age} ans`],
-        ["Premier mentor", pilotSheet.mentor],
+        ["Premier mentor", sheet.mentor],
       ],
     },
   ];
@@ -69,7 +69,7 @@ export function Pilot({ pilot }: { pilot: Site["pilot"] }) {
 
   return (
     <section ref={root} id="pilote" className={s.pilot} aria-labelledby="pilot-title">
-      <Lines as="h2" id="pilot-title" className={s.title} lines={["Le pilote"]} />
+      <Lines as="h2" id="pilot-title" className={s.title} lines={lines(texts.title)} />
       <p className={s.text}>
         {words.map((w, i) => (
           <span key={i} className={s.word}>{w} </span>

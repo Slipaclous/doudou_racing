@@ -1,4 +1,5 @@
 import type { Site } from "./schema";
+import { defaultQuotes, defaultTexts, lines } from "./texts";
 
 // Placeholder content: used when no database is configured, and as seed data.
 export const placeholderSite: Site = {
@@ -38,10 +39,10 @@ export const placeholderSite: Site = {
   ],
   // Sample content: replace in /admin ("L'aventure" and "La suite").
   events: [
-    { title: "Le rallye #105", type: "rallye", date: "2026-06-14", place: "Ardennes belges", guests: 60, text: "Une journée sur les routes des Ardennes avec les partenaires et leurs invités, arrivée au circuit et repas au paddock.", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=80" },
-    { title: "Journée partenaires", type: "partenaires", date: "2026-05-02", place: "Karting des Fagnes, Mariembourg", guests: 35, text: "Les partenaires prennent le volant : séances chronométrées, briefing avec Doudou et remise des prix.", image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1600&q=80" },
-    { title: "Dans les coulisses du paddock", type: "paddock", date: "2026-04-11", place: "Genk", guests: 12, text: "Accueil sous la tente #105, visite du stand, du camion et de la grille avant le départ.", image: "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=1600&q=80" },
-    { title: "Soirée clients", type: "clients", date: "2026-03-20", place: "Charleroi", guests: 80, text: "Les partenaires invitent leurs clients à une soirée autour du kart et de la saison à venir.", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80" },
+    { title: "Le rallye #105", type: "rallye", date: "2026-06-14", place: "Ardennes belges", guests: 60, text: "Une journée sur les routes des Ardennes avec les partenaires et leurs invités, arrivée au circuit et repas au paddock.", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=80", photos: ["https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=80", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=1600&q=80", "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=1600&q=80"] },
+    { title: "Journée partenaires", type: "partenaires", date: "2026-05-02", place: "Karting des Fagnes, Mariembourg", guests: 35, text: "Les partenaires prennent le volant : séances chronométrées, briefing avec Doudou et remise des prix.", image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1600&q=80", photos: ["https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1600&q=80", "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1600&q=80", "https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1600&q=80"] },
+    { title: "Dans les coulisses du paddock", type: "paddock", date: "2026-04-11", place: "Genk", guests: 12, text: "Accueil sous la tente #105, visite du stand, du camion et de la grille avant le départ.", image: "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=1600&q=80", photos: ["https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=1600&q=80", "https://images.unsplash.com/photo-1606577924006-27d39b132ae2?w=1600&q=80", "https://images.unsplash.com/photo-1600712242805-5f78671b24da?w=1600&q=80"] },
+    { title: "Soirée clients", type: "clients", date: "2026-03-20", place: "Charleroi", guests: 80, text: "Les partenaires invitent leurs clients à une soirée autour du kart et de la saison à venir.", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80", photos: ["https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80", "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80", "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80", "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&q=80"] },
   ],
   future: [
     { year: 2027, category: "X30 Junior", title: "Le podium européen", text: "Une saison complète en IAME Euro Series, avec l'objectif de monter sur le podium final." },
@@ -87,6 +88,8 @@ export const placeholderSite: Site = {
     { id: "rear", label: "Pare-chocs arrière", text: "Ce que voient les concurrents, tour après tour." },
   ],
   contactEmail: "partners@doudouracing.be",
+  quotes: defaultQuotes.map(({ text, ...q }) => ({ ...q, lines: lines(text) })),
+  texts: defaultTexts,
 };
 
 

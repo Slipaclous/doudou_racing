@@ -1,17 +1,20 @@
 "use client";
 
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Goal } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
 import { Roll } from "@/components/motion/Roll";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Future.module.css";
 
 /**
  * The seasons ahead, continuing the career timeline. A line draws itself down the section as you scroll,
  * a marker rides its tip, and each future year is revealed in dotted outline (not written yet) with its goal sliding in.
  */
-export function Future({ goals, number }: { goals: Goal[]; number: number }) {
+export function Future({ goals, number, texts }: { goals: Goal[]; number: number; texts: Texts["future"] }) {
+  const title = lines(texts.title);
+  const closing = lines(texts.closing);
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -45,8 +48,8 @@ export function Future({ goals, number }: { goals: Goal[]; number: number }) {
   return (
     <section ref={root} id="la-suite" className={s.future} aria-labelledby="future-title">
       <header className={s.head}>
-        <p className={`${s.kicker} mono`}>La suite</p>
-        <Lines as="h2" id="future-title" className={s.title} lines={["La route", "est encore longue"]} accent={1} />
+        <p className={`${s.kicker} mono`}>{texts.kicker}</p>
+        <Lines as="h2" id="future-title" className={s.title} lines={title} accent={title.length - 1} />
       </header>
 
       <div className={s.timeline}>
@@ -78,12 +81,16 @@ export function Future({ goals, number }: { goals: Goal[]; number: number }) {
 
       <div className={s.closing}>
         <p className={s.closingText}>
-          Cette suite,
-          <br />
-          <span>écrivons-la ensemble.</span>
+          {closing.slice(0, -1).map((l) => (
+            <Fragment key={l}>
+              {l}
+              <br />
+            </Fragment>
+          ))}
+          <span>{closing.at(-1)}</span>
         </p>
         <a href="#contact" className={s.cta}>
-          <Roll>{`Rejoindre l'équipe #${number}`}</Roll>
+          <Roll>{`${texts.cta} #${number}`}</Roll>
         </a>
       </div>
     </section>

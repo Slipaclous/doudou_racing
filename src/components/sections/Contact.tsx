@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { sendContact, type ContactState } from "@/actions/contact";
 import { Lines } from "@/components/motion/Lines";
 import { Roll } from "@/components/motion/Roll";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Contact.module.css";
 
 const initial: ContactState = { status: "idle" };
@@ -14,17 +15,17 @@ const fields = [
   { name: "email", label: "E-mail", type: "email", autoComplete: "email" },
 ] as const;
 
-export function Contact({ email }: { email: string }) {
+export function Contact({ email, texts }: { email: string; texts: Texts["contact"] }) {
   const [state, action, pending] = useActionState(sendContact, initial);
   const errors = state.status === "error" ? state.fieldErrors ?? {} : {};
 
   return (
     <section id="contact" className={s.contact} aria-labelledby="contact-title">
-      <Lines as="h2" id="contact-title" className={s.title} lines={["Prenez", "le départ", "avec nous"]} />
+      <Lines as="h2" id="contact-title" className={s.title} lines={lines(texts.title)} />
 
       {state.status === "success" ? (
         <p className={s.success} role="status">
-          Message reçu. On vous répond sous 48 heures.
+          {texts.success}
         </p>
       ) : (
         <form action={action} className={s.form} noValidate>
@@ -43,7 +44,7 @@ export function Contact({ email }: { email: string }) {
             </label>
           ))}
           <label className={`${s.field} ${s.full}`}>
-            <span className="mono">Votre projet</span>
+            <span className="mono">{texts.message}</span>
             <textarea name="message" rows={4} required aria-invalid={!!errors.message} className={s.input} />
             {errors.message && <span className={s.error}>{errors.message}</span>}
           </label>
@@ -51,7 +52,7 @@ export function Contact({ email }: { email: string }) {
 
           <div className={`${s.actions} ${s.full}`}>
             <button type="submit" className={s.submit} disabled={pending}>
-              {pending ? "Envoi…" : <Roll>Envoyer</Roll>}
+              {pending ? "Envoi…" : <Roll>{texts.submit}</Roll>}
             </button>
             {state.status === "error" && (
               <p className={s.error} role="alert">

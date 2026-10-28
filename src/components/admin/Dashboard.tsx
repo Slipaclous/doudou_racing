@@ -89,6 +89,11 @@ export async function Dashboard({ payload, user }: ServerProps) {
                 <Link href={editPath(section.edit)} className="doudou-btn doudou-btn--primary">
                   Modifier
                 </Link>
+                {section.texts && (
+                  <Link href={editPath({ kind: "global", slug: section.texts })} className="doudou-btn">
+                    Textes
+                  </Link>
+                )}
                 <a href={sitePath(section.anchor)} target="_blank" rel="noopener" className="doudou-btn">
                   Voir <span aria-hidden>↗</span>
                 </a>
@@ -101,6 +106,8 @@ export async function Dashboard({ payload, user }: ServerProps) {
       <nav className="doudou-more" aria-label="Autres réglages">
         <Link href="/admin/collections/media">Médias (photos et vidéos)</Link>
         <Link href="/admin/collections/partners">Partenaires</Link>
+        <Link href="/admin/globals/quotes">Citations</Link>
+        <Link href="/admin/globals/galleryTexts">Page Galerie</Link>
         <Link href="/admin/collections/users">Administrateurs</Link>
       </nav>
     </div>

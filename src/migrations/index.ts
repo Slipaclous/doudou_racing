@@ -9,6 +9,8 @@ import * as migration_20261016_142009_partner_area from './20261016_142009_partn
 import * as migration_20261016_143123_race_registrations from './20261016_143123_race_registrations';
 import * as migration_20261016_222817_partner_kart_zone from './20261016_222817_partner_kart_zone';
 import * as migration_20261019_143813_events_future from './20261019_143813_events_future';
+import * as migration_20261021_132550_events_gallery from './20261021_132550_events_gallery';
+import * as migration_20261028_143803_texts_by_section from './20261028_143803_texts_by_section';
 
 export const migrations = [
   {
@@ -64,6 +66,16 @@ export const migrations = [
   {
     up: migration_20261019_143813_events_future.up,
     down: migration_20261019_143813_events_future.down,
-    name: '20261019_143813_events_future'
+    name: '20261019_143813_events_future',
+  },
+  {
+    up: migration_20261021_132550_events_gallery.up,
+    down: migration_20261021_132550_events_gallery.down,
+    name: '20261021_132550_events_gallery',
+  },
+  {
+    up: migration_20261028_143803_texts_by_section.up,
+    down: migration_20261028_143803_texts_by_section.down,
+    name: '20261028_143803_texts_by_section'
   },
 ];

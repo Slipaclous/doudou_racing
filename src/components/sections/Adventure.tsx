@@ -2,28 +2,22 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { SiteEvent } from "@/content/schema";
 import { Roll } from "@/components/motion/Roll";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Adventure.module.css";
-
-// What the partner pass gives access to. Each privilege stamps the pass as it scrolls by.
-const perks = [
-  { word: "Vivre", stamp: "Paddock", text: "La saison au cœur de l'équipe : rallye, journées sur circuit, coulisses du paddock." },
-  { word: "Inviter", stamp: "Invités", text: "Vos clients et vos équipes à des moments qu'ils n'oublieront pas." },
-  { word: "Rencontrer", stamp: "Réseau", text: "Les autres entrepreneurs partenaires, pour faire grandir votre réseau." },
-  { word: "Briller", stamp: "Visibilité", text: "Votre marque sur le kart, la combinaison et le casque, sur les circuits d'Europe." },
-];
 
 // Barcode bars, fixed so server and client render the same thing.
 const BARS = [3, 1, 2, 1, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3, 1, 2];
 
 type Photo = { src: string; caption?: string };
 
-function buildPhotos(events: SiteEvent[], photos: string[]): Photo[] {
+function buildPhotos(events: SiteEvent[], photos: string[], count: number): Photo[] {
   const pool: Photo[] = [...events.map((e) => ({ src: e.image, caption: e.title })), ...photos.map((src) => ({ src }))];
   if (!pool.length) return [];
-  return perks.map((_, i) => pool[i % pool.length]);
+  return Array.from({ length: count }, (_, i) => pool[i % pool.length]);
 }
 
 /**
@@ -31,9 +25,24 @@ function buildPhotos(events: SiteEvent[], photos: string[]): Photo[] {
  * on large screens it stays beside the list while the four privileges scroll by. Each privilege opens its photo
  * and slams a stamp onto the pass. No pinning: everything follows the normal scroll.
  */
-export function Adventure({ events, photos, portrait, number }: { events: SiteEvent[]; photos: string[]; portrait: string; number: number }) {
+export function Adventure({
+  events,
+  photos,
+  portrait,
+  number,
+  texts,
+}: {
+  events: SiteEvent[];
+  photos: string[];
+  portrait: string;
+  number: number;
+  texts: Texts["adventure"];
+}) {
   const root = useRef<HTMLElement>(null);
-  const pics = buildPhotos(events, photos);
+  // What the partner pass gives access to. Each privilege stamps the pass as it scrolls by.
+  const { perks } = texts;
+  const title = lines(texts.title);
+  const pics = buildPhotos(events, photos, perks.length);
 
   useGSAP(
     () => {
@@ -128,9 +137,9 @@ export function Adventure({ events, photos, portrait, number }: { events: SiteEv
   return (
     <section ref={root} id="aventure" className={s.adventure} aria-labelledby="adventure-title">
       <header className={s.head}>
-        <p className={`${s.kicker} mono`}>Bien plus qu&apos;un logo</p>
+        <p className={`${s.kicker} mono`}>{texts.kicker}</p>
         <h2 id="adventure-title" className={s.title}>
-          Votre pass <span>pour la saison</span>
+          {title.slice(0, -1).join(" ")} <span>{title.at(-1)}</span>
         </h2>
       </header>
 
@@ -143,13 +152,13 @@ export function Adventure({ events, photos, portrait, number }: { events: SiteEv
             <div className={s.pass}>
               <div className={s.passTop}>
                 <span className={s.passNum}>#{number}</span>
-                <span className={`${s.passSeason} mono`}>Saison 2027</span>
+                <span className={`${s.passSeason} mono`}>{texts.passSeason}</span>
               </div>
               <div className={s.passPhoto}>
                 <Image src={portrait} alt="" fill sizes="320px" unoptimized={portrait.endsWith(".svg")} />
               </div>
-              <p className={s.passRole}>Partenaire</p>
-              <p className={`${s.passName} mono`}>Votre entreprise</p>
+              <p className={s.passRole}>{texts.passRole}</p>
+              <p className={`${s.passName} mono`}>{texts.passName}</p>
               <div className={s.stamps}>
                 {perks.map((p) => (
                   <span key={p.stamp} className={`${s.stamp} mono`}>
@@ -163,7 +172,7 @@ export function Adventure({ events, photos, portrait, number }: { events: SiteEv
                   <span key={i} style={{ flexGrow: w }} />
                 ))}
               </div>
-              <p className={`${s.passFoot} mono`}>Accès paddock · All areas</p>
+              <p className={`${s.passFoot} mono`}>{texts.passFoot}</p>
             </div>
           </div>
         </div>
@@ -186,13 +195,16 @@ export function Adventure({ events, photos, portrait, number }: { events: SiteEv
       </div>
 
       <div className={s.closing}>
-        <p className={s.closingText}>Votre pass vous attend.</p>
+        <p className={s.closingText}>{texts.closing}</p>
         <div className={s.actions}>
           <a href="#contact" className={s.cta}>
-            <Roll>Devenir partenaire</Roll>
+            <Roll>{texts.cta}</Roll>
           </a>
+          <Link href="/galerie" className={`${s.link} mono`}>
+            <Roll>{texts.galleryLink}</Roll>
+          </Link>
           <a href="/espace-partenaires/courses" className={`${s.link} mono`}>
-            <Roll>Déjà partenaire ? Les prochains rendez-vous</Roll>
+            <Roll>{texts.memberLink}</Roll>
           </a>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useRef, useSyncExternalStore } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Race } from "@/content/schema";
 import { Lines } from "@/components/motion/Lines";
+import { lines, type Texts } from "@/content/texts";
 import s from "./Races.module.css";
 
 const DAY = 86_400_000;
@@ -15,7 +16,7 @@ function parse(date: string) {
   return new Date(`${date}T00:00:00Z`);
 }
 
-export function Races({ races }: { races: Race[] }) {
+export function Races({ races, texts }: { races: Race[]; texts: Texts["races"] }) {
   const root = useRef<HTMLElement>(null);
   // The page is static: "today" must come from the visitor's clock, not the build (null on the server).
   const daysToNext = useSyncExternalStore(
@@ -54,11 +55,11 @@ export function Races({ races }: { races: Race[] }) {
   return (
     <section ref={root} id="courses" className={s.races} aria-labelledby="races-title">
       <header className={s.head}>
-        <Lines as="h2" id="races-title" className={s.title} lines={["Prochaines", "courses"]} />
+        <Lines as="h2" id="races-title" className={s.title} lines={lines(texts.title)} />
         {daysToNext !== null && (
           <p className={s.countdown}>
             <span className={s.days}>J-{daysToNext}</span>
-            <span className="mono">avant le prochain départ</span>
+            <span className="mono">{texts.countdown}</span>
           </p>
         )}
       </header>

@@ -47,5 +47,13 @@ export const Events: CollectionConfig = {
     },
     { name: "text", label: "Texte", type: "textarea", required: true, admin: { rows: 3, description: "Deux ou trois phrases : ce qu'on y a vécu." } },
     { name: "image", label: "Photo principale", type: "upload", relationTo: "media" },
+    {
+      name: "gallery",
+      label: "Galerie",
+      type: "upload",
+      relationTo: "media",
+      hasMany: true,
+      admin: { description: "Toutes les photos de l'événement, affichées sur la page Galerie (la photo principale y est déjà)." },
+    },
   ],
 };
