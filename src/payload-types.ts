@@ -110,7 +110,7 @@ export interface Config {
     future: Future;
     quotes: Quote;
     stats: Stat;
-    racesTexts: RacesText;
+    upcomingTexts: UpcomingText;
     adventureTexts: AdventureText;
     galleryTexts: GalleryText;
     pitch: Pitch;
@@ -123,7 +123,7 @@ export interface Config {
     future: FutureSelect<false> | FutureSelect<true>;
     quotes: QuotesSelect<false> | QuotesSelect<true>;
     stats: StatsSelect<false> | StatsSelect<true>;
-    racesTexts: RacesTextsSelect<false> | RacesTextsSelect<true>;
+    upcomingTexts: UpcomingTextsSelect<false> | UpcomingTextsSelect<true>;
     adventureTexts: AdventureTextsSelect<false> | AdventureTextsSelect<true>;
     galleryTexts: GalleryTextsSelect<false> | GalleryTextsSelect<true>;
     pitch: PitchSelect<false> | PitchSelect<true>;
@@ -837,9 +837,9 @@ export interface Stat {
  * Les courses se gèrent dans « Courses ».
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "racesTexts".
+ * via the `definition` "upcomingTexts".
  */
-export interface RacesText {
+export interface UpcomingText {
   id: number;
   /**
    * Une ligne par retour à la ligne.
@@ -1151,9 +1151,9 @@ export interface StatsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "racesTexts_select".
+ * via the `definition` "upcomingTexts_select".
  */
-export interface RacesTextsSelect<T extends boolean = true> {
+export interface UpcomingTextsSelect<T extends boolean = true> {
   title?: T;
   countdown?: T;
   updatedAt?: T;

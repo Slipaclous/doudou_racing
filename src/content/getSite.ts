@@ -66,7 +66,7 @@ export async function getSite(): Promise<Site> {
   const payload = await getPayload({ config });
   const today = new Date(new Date().toISOString().slice(0, 10)).toISOString();
 
-  const [pilot, stats, pitch, zones, settings, seasons, races, partners, events, future, career, racesTexts, adventure, gallery, quotes] = await Promise.all([
+  const [pilot, stats, pitch, zones, settings, seasons, races, partners, events, future, career, upcomingTexts, adventure, gallery, quotes] = await Promise.all([
     payload.findGlobal({ slug: "pilot", depth: 1 }),
     payload.findGlobal({ slug: "stats" }),
     payload.findGlobal({ slug: "pitch", depth: 1 }),
@@ -78,7 +78,7 @@ export async function getSite(): Promise<Site> {
     payload.find({ collection: "events", sort: "-date", limit: 8, depth: 1, pagination: false }),
     payload.findGlobal({ slug: "future" }),
     payload.findGlobal({ slug: "careerTexts" }),
-    payload.findGlobal({ slug: "racesTexts" }),
+    payload.findGlobal({ slug: "upcomingTexts" }),
     payload.findGlobal({ slug: "adventureTexts" }),
     payload.findGlobal({ slug: "galleryTexts" }),
     payload.findGlobal({ slug: "quotes" }),
@@ -145,7 +145,7 @@ export async function getSite(): Promise<Site> {
       career: withDefaults(d.career, career),
       future: withDefaults(d.future, future.texts),
       stats: withDefaults(d.stats, stats.texts),
-      races: withDefaults(d.races, racesTexts),
+      races: withDefaults(d.races, upcomingTexts),
       adventure: withDefaults(d.adventure, { ...adventure, ...adventure.pass }),
       partners: withDefaults(d.partners, zones.texts),
       contact: withDefaults(d.contact, settings.texts),

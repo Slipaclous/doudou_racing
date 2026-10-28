@@ -11,6 +11,7 @@ import * as migration_20261016_222817_partner_kart_zone from './20261016_222817_
 import * as migration_20261019_143813_events_future from './20261019_143813_events_future';
 import * as migration_20261021_132550_events_gallery from './20261021_132550_events_gallery';
 import * as migration_20261028_143803_texts_by_section from './20261028_143803_texts_by_section';
+import * as migration_20261028_150000_rename_races_texts from './20261028_150000_rename_races_texts';
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20261028_143803_texts_by_section.up,
     down: migration_20261028_143803_texts_by_section.down,
     name: '20261028_143803_texts_by_section'
+  },
+  {
+    up: migration_20261028_150000_rename_races_texts.up,
+    down: migration_20261028_150000_rename_races_texts.down,
+    name: '20261028_150000_rename_races_texts',
   },
 ];

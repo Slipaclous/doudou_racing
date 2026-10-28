@@ -260,7 +260,7 @@ export const CareerTextsGlobal: GlobalConfig = {
 };
 
 export const RacesTextsGlobal: GlobalConfig = {
-  slug: "racesTexts",
+  slug: "upcomingTexts",
   access: adminOnlyGlobal,
   label: "Prochaines courses (textes)",
   admin: { ...at("courses"), group: "Le site", description: "Les courses se gèrent dans « Courses »." },
