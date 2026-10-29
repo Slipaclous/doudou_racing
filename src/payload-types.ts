@@ -324,7 +324,7 @@ export interface Partner {
   createdAt: string;
 }
 /**
- * Les moments vécus avec les partenaires. Les plus récents s'affichent en premier sur le site.
+ * Les moments vécus avec les partenaires. Sur l'accueil, les photos principales des 4 plus récents illustrent les avantages du pass ; la page Galerie montre tous les événements qui ont au moins une photo.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
@@ -702,16 +702,43 @@ export interface Pilot {
    */
   bio: string;
   sheet?: {
+    /**
+     * 24 caractères au maximum.
+     */
     birth?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     birthplace?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     firstKart?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     height?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     weight?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     mentor?: string | null;
   };
   texts?: {
+    /**
+     * 24 caractères au maximum.
+     */
     title?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     tabInfo?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     tabRace?: string | null;
   };
   updatedAt?: string | null;
@@ -726,13 +753,16 @@ export interface Pilot {
 export interface CareerText {
   id: number;
   /**
-   * Une ligne par retour à la ligne.
+   * Une ligne par retour à la ligne. 3 lignes, 20 caractères par ligne au maximum.
    */
   title?: string | null;
   /**
-   * Affiché après l'année de la première saison : « 2017 → aujourd'hui ».
+   * Affiché après l'année de la première saison : « 2017 → aujourd'hui ». 24 caractères au maximum.
    */
   since?: string | null;
+  /**
+   * 24 caractères au maximum.
+   */
   hint?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -756,17 +786,20 @@ export interface Future {
       }[]
     | null;
   texts?: {
+    /**
+     * 24 caractères au maximum.
+     */
     kicker?: string | null;
     /**
-     * Une ligne par retour à la ligne.
+     * Une ligne par retour à la ligne. 3 lignes, 26 caractères par ligne au maximum.
      */
     title?: string | null;
     /**
-     * La dernière ligne est mise en couleur.
+     * La dernière ligne est mise en couleur. 3 lignes, 32 caractères par ligne au maximum.
      */
     closing?: string | null;
     /**
-     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ».
+     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ». 27 caractères au maximum.
      */
     cta?: string | null;
   };
@@ -784,7 +817,7 @@ export interface Quote {
   items?:
     | {
         /**
-         * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+         * Une ligne par retour à la ligne ; la dernière est mise en couleur. 5 lignes, 28 caractères par ligne au maximum.
          */
         text: string;
         author: string;
@@ -819,6 +852,9 @@ export interface Stat {
       }[]
     | null;
   texts?: {
+    /**
+     * 24 caractères au maximum.
+     */
     title?: string | null;
   };
   updatedAt?: string | null;
@@ -833,9 +869,12 @@ export interface Stat {
 export interface UpcomingText {
   id: number;
   /**
-   * Une ligne par retour à la ligne.
+   * Une ligne par retour à la ligne. 3 lignes, 20 caractères par ligne au maximum.
    */
   title?: string | null;
+  /**
+   * 36 caractères au maximum.
+   */
   countdown?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -848,28 +887,64 @@ export interface UpcomingText {
  */
 export interface AdventureText {
   id: number;
+  /**
+   * 30 caractères au maximum.
+   */
   kicker?: string | null;
   /**
-   * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+   * Une ligne par retour à la ligne ; la dernière est mise en couleur. 3 lignes, 21 caractères par ligne au maximum.
    */
   title?: string | null;
   pass?: {
+    /**
+     * 24 caractères au maximum.
+     */
     passSeason?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     passRole?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     passName?: string | null;
+    /**
+     * 38 caractères au maximum.
+     */
     passFoot?: string | null;
   };
   perks?:
     | {
+        /**
+         * 14 caractères au maximum.
+         */
         word: string;
+        /**
+         * 12 caractères au maximum : il tient sur le tampon.
+         */
         stamp: string;
+        /**
+         * 160 caractères au maximum.
+         */
         text: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * 35 caractères au maximum.
+   */
   closing?: string | null;
+  /**
+   * 27 caractères au maximum.
+   */
   cta?: string | null;
+  /**
+   * 26 caractères au maximum.
+   */
   galleryLink?: string | null;
+  /**
+   * 65 caractères au maximum.
+   */
   memberLink?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -882,18 +957,33 @@ export interface AdventureText {
  */
 export interface GalleryText {
   id: number;
+  /**
+   * 24 caractères au maximum.
+   */
   kicker?: string | null;
+  /**
+   * 24 caractères au maximum.
+   */
   back?: string | null;
   /**
-   * Une ligne par retour à la ligne ; la dernière est mise en couleur.
+   * Une ligne par retour à la ligne ; la dernière est mise en couleur. 3 lignes, 30 caractères par ligne au maximum.
    */
   title?: string | null;
+  /**
+   * 143 caractères au maximum.
+   */
   lead?: string | null;
+  /**
+   * 57 caractères au maximum.
+   */
   empty?: string | null;
   /**
-   * La dernière ligne est mise en couleur.
+   * La dernière ligne est mise en couleur. 3 lignes, 33 caractères par ligne au maximum.
    */
   closing?: string | null;
+  /**
+   * 27 caractères au maximum.
+   */
   cta?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -936,14 +1026,20 @@ export interface Zone {
     | null;
   texts?: {
     /**
-     * Une ligne par retour à la ligne.
+     * Une ligne par retour à la ligne. 3 lignes, 20 caractères par ligne au maximum.
      */
     title?: string | null;
+    /**
+     * 33 caractères au maximum.
+     */
     available?: string | null;
     /**
-     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ».
+     * Suivi du numéro du pilote : « Rejoindre l'équipe #105 ». 27 caractères au maximum.
      */
     cta?: string | null;
+    /**
+     * 29 caractères au maximum.
+     */
     roster?: string | null;
   };
   updatedAt?: string | null;
@@ -958,32 +1054,81 @@ export interface Setting {
   contactEmail: string;
   texts?: {
     /**
-     * Une ligne par retour à la ligne.
+     * Une ligne par retour à la ligne. 4 lignes, 20 caractères par ligne au maximum.
      */
     title?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     message?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     submit?: string | null;
+    /**
+     * 66 caractères au maximum.
+     */
     success?: string | null;
   };
   menu?: {
+    /**
+     * 24 caractères au maximum.
+     */
     pilote?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     parcours?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     suite?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     chiffres?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     courses?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     aventure?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     galerie?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     partenaires?: string | null;
+    /**
+     * 24 caractères au maximum.
+     */
     contact?: string | null;
+    /**
+     * 27 caractères au maximum.
+     */
     cta?: string | null;
+    /**
+     * 27 caractères au maximum.
+     */
     member?: string | null;
   };
   seo?: {
     /**
-     * Laissez vide pour « Prénom « Surnom » #numéro — Pilote de karting », tiré de la fiche Pilote.
+     * Laissez vide pour « Prénom « Surnom » #numéro — Pilote de karting », tiré de la fiche Pilote. 72 caractères au maximum.
      */
     title?: string | null;
+    /**
+     * 141 caractères au maximum.
+     */
     description?: string | null;
+    /**
+     * L'aperçu affiché sur WhatsApp, LinkedIn, Facebook… Format paysage, idéalement 1200 × 630 px. Vide : la photo d'ouverture.
+     */
+    image?: (number | null) | Media;
   };
   theme?: {
     background?: string | null;
@@ -1253,6 +1398,7 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
+        image?: T;
       };
   theme?:
     | T

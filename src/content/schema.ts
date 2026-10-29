@@ -100,6 +100,8 @@ export const siteSchema = z.object({
   zones: z.array(zoneSchema),
   contactEmail: z.string().email(),
   quotes: z.array(quoteSchema),
+  // Image descriptions by URL (Médias > "Description").
+  alts: z.record(z.string(), z.string()),
   // Typed by its defaults (texts.ts): every key is always filled.
   texts: z.custom<Texts>(),
 });

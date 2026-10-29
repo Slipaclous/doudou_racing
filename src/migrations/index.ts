@@ -12,6 +12,7 @@ import * as migration_20261019_143813_events_future from './20261019_143813_even
 import * as migration_20261021_132550_events_gallery from './20261021_132550_events_gallery';
 import * as migration_20261028_143803_texts_by_section from './20261028_143803_texts_by_section';
 import * as migration_20261028_150000_rename_races_texts from './20261028_150000_rename_races_texts';
+import * as migration_20261028_153250_seo_share_image from './20261028_153250_seo_share_image';
 
 export const migrations = [
   {
@@ -77,11 +78,16 @@ export const migrations = [
   {
     up: migration_20261028_143803_texts_by_section.up,
     down: migration_20261028_143803_texts_by_section.down,
-    name: '20261028_143803_texts_by_section'
+    name: '20261028_143803_texts_by_section',
   },
   {
     up: migration_20261028_150000_rename_races_texts.up,
     down: migration_20261028_150000_rename_races_texts.down,
     name: '20261028_150000_rename_races_texts',
+  },
+  {
+    up: migration_20261028_153250_seo_share_image.up,
+    down: migration_20261028_153250_seo_share_image.down,
+    name: '20261028_153250_seo_share_image'
   },
 ];

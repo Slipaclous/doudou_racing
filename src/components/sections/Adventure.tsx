@@ -31,12 +31,14 @@ export function Adventure({
   portrait,
   number,
   texts,
+  alts,
 }: {
   events: SiteEvent[];
   photos: string[];
   portrait: string;
   number: number;
   texts: Texts["adventure"];
+  alts: Record<string, string>;
 }) {
   const root = useRef<HTMLElement>(null);
   // What the partner pass gives access to. Each privilege stamps the pass as it scrolls by.
@@ -186,7 +188,7 @@ export function Adventure({
               </span>
               <p className={s.perkText}>{p.text}</p>
               <div className={s.photo}>
-                <Image src={pics[i].src} alt="" fill sizes="(min-width: 900px) 40vw, 90vw" unoptimized={pics[i].src.endsWith(".svg")} />
+                <Image src={pics[i].src} alt={alts[pics[i].src] ?? ""} fill sizes="(min-width: 900px) 40vw, 90vw" unoptimized={pics[i].src.endsWith(".svg")} />
                 {pics[i].caption && <span className={`${s.caption} mono`}>{pics[i].caption}</span>}
               </div>
             </li>

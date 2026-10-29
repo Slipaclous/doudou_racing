@@ -25,10 +25,10 @@ export default async function Home() {
       <Intro number={pilot.number} />
       <Nav number={pilot.number} texts={texts.menu} />
       <main id="top">
-        <Hero pilot={pilot} />
+        <Hero pilot={pilot} alts={site.alts} />
         <Pilot pilot={pilot} texts={texts.pilot} sheet={texts.sheet} />
         <Banner items={[`#${pilot.number}`, `${pilot.firstName} « ${pilot.nickname} »`, pilot.category, pilot.team, pilot.nationality]} />
-        <Career seasons={site.seasons} texts={texts.career} />
+        <Career seasons={site.seasons} texts={texts.career} alts={site.alts} />
         <Future goals={site.future} number={pilot.number} texts={texts.future} />
         {quotes[0] && <Quote quote={quotes[0]} />}
         <Stats stats={site.stats} texts={texts.stats} />
@@ -40,6 +40,7 @@ export default async function Home() {
           portrait={pilot.heroPoster}
           number={pilot.number}
           texts={texts.adventure}
+          alts={site.alts}
         />
         <Partners partners={site.partners} zones={site.zones} number={pilot.number} texts={texts.partners} />
         <Contact email={site.contactEmail} texts={texts.contact} />

@@ -37,6 +37,24 @@ export const navSections: { title: string; links: { label: string; href: string 
   { title: "Contact et réglages", links: [{ label: "Contact, menu, Google, couleurs", href: "/admin/globals/settings" }] },
 ];
 
+/** Where each back-office page shows on the site: opens the live preview at the right section. */
+export const previewPaths: Record<string, string> = {
+  pilot: "/",
+  seasons: "/#parcours",
+  careerTexts: "/#parcours",
+  future: "/#la-suite",
+  quotes: "/#chiffres",
+  stats: "/#chiffres",
+  races: "/#courses",
+  upcomingTexts: "/#courses",
+  events: "/#aventure",
+  adventureTexts: "/#aventure",
+  galleryTexts: "/galerie",
+  partners: "/#partenaires",
+  zones: "/#partenaires",
+  settings: "/#contact",
+};
+
 export const sitePath = (anchor: string) => (anchor === "top" ? "/" : `/#${anchor}`);
 
 export const editPath = ({ kind, slug }: SiteSection["edit"]) =>

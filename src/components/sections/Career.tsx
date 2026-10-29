@@ -11,7 +11,7 @@ import s from "./Career.module.css";
 // Horizontal pinned scroll only where a whole season fits on screen; keep in sync with Career.module.css.
 const HORIZONTAL = "((min-width: 1024px) and (min-height: 600px))";
 
-export function Career({ seasons, texts }: { seasons: Season[]; texts: Texts["career"] }) {
+export function Career({ seasons, texts, alts }: { seasons: Season[]; texts: Texts["career"]; alts: Record<string, string> }) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -128,8 +128,8 @@ export function Career({ seasons, texts }: { seasons: Season[]; texts: Texts["ca
             <div className={s.frame}>
               <Image
                 src={season.image}
-                alt=""
-fill
+                alt={alts[season.image] ?? ""}
+                fill
                 sizes="(min-width: 1024px) 45vw, (min-width: 600px) 50vw, 100vw"
                 unoptimized={season.image.endsWith(".svg")}
               />

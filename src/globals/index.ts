@@ -3,7 +3,7 @@ import { revalidateSite } from "@/hooks/revalidateSite";
 import { previewAt } from "@/admin/sections";
 import { adminOnlyGlobal } from "@/access";
 import { HEX, themeColors } from "@/content/theme";
-import { defaultQuotes, defaultTexts as d, textFields } from "@/content/texts";
+import { checkWording, defaultQuotes, defaultTexts as d, textFields } from "@/content/texts";
 
 const hooks = { afterChange: [revalidateSite] };
 const at = (anchor: string) => ({ preview: previewAt(anchor) });
@@ -355,11 +355,11 @@ export const AdventureTextsGlobal: GlobalConfig = {
                 {
                   type: "row",
                   fields: [
-                    { name: "word", label: "Verbe", type: "text", required: true, admin: { placeholder: "Vivre" } },
-                    { name: "stamp", label: "Tampon sur le pass", type: "text", required: true, admin: { placeholder: "Paddock" } },
+                    { name: "word", label: "Verbe", type: "text", required: true, maxLength: 14, admin: { placeholder: "Vivre", description: "14 caractères au maximum." } },
+                    { name: "stamp", label: "Tampon sur le pass", type: "text", required: true, maxLength: 12, admin: { placeholder: "Paddock", description: "12 caractères au maximum : il tient sur le tampon." } },
                   ],
                 },
-                { name: "text", label: "Texte", type: "textarea", required: true, admin: { rows: 2 } },
+                { name: "text", label: "Texte", type: "textarea", required: true, maxLength: 160, admin: { rows: 2, description: "160 caractères au maximum." } },
               ],
             },
           ],
@@ -419,7 +419,15 @@ export const QuotesGlobal: GlobalConfig = {
       defaultValue: defaultQuotes,
       admin: { initCollapsed: true, components: { RowLabel: "/components/admin/RowLabel#QuoteRowLabel" } },
       fields: [
-        { name: "text", label: "Citation", type: "textarea", required: true, admin: { rows: 4, description: "Une ligne par retour à la ligne ; la dernière est mise en couleur." } },
+        {
+          name: "text",
+          label: "Citation",
+          type: "textarea",
+          required: true,
+          validate: (value: unknown) =>
+            typeof value === "string" && value.trim() ? checkWording(value, { maxLength: 160, maxLines: 5, maxLine: 28 }) : "La citation est obligatoire.",
+          admin: { rows: 4, description: "Une ligne par retour à la ligne ; la dernière est mise en couleur. 5 lignes, 28 caractères par ligne au maximum." },
+        },
         {
           type: "row",
           fields: [
@@ -488,11 +496,20 @@ export const SettingsGlobal: GlobalConfig = {
               name: "seo",
               label: false,
               type: "group",
-              fields: textFields(
-                d.seo,
-                { title: "Titre du site", description: "Description" },
-                { title: "Laissez vide pour « Prénom « Surnom » #numéro — Pilote de karting », tiré de la fiche Pilote." },
-              ),
+              fields: [
+                ...textFields(
+                  d.seo,
+                  { title: "Titre du site", description: "Description" },
+                  { title: "Laissez vide pour « Prénom « Surnom » #numéro — Pilote de karting », tiré de la fiche Pilote." },
+                ),
+                {
+                  name: "image",
+                  label: "Image de partage",
+                  type: "upload",
+                  relationTo: "media",
+                  admin: { description: "L'aperçu affiché sur WhatsApp, LinkedIn, Facebook… Format paysage, idéalement 1200 × 630 px. Vide : la photo d'ouverture." },
+                },
+              ],
             },
           ],
         },

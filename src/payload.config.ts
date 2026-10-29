@@ -28,6 +28,7 @@ import {
   QuotesGlobal,
 } from "./globals";
 import { Events } from "./collections/Events";
+import { previewPaths } from "./admin/sections";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -41,6 +42,17 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: " — #105 Admin" },
+    // Site beside the form, opened at the section being edited; it reloads its content on each save.
+    livePreview: {
+      url: ({ collectionConfig, globalConfig }) => previewPaths[collectionConfig?.slug ?? globalConfig?.slug ?? ""] ?? "/",
+      collections: ["seasons", "races", "events", "partners"],
+      globals: ["pilot", "careerTexts", "future", "quotes", "stats", "upcomingTexts", "adventureTexts", "galleryTexts", "zones", "settings"],
+      breakpoints: [
+        { label: "Mobile", name: "mobile", width: 390, height: 844 },
+        { label: "Tablette", name: "tablet", width: 820, height: 1180 },
+        { label: "Ordinateur", name: "desktop", width: 1440, height: 900 },
+      ],
+    },
     theme: "light",
     components: {
       graphics: {

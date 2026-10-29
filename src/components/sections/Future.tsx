@@ -81,8 +81,8 @@ export function Future({ goals, number, texts }: { goals: Goal[]; number: number
 
       <div className={s.closing}>
         <p className={s.closingText}>
-          {closing.slice(0, -1).map((l) => (
-            <Fragment key={l}>
+          {closing.slice(0, -1).map((l, i) => (
+            <Fragment key={i}>
               {l}
               <br />
             </Fragment>

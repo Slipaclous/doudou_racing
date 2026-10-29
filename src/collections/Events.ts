@@ -14,7 +14,8 @@ export const Events: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["date", "title", "type", "place"],
     group: false,
-    description: "Les moments vécus avec les partenaires. Les plus récents s'affichent en premier sur le site.",
+    description:
+      "Les moments vécus avec les partenaires. Sur l'accueil, les photos principales des 4 plus récents illustrent les avantages du pass ; la page Galerie montre tous les événements qui ont au moins une photo.",
   },
   hooks: revalidateHooks,
   fields: [

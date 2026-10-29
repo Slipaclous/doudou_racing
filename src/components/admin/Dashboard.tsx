@@ -12,7 +12,7 @@ const dateFmt = new Intl.DateTimeFormat("fr-BE", { day: "numeric", month: "long"
 export async function Dashboard({ payload, user }: ServerProps) {
   const today = new Date(new Date().toISOString().slice(0, 10)).toISOString();
 
-  const [pilot, stats, zones, settings, seasons, seasonsNoPhoto, races, partners, future, events] = await Promise.all([
+  const [pilot, stats, zones, settings, seasons, seasonsNoPhoto, races, partners, future, events, eventsNoPhoto, adventure] = await Promise.all([
     payload.findGlobal({ slug: "pilot", depth: 0 }),
     payload.findGlobal({ slug: "stats" }),
     payload.findGlobal({ slug: "zones" }),
@@ -23,7 +23,13 @@ export async function Dashboard({ payload, user }: ServerProps) {
     payload.count({ collection: "partners" }),
     payload.findGlobal({ slug: "future" }),
     payload.count({ collection: "events" }),
+    payload.count({ collection: "events", where: { and: [{ image: { exists: false } }, { gallery: { exists: false } }] } }),
+    payload.findGlobal({ slug: "adventureTexts", depth: 0 }),
   ]);
+
+  // The pass shows a season ("Saison 2027"): flag it once that year is over.
+  const passYear = Number(adventure.pass?.passSeason?.match(/\d{4}/)?.[0]);
+  const passOutdated = passYear > 0 && passYear < new Date().getFullYear();
 
   const next = races.docs[0];
   const daysToNext = next ? daysUntil(next.date) : null;
@@ -35,7 +41,16 @@ export async function Dashboard({ payload, user }: ServerProps) {
     { text: plural(future.items?.length ?? 0, "étape", "étapes"), todo: future.items?.length ? undefined : "Objectifs à renseigner" },
     { text: plural(stats.items?.length ?? 0, "chiffre", "chiffres") },
     { text: next ? `Prochaine : ${next.name}` : "Aucune course à venir", todo: next ? undefined : "Ajouter une course" },
-    { text: plural(events.totalDocs, "événement", "événements"), todo: events.totalDocs ? undefined : "Ajouter un événement" },
+    {
+      text: plural(events.totalDocs, "événement", "événements"),
+      todo: !events.totalDocs
+        ? "Ajouter un événement"
+        : passOutdated
+          ? `Saison du pass (${passYear}) à mettre à jour`
+          : eventsNoPhoto.totalDocs
+            ? `${plural(eventsNoPhoto.totalDocs, "événement", "événements")} sans photo`
+            : undefined,
+    },
     { text: `${plural(zones.items?.length ?? 0, "zone", "zones")} · ${plural(partners.totalDocs, "partenaire", "partenaires")}` },
     { text: settings.contactEmail ?? "—", todo: settings.contactEmail ? undefined : "E-mail à renseigner" },
   ];

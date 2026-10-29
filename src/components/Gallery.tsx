@@ -27,7 +27,7 @@ type Shot = { src: string; event: SiteEvent; index: number };
  * /galerie: every partner event with its photos. Tiles open from behind a mask as they scroll in;
  * a click shows the photo full screen, arrows and Esc to browse and close.
  */
-export function Gallery({ events, number, texts }: { events: SiteEvent[]; number: number; texts: Texts["gallery"] }) {
+export function Gallery({ events, number, texts, alts }: { events: SiteEvent[]; number: number; texts: Texts["gallery"]; alts: Record<string, string> }) {
   const title = lines(texts.title);
   const closing = lines(texts.closing);
   const root = useRef<HTMLElement>(null);
@@ -102,8 +102,8 @@ export function Gallery({ events, number, texts }: { events: SiteEvent[]; number
       {events.length === 0 ? (
         <p className={s.empty}>{texts.empty}</p>
       ) : (
-        events.map((event) => (
-          <section key={`${event.date}-${event.title}`} className={s.event} aria-labelledby={`ev-${event.date}`}>
+        events.map((event, n) => (
+          <section key={`${event.date}-${event.title}`} className={s.event} aria-labelledby={`ev-${n}`}>
             <div className={s.eventHead}>
               <p className={`${s.meta} mono`}>
                 <span className={s.type}>{typeLabel[event.type]}</span>
@@ -111,7 +111,7 @@ export function Gallery({ events, number, texts }: { events: SiteEvent[]; number
                 {event.place && <> · {event.place}</>}
                 {event.guests ? <> · {event.guests} invités</> : null}
               </p>
-              <h2 id={`ev-${event.date}`} className={s.eventTitle}>
+              <h2 id={`ev-${n}`} className={s.eventTitle}>
                 {event.title}
               </h2>
               <p className={s.eventText}>{event.text}</p>
@@ -121,7 +121,7 @@ export function Gallery({ events, number, texts }: { events: SiteEvent[]; number
                 .filter((x) => x.event === event)
                 .map((shot, i) => (
                   <li key={shot.src + i} className={`${s.tile} ${shapes[i % shapes.length] ? s[shapes[i % shapes.length]] : ""}`}>
-                    <button type="button" className={s.open} onClick={() => setOpen(shot.index)} aria-label={`Agrandir la photo ${i + 1} de « ${event.title} »`}>
+                    <button type="button" className={s.open} onClick={() => setOpen(shot.index)} aria-label={`Agrandir la photo ${i + 1} de « ${event.title} »${alts[shot.src] ? ` : ${alts[shot.src]}` : ""}`}>
                       <Image src={shot.src} alt="" fill sizes="(min-width: 900px) 33vw, 50vw" unoptimized={shot.src.endsWith(".svg")} />
                     </button>
                   </li>
@@ -143,7 +143,7 @@ export function Gallery({ events, number, texts }: { events: SiteEvent[]; number
       {current && (
         <div className={s.viewer} role="dialog" aria-modal="true" aria-label={`Photo de « ${current.event.title} »`} onClick={close}>
           <div className={s.viewerImg} onClick={(e) => e.stopPropagation()}>
-            <Image key={current.src} src={current.src} alt="" fill sizes="100vw" unoptimized={current.src.endsWith(".svg")} />
+            <Image key={current.src} src={current.src} alt={alts[current.src] ?? ""} fill sizes="100vw" unoptimized={current.src.endsWith(".svg")} />
           </div>
           <p className={`${s.viewerCaption} mono`}>
             {current.event.title} · {open! + 1} / {shots.length}

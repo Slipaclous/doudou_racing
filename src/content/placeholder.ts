@@ -90,6 +90,7 @@ export const placeholderSite: Site = {
   contactEmail: "partners@doudouracing.be",
   quotes: defaultQuotes.map(({ text, ...q }) => ({ ...q, lines: lines(text) })),
   texts: defaultTexts,
+  alts: {},
 };
 
 

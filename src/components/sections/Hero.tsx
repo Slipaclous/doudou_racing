@@ -6,7 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import type { Site } from "@/content/schema";
 import s from "./Hero.module.css";
 
-export function Hero({ pilot }: { pilot: Site["pilot"] }) {
+export function Hero({ pilot, alts }: { pilot: Site["pilot"]; alts: Record<string, string> }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -43,7 +43,7 @@ export function Hero({ pilot }: { pilot: Site["pilot"] }) {
         {pilot.heroVideo ? (
           <video className={s.media} src={pilot.heroVideo} poster={pilot.heroPoster} preload="metadata" autoPlay muted loop playsInline />
         ) : (
-          <Image className={s.media} src={pilot.heroPoster} alt="" fill priority sizes="100vw" />
+          <Image className={s.media} src={pilot.heroPoster} alt={alts[pilot.heroPoster] ?? ""} fill priority sizes="100vw" />
         )}
       </div>
 

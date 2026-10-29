@@ -118,18 +118,48 @@ export function withDefaults<T extends Group>(defaults: T, saved: object | null 
   return out as T;
 }
 
-/** Payload text fields for a group of defaults: label, default value, textarea when the default spans lines. */
+/**
+ * Limits that keep the design intact: about half again the original wording, never below 24 characters.
+ * Multi-line titles also keep their number of lines (one more allowed) and a line length that fits the big type.
+ */
+export function limitsFor(text: string) {
+  const all = text.split("\n");
+  return {
+    maxLength: Math.max(24, Math.ceil(text.length * 1.5)),
+    maxLines: all.length > 1 ? all.length + 1 : 1,
+    maxLine: Math.max(20, Math.ceil(Math.max(...all.map((l) => l.length)) * 1.5)),
+  };
+}
+
+/** Field validation for a wording limit; an empty field is fine (the default wording is used). */
+export function checkWording(value: unknown, { maxLength, maxLines, maxLine }: ReturnType<typeof limitsFor>): true | string {
+  if (typeof value !== "string" || !value.trim()) return true;
+  if (value.length > maxLength) return `Trop long : ${value.length} caractères pour ${maxLength} au maximum.`;
+  if (maxLines === 1) return true;
+  const all = value.split("\n").filter((l) => l.trim());
+  if (all.length > maxLines) return `Trop de lignes : ${all.length} pour ${maxLines} au maximum.`;
+  const long = all.find((l) => l.length > maxLine);
+  return long ? `La ligne « ${long.slice(0, 30)}… » est trop longue (${long.length} caractères pour ${maxLine} au maximum).` : true;
+}
+
+/** Payload text fields for a group of defaults: label, default value, limits; textarea when the default spans lines. */
 export function textFields<T extends Record<string, string>>(defaults: T, labels: Record<keyof T, string>, hints: Partial<Record<keyof T, string>> = {}): Field[] {
   return (Object.keys(defaults) as (keyof T & string)[]).map((name) => {
+    // No default (SEO title, built from the pilot sheet): Google shows about 70 characters.
+    const text = defaults[name] || "x".repeat(48);
     const multi = defaults[name].includes("\n");
+    const limits = limitsFor(text);
+    const rule = multi ? `${limits.maxLines} lignes, ${limits.maxLine} caractères par ligne au maximum.` : `${limits.maxLength} caractères au maximum.`;
+    const hint = hints[name] ?? (multi ? "Une ligne par retour à la ligne." : undefined);
     return {
       name,
       label: labels[name],
       type: multi ? "textarea" : "text",
       defaultValue: defaults[name] || undefined,
+      validate: (value: unknown) => checkWording(value, limits),
       admin: {
         ...(multi ? { rows: defaults[name].split("\n").length } : {}),
-        description: hints[name] ?? (multi ? "Une ligne par retour à la ligne." : undefined),
+        description: hint ? `${hint} ${rule}` : rule,
       },
     } as Field;
   });

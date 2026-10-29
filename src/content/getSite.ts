@@ -16,6 +16,22 @@ function mediaUrl(m: number | Media | null | undefined): string | undefined {
 
 const clean = (v: string | null | undefined) => v?.trim() || undefined;
 
+/** Each uploaded image's description ("alt" in Médias), by URL: components look up the photo they show. */
+function collectAlts(...docs: unknown[]): Record<string, string> {
+  const alts: Record<string, string> = {};
+  const seen = new Set<object>();
+  const walk = (v: unknown) => {
+    if (!v || typeof v !== "object" || seen.has(v)) return;
+    seen.add(v);
+    if (Array.isArray(v)) return v.forEach(walk);
+    const o = v as Record<string, unknown>;
+    if (typeof o.url === "string" && typeof o.alt === "string" && o.alt.trim()) alts[o.url] = o.alt.trim();
+    Object.values(o).forEach(walk);
+  };
+  docs.forEach(walk);
+  return alts;
+}
+
 function toEvent(e: Event): SiteEvent {
   const main = mediaUrl(e.image);
   const gallery = (e.gallery ?? []).map(mediaUrl).filter((u): u is string => Boolean(u));
@@ -32,23 +48,29 @@ function toEvent(e: Event): SiteEvent {
 }
 
 /** Every event with its photos, newest first, for /galerie. Samples in development until the client adds some. */
-export async function getGallery(): Promise<SiteEvent[]> {
-  if (!process.env.DATABASE_URL) return placeholderSite.events;
+export async function getGallery(): Promise<{ events: SiteEvent[]; alts: Record<string, string> }> {
+  const samples = { events: process.env.NODE_ENV !== "production" || !process.env.DATABASE_URL ? placeholderSite.events : [], alts: {} };
+  if (!process.env.DATABASE_URL) return samples;
   const payload = await getPayload({ config });
   const { docs } = await payload.find({ collection: "events", sort: "-date", depth: 1, limit: 200, pagination: false });
-  if (docs.length) return docs.map(toEvent).filter((e) => e.photos.length);
-  return process.env.NODE_ENV !== "production" ? placeholderSite.events : [];
+  if (!docs.length) return samples;
+  return { events: docs.map(toEvent).filter((e) => e.photos.length), alts: collectAlts(docs) };
 }
 
-/** Title and description for search engines and link previews, from "Google et partage" and the pilot sheet. */
-export async function getSeo(): Promise<{ title: string; description: string; number: number }> {
+/** Title, description and share image for search engines and link previews ("Google et partage", then the pilot sheet). */
+export async function getSeo(): Promise<{ title: string; description: string; image: string; number: number }> {
   const fromPilot = (p: { firstName: string; nickname: string; number: number }) => `${p.firstName} « ${p.nickname} » #${p.number} — Pilote de karting`;
-  if (!process.env.DATABASE_URL) return { title: fromPilot(placeholderSite.pilot), description: d.seo.description, number: placeholderSite.pilot.number };
+  const fallback = placeholderSite.pilot;
+  if (!process.env.DATABASE_URL) return { title: fromPilot(fallback), description: d.seo.description, image: fallback.heroPoster, number: fallback.number };
   const payload = await getPayload({ config });
-  const [pilot, settings] = await Promise.all([payload.findGlobal({ slug: "pilot", depth: 0 }), payload.findGlobal({ slug: "settings" })]);
+  const [pilot, settings] = await Promise.all([payload.findGlobal({ slug: "pilot", depth: 1 }), payload.findGlobal({ slug: "settings", depth: 1 })]);
   const seo = withDefaults(d.seo, settings.seo);
-  const number = pilot.number ?? placeholderSite.pilot.number;
-  return { title: seo.title || (pilot.firstName ? fromPilot(pilot) : fromPilot(placeholderSite.pilot)), description: seo.description, number };
+  return {
+    title: seo.title || fromPilot(pilot.firstName ? pilot : fallback),
+    description: seo.description,
+    image: mediaUrl(settings.seo?.image) ?? mediaUrl(pilot.heroImage) ?? HERO_FALLBACK,
+    number: pilot.number ?? fallback.number,
+  };
 }
 
 /** Back-office colors as a :root override, for every public page (home and partner area). */
@@ -138,6 +160,7 @@ export async function getSite(): Promise<Site> {
       : samples ? placeholderSite.future : [],
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,
+    alts: collectAlts(pilot, seasons.docs, events.docs),
     quotes: (quotes.items ?? []).map(({ text, author, context, year }) => ({ lines: lines(text), author, context: clean(context), year: year ?? undefined })),
     texts: {
       pilot: withDefaults(d.pilot, pilot.texts),
