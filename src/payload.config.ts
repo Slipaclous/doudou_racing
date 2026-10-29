@@ -84,7 +84,9 @@ export default buildConfig({
     // On Vercel, uploads go to Blob storage; locally without a token they stay on disk.
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-      collections: { media: true },
+      // Direct Blob CDN URLs instead of /api/media/file/…: otherwise each image goes through a serverless
+      // function (cold start + Payload) before next/image can optimize it. Safe: media is public (Media.access.read).
+      collections: { media: { disablePayloadAccessControl: true } },
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
