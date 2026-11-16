@@ -14,10 +14,10 @@ const BARS = [3, 1, 2, 1, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 
 
 type Photo = { src: string; caption?: string };
 
-function buildPhotos(events: SiteEvent[], photos: string[], count: number): Photo[] {
+/** Each perk's own photo when chosen in the back-office; otherwise event photos, then season photos, in turn. */
+function buildPhotos(events: SiteEvent[], photos: string[], chosen: (string | undefined)[], count: number): (Photo | undefined)[] {
   const pool: Photo[] = [...events.map((e) => ({ src: e.image, caption: e.title })), ...photos.map((src) => ({ src }))];
-  if (!pool.length) return [];
-  return Array.from({ length: count }, (_, i) => pool[i % pool.length]);
+  return Array.from({ length: count }, (_, i) => (chosen[i] ? { src: chosen[i]! } : pool[i % pool.length]));
 }
 
 /**
@@ -32,6 +32,7 @@ export function Adventure({
   number,
   texts,
   alts,
+  chosen,
 }: {
   events: SiteEvent[];
   photos: string[];
@@ -39,12 +40,15 @@ export function Adventure({
   number: number;
   texts: Texts["adventure"];
   alts: Record<string, string>;
+  /** Photos picked in the back-office for this section; empty ones fall back. */
+  chosen: { pass?: string; perks: (string | undefined)[] };
 }) {
   const root = useRef<HTMLElement>(null);
   // What the partner pass gives access to. Each privilege stamps the pass as it scrolls by.
   const { perks } = texts;
   const title = lines(texts.title);
-  const pics = buildPhotos(events, photos, perks.length);
+  const passPhoto = chosen.pass ?? portrait;
+  const pics = buildPhotos(events, photos, chosen.perks, perks.length);
 
   useGSAP(
     () => {
@@ -157,7 +161,7 @@ export function Adventure({
                 <span className={`${s.passSeason} mono`}>{texts.passSeason}</span>
               </div>
               <div className={s.passPhoto}>
-                <Image src={portrait} alt="" fill sizes="320px" unoptimized={portrait.endsWith(".svg")} />
+                <Image src={passPhoto} alt="" fill sizes="320px" unoptimized={passPhoto.endsWith(".svg")} />
               </div>
               <p className={s.passRole}>{texts.passRole}</p>
               <p className={`${s.passName} mono`}>{texts.passName}</p>
@@ -187,10 +191,12 @@ export function Adventure({
                 <span className={s.word}>{p.word}</span>
               </span>
               <p className={s.perkText}>{p.text}</p>
-              <div className={s.photo}>
-                <Image src={pics[i].src} alt={alts[pics[i].src] ?? ""} fill sizes="(min-width: 900px) 40vw, 90vw" unoptimized={pics[i].src.endsWith(".svg")} />
-                {pics[i].caption && <span className={`${s.caption} mono`}>{pics[i].caption}</span>}
-              </div>
+              {pics[i] && (
+                <div className={s.photo}>
+                  <Image src={pics[i].src} alt={alts[pics[i].src] ?? ""} fill sizes="(min-width: 900px) 40vw, 90vw" unoptimized={pics[i].src.endsWith(".svg")} />
+                  {pics[i].caption && <span className={`${s.caption} mono`}>{pics[i].caption}</span>}
+                </div>
+              )}
             </li>
           ))}
         </ol>

@@ -334,13 +334,19 @@ export const AdventureTextsGlobal: GlobalConfig = {
                   { passSeason: "Saison", passRole: "Rôle", passName: "Nom", passFoot: "Bas du pass" },
                 ),
                 2,
-              ),
+              ).concat({
+                name: "photo",
+                label: "Photo du pass",
+                type: "upload",
+                relationTo: "media",
+                admin: { description: "Photo propre au pass, format paysage 4:3. Vide : l'image d'ouverture du pilote." },
+              }),
             },
           ],
         },
         {
           label: "Avantages",
-          description: "Chaque avantage s'affiche avec une photo d'événement et appose son tampon sur le pass.",
+          description: "Chaque avantage s'affiche avec sa photo et appose son tampon sur le pass.",
           fields: [
             {
               name: "perks",
@@ -360,6 +366,13 @@ export const AdventureTextsGlobal: GlobalConfig = {
                   ],
                 },
                 { name: "text", label: "Texte", type: "textarea", required: true, maxLength: 160, admin: { rows: 2, description: "160 caractères au maximum." } },
+                {
+                  name: "photo",
+                  label: "Photo",
+                  type: "upload",
+                  relationTo: "media",
+                  admin: { description: "Photo propre à cet avantage. Vide : une photo d'événement." },
+                },
               ],
             },
           ],

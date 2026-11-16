@@ -102,6 +102,8 @@ export const siteSchema = z.object({
   quotes: z.array(quoteSchema),
   // Image descriptions by URL (Médias > "Description").
   alts: z.record(z.string(), z.string()),
+  // Photos chosen for "L'aventure": the pass portrait and one per perk (index-aligned). Empty means fallback.
+  adventurePhotos: z.object({ pass: z.string().optional(), perks: z.array(z.string().optional()) }),
   // Typed by its defaults (texts.ts): every key is always filled.
   texts: z.custom<Texts>(),
 });

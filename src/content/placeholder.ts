@@ -91,6 +91,7 @@ export const placeholderSite: Site = {
   quotes: defaultQuotes.map(({ text, ...q }) => ({ ...q, lines: lines(text) })),
   texts: defaultTexts,
   alts: {},
+  adventurePhotos: { perks: [] },
 };
 
 

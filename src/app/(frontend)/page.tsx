@@ -41,6 +41,7 @@ export default async function Home() {
           number={pilot.number}
           texts={texts.adventure}
           alts={site.alts}
+          chosen={site.adventurePhotos}
         />
         <Partners partners={site.partners} zones={site.zones} number={pilot.number} texts={texts.partners} />
         <Contact email={site.contactEmail} texts={texts.contact} />

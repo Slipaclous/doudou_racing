@@ -13,6 +13,7 @@ import * as migration_20261021_132550_events_gallery from './20261021_132550_eve
 import * as migration_20261028_143803_texts_by_section from './20261028_143803_texts_by_section';
 import * as migration_20261028_150000_rename_races_texts from './20261028_150000_rename_races_texts';
 import * as migration_20261028_153250_seo_share_image from './20261028_153250_seo_share_image';
+import * as migration_20261116_080311_adventure_photos from './20261116_080311_adventure_photos';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20261028_153250_seo_share_image.up,
     down: migration_20261028_153250_seo_share_image.down,
-    name: '20261028_153250_seo_share_image'
+    name: '20261028_153250_seo_share_image',
+  },
+  {
+    up: migration_20261116_080311_adventure_photos.up,
+    down: migration_20261116_080311_adventure_photos.down,
+    name: '20261116_080311_adventure_photos'
   },
 ];

@@ -912,6 +912,10 @@ export interface AdventureText {
      * 38 caractères au maximum.
      */
     passFoot?: string | null;
+    /**
+     * Photo propre au pass, format paysage 4:3. Vide : l'image d'ouverture du pilote.
+     */
+    photo?: (number | null) | Media;
   };
   perks?:
     | {
@@ -927,6 +931,10 @@ export interface AdventureText {
          * 160 caractères au maximum.
          */
         text: string;
+        /**
+         * Photo propre à cet avantage. Vide : une photo d'événement.
+         */
+        photo?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1289,6 +1297,7 @@ export interface AdventureTextsSelect<T extends boolean = true> {
         passRole?: T;
         passName?: T;
         passFoot?: T;
+        photo?: T;
       };
   perks?:
     | T
@@ -1296,6 +1305,7 @@ export interface AdventureTextsSelect<T extends boolean = true> {
         word?: T;
         stamp?: T;
         text?: T;
+        photo?: T;
         id?: T;
       };
   closing?: T;

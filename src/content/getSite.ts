@@ -101,7 +101,7 @@ export async function getSite(): Promise<Site> {
     payload.findGlobal({ slug: "future" }),
     payload.findGlobal({ slug: "careerTexts" }),
     payload.findGlobal({ slug: "upcomingTexts" }),
-    payload.findGlobal({ slug: "adventureTexts" }),
+    payload.findGlobal({ slug: "adventureTexts", depth: 1 }),
     payload.findGlobal({ slug: "galleryTexts" }),
     payload.findGlobal({ slug: "quotes" }),
   ]);
@@ -160,7 +160,11 @@ export async function getSite(): Promise<Site> {
       : samples ? placeholderSite.future : [],
     zones: (zones.items ?? []).map(({ zone, label, text }) => ({ id: zone, label, text })),
     contactEmail: settings.contactEmail,
-    alts: collectAlts(pilot, seasons.docs, events.docs),
+    alts: collectAlts(pilot, seasons.docs, events.docs, adventure),
+    adventurePhotos: {
+      pass: mediaUrl(adventure.pass?.photo),
+      perks: (adventure.perks ?? []).map((p) => mediaUrl(p.photo)),
+    },
     quotes: (quotes.items ?? []).map(({ text, author, context, year }) => ({ lines: lines(text), author, context: clean(context), year: year ?? undefined })),
     texts: {
       pilot: withDefaults(d.pilot, pilot.texts),
@@ -169,7 +173,7 @@ export async function getSite(): Promise<Site> {
       future: withDefaults(d.future, future.texts),
       stats: withDefaults(d.stats, stats.texts),
       races: withDefaults(d.races, upcomingTexts),
-      adventure: withDefaults(d.adventure, { ...adventure, ...adventure.pass }),
+      adventure: withDefaults(d.adventure, { ...adventure, ...adventure.pass, perks: adventure.perks?.map(({ word, stamp, text }) => ({ word, stamp, text })) }),
       partners: withDefaults(d.partners, zones.texts),
       contact: withDefaults(d.contact, settings.texts),
       gallery: withDefaults(d.gallery, gallery),
