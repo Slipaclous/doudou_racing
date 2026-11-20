@@ -18,7 +18,7 @@ export function Hero({ pilot, alts }: { pilot: Site["pilot"]; alts: Record<strin
       });
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: root.current, start: "top top", end: "+=150%", scrub: 0.6, pin: true },
+          scrollTrigger: { trigger: root.current, start: "top top", end: "+=100%", scrub: 0.6, pin: true },
         });
         // The image opens like a helmet visor, while the name splits apart.
         tl.fromTo(
@@ -30,8 +30,8 @@ export function Hero({ pilot, alts }: { pilot: Site["pilot"]; alts: Record<strin
           .fromTo(`.${s.media}`, { scale: 1.35 }, { scale: 1, ease: "none" }, 0)
           .to(`.${s.lineTop}`, { xPercent: -60, ease: "none" }, 0)
           .to(`.${s.lineBottom}`, { xPercent: 60, ease: "none" }, 0)
-          .fromTo(`.${s.number}`, { yPercent: 110 }, { yPercent: 0, ease: "power2.out" }, 0.45)
-          .fromTo(`.${s.tagline}`, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", ease: "none" }, 0.6);
+          // Number and tagline enter on load (CSS); the scroll hint leaves as soon as the visitor scrolls.
+          .to(`.${s.scrollHint}`, { autoAlpha: 0, duration: 0.1, ease: "none" }, 0);
       });
     },
     { scope: root },
@@ -57,6 +57,10 @@ export function Hero({ pilot, alts }: { pilot: Site["pilot"]; alts: Record<strin
       </div>
 
       <p className={`${s.tagline} mono`}>{pilot.tagline}</p>
+
+      <span className={`${s.scrollHint} mono`} aria-hidden>
+        Scroll
+      </span>
     </section>
   );
 }

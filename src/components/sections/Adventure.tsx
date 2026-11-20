@@ -22,7 +22,7 @@ function buildPhotos(events: SiteEvent[], photos: string[], chosen: (string | un
 
 /**
  * "Bien plus qu'un logo", told as a paddock pass. The partner accreditation drops in on its lanyard and swings;
- * on large screens it stays beside the list while the four privileges scroll by. Each privilege opens its photo
+ * on large screens it stays beside the list while the four privileges scroll by; on phones it comes after the list and gets all its stamps at once. Each privilege opens its photo
  * and slams a stamp onto the pass. No pinning: everything follows the normal scroll.
  */
 export function Adventure({
@@ -58,7 +58,10 @@ export function Adventure({
         const pass = root.current!.querySelector<HTMLElement>(`.${s.pass}`)!;
         const stamps = gsap.utils.toArray<HTMLElement>(`.${s.stamp}`);
 
+        const desktop = window.matchMedia("(min-width: 900px)").matches;
+
         // The pass drops in on its lanyard and settles with a swing.
+        // Phones: the pass sits after the list, so it drops when it reaches the screen.
         gsap.fromTo(
           `.${s.hanger}`,
           { yPercent: -60, rotate: 14 },
@@ -67,7 +70,7 @@ export function Adventure({
             rotate: 0,
             ease: "elastic.out(1, 0.45)",
             duration: 1.6,
-            scrollTrigger: { trigger: root.current, start: "top 70%", toggleActions: "play none none reverse" },
+            scrollTrigger: { trigger: desktop ? root.current : `.${s.passCol}`, start: "top 70%", toggleActions: "play none none reverse" },
           },
         );
         // A slow sway while the section scrolls, like a badge swinging from a neck.
@@ -78,6 +81,17 @@ export function Adventure({
         );
 
         gsap.set(stamps, { autoAlpha: 0 });
+        // The stamp slams onto the pass: big and tilted, then flat with a little bounce, and the pass shakes.
+        const slam = (tl: gsap.core.Timeline, i: number, at: number) =>
+          tl
+            .fromTo(
+              stamps[i],
+              { autoAlpha: 0, scale: 2.4, rotate: -24 },
+              { autoAlpha: 1, scale: 1, rotate: i % 2 ? 8 : -8, duration: 0.45, ease: "back.out(2.2)" },
+              at,
+            )
+            .fromTo(pass, { x: 0 }, { x: 6, duration: 0.06, repeat: 3, yoyo: true, ease: "none" }, at + 0.37);
+
         gsap.utils.toArray<HTMLElement>(`.${s.perk}`).forEach((perk, i) => {
           const tl = gsap.timeline({
             scrollTrigger: { trigger: perk, start: "top 65%", toggleActions: "play none none reverse" },
@@ -89,16 +103,19 @@ export function Adventure({
               { clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "power3.inOut" },
               0.1,
             )
-            .fromTo(perk.querySelector(`.${s.perkText}`), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.3)
-            // The stamp slams onto the pass: big and tilted, then flat with a little bounce, and the pass shakes.
-            .fromTo(
-              stamps[i],
-              { autoAlpha: 0, scale: 2.4, rotate: -24 },
-              { autoAlpha: 1, scale: 1, rotate: i % 2 ? 8 : -8, duration: 0.45, ease: "back.out(2.2)" },
-              0.25,
-            )
-            .fromTo(pass, { x: 0 }, { x: 6, duration: 0.06, repeat: 3, yoyo: true, ease: "none" }, 0.62);
+            .fromTo(perk.querySelector(`.${s.perkText}`), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.3);
+          // Large screens: the pass stays in view beside the list, so each privilege stamps it as it scrolls by.
+          if (desktop) slam(tl, i, 0.25);
         });
+
+        // Phones: the pass comes after the list (it would be off screen during it), so all stamps land in a row once it is in view.
+        if (!desktop) {
+          const tl = gsap.timeline({
+            scrollTrigger: { trigger: pass, start: "top 55%", toggleActions: "play none none reverse" },
+            delay: 0.4,
+          });
+          stamps.forEach((_, i) => slam(tl, i, 0.7 + i * 0.55));
+        }
 
         gsap.fromTo(
           `.${s.closing}`,

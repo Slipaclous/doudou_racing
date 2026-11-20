@@ -13,6 +13,10 @@
 
 /* ---------- The pass ---------- */
 .passCol { display: grid; justify-items: center; perspective: 1200px; }
+/* Phones: the pass closes the list, where it is on screen when its stamps land. */
+@media (max-width: 899px) {
+  .passCol { order: 2; }
+}
 .hanger {
   --sway: 0deg;
   position: relative;
@@ -73,7 +77,7 @@
   background: var(--black);
 }
 .passNum { font-family: var(--font-display), sans-serif; font-size: 3rem; line-height: 0.8; }
-.passSeason { font-size: 0.7rem; }
+.passSeason { font-size: 0.8rem; }
 .passPhoto { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--black-2); }
 .passPhoto img { object-fit: cover; }
 .passRole {
@@ -85,7 +89,7 @@
   line-height: 1;
   margin-top: var(--s-1);
 }
-.passName { font-size: 0.7rem; color: color-mix(in srgb, var(--black) 60%, transparent); }
+.passName { font-size: 0.8rem; color: color-mix(in srgb, var(--black) 75%, transparent); }
 
 /* Four stamp spots, filled as the privileges scroll by. */
 .stamps {
@@ -104,7 +108,7 @@
   border: 2px solid var(--red-deep);
   border-radius: 6px;
   color: var(--red-deep);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   line-height: 1.1;
   mix-blend-mode: multiply;

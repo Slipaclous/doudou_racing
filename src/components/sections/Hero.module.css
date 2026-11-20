@@ -45,7 +45,6 @@
   font-size: clamp(5rem, 16vw, 18rem);
   line-height: 0.85;
   color: var(--touch);
-  transform: translateY(110%);
 }
 
 .tagline {
@@ -57,11 +56,43 @@
   background: var(--red);
   color: var(--on-red);
   padding: var(--s-1) var(--s-2);
-  clip-path: inset(0 100% 0 0);
+}
+
+/* Visible on the first screen: tells the visitor the page goes on. */
+.scrollHint {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: var(--s-2);
+  translate: -50% 0;
+  font-size: 0.75rem;
+  color: var(--white);
+}
+.scrollHint::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 2.5rem;
+  margin: var(--s-1) auto 0;
+  background: var(--touch);
+  transform-origin: top;
+}
+
+/* Number and tagline arrive right after the intro bands open (Intro ends around 1.7s), no scroll needed. */
+@media (prefers-reduced-motion: no-preference) {
+  .number { animation: numberIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.6s both; }
+  .tagline { animation: taglineIn 0.7s cubic-bezier(0.76, 0, 0.24, 1) 1.8s both; }
+  .scrollHint::after { animation: hintLine 1.6s cubic-bezier(0.76, 0, 0.24, 1) 2.2s infinite; }
+}
+@keyframes numberIn { from { transform: translateY(110%); } to { transform: translateY(0); } }
+@keyframes taglineIn { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes hintLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .visor { clip-path: none; }
-  .number { transform: none; }
-  .tagline { clip-path: none; }
 }

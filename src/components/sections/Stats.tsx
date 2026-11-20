@@ -30,9 +30,11 @@ export function Stats({ stats, texts }: { stats: Site["stats"]; texts: Texts["st
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const n = stats.length;
+        // Pinned length per stat: kept short so the page never feels stuck, shorter still on phones.
+        const perStat = window.matchMedia("(min-width: 768px)").matches ? 55 : 40;
         const tl = gsap.timeline({
           defaults: { ease: "none" },
-          scrollTrigger: { trigger: root.current, start: "top top", end: `+=${n * 80}%`, scrub: 0.5, pin: true },
+          scrollTrigger: { trigger: root.current, start: "top top", end: `+=${n * perStat}%`, scrub: 0.5, pin: true },
         });
 
         // One lap over the whole section: the red line draws itself, the #105 kart follows it.

@@ -147,7 +147,7 @@ export function Partners({ partners, zones, number, texts }: { partners: Site["p
         const accent = cssColor("--touch");
         const line = cssColor("--line");
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: `.${s.showcase}`, start: "top top", end: `+=${zones.length * 60}%`, scrub: 0.4, pin: true },
+          scrollTrigger: { trigger: `.${s.showcase}`, start: "top top", end: `+=${zones.length * 45}%`, scrub: 0.4, pin: true },
         });
         // Light up one zone at a time, synced with its description.
         // The partner's logo lands on its zone while it is lit.
