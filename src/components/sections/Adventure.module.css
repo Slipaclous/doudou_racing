@@ -15,7 +15,8 @@
 .passCol { display: grid; justify-items: center; perspective: 1200px; }
 /* Phones: the pass closes the list, where it is on screen when its stamps land. */
 @media (max-width: 899px) {
-  .passCol { order: 2; }
+  /* Clip vertically so the pass never pokes above its own area while it drops in. */
+  .passCol { order: 2; overflow-y: clip; overflow-clip-margin: 0; }
 }
 .hanger {
   --sway: 0deg;

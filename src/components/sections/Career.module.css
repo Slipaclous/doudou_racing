@@ -58,7 +58,8 @@
 
 /* Tablets (and short landscape screens): photo and text side by side, still scrolling vertically. */
 @media (min-width: 600px) {
-  .panel { grid-template-columns: 1fr 1fr; column-gap: var(--s-4); align-items: end; padding-block: var(--s-8); }
+  /* Photo and text start on the same line, right under the year; seasons are separated by one even gap. */
+  .panel { grid-template-columns: 1fr 1fr; column-gap: var(--s-4); row-gap: var(--s-2); align-items: start; padding-block: var(--s-4); }
   /* Tablets: the year sits above the photo, never on it (black outline was lost on the dark image). */
   .year { grid-column: 1 / -1; margin-bottom: 0; }
   .headline { font-size: clamp(1.75rem, 3.6vw, 2.75rem); }

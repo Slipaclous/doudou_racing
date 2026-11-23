@@ -64,10 +64,12 @@ export function Adventure({
         // Phones: the pass sits after the list, so it drops when it reaches the screen.
         gsap.fromTo(
           `.${s.hanger}`,
-          { yPercent: -60, rotate: 14 },
+          // Phones/portrait tablets: also hidden until it drops, otherwise its raised start overlaps the last photo.
+          { yPercent: -60, rotate: 14, autoAlpha: desktop ? 1 : 0 },
           {
             yPercent: 0,
             rotate: 0,
+            autoAlpha: 1,
             ease: "elastic.out(1, 0.45)",
             duration: 1.6,
             scrollTrigger: { trigger: desktop ? root.current : `.${s.passCol}`, start: "top 70%", toggleActions: "play none none reverse" },
