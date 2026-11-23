@@ -122,6 +122,26 @@ a.rowInner:focus-visible { outline: 3px solid var(--touch); outline-offset: 4px;
   }
   .title { grid-column: 1 / -1; font-size: clamp(4rem, 9vw, 10rem); }
   .zoneItem { opacity: 0.25; }
+  /* The kart shrinks to the space left under the title instead of pushing the scene past the screen. */
+  .kart { max-height: 100%; min-height: 0; }
+}
+/* Short screens (landscape tablets, small laptops): the pinned scene is one screen tall,
+   so the title and the zone list are sized on the screen height to fit in it. */
+@media (min-width: 768px) and (max-height: 900px) {
+  .showcase { gap: var(--s-3) var(--s-6); padding-bottom: var(--s-3); }
+  .title { font-size: clamp(2.5rem, 13svh, 10rem); }
+  .zones { gap: clamp(0.5rem, 2.5svh, var(--s-3)); }
+  .zoneItem { gap: 0.2rem; border-left-width: 4px; padding-left: var(--s-2); }
+  .zoneLabel { font-size: clamp(1rem, 3.4svh, 2rem); }
+  .zoneItem > p:not(.zoneOwner) { font-size: clamp(0.8rem, 2.3svh, 1.05rem); line-height: 1.35; }
+  .zoneOwner { font-size: clamp(0.6rem, 1.6svh, 0.8rem); }
+  /* The kart row may shrink below the drawing's natural height. */
+  .showcase { grid-template-rows: auto minmax(0, 1fr); }
+}
+/* Phones in landscape: only the zone names and owners stay, the descriptions would not fit. */
+@media (min-width: 768px) and (max-height: 520px) {
+  .zoneItem > p:not(.zoneOwner) { display: none; }
+  .zones { gap: 0.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .marquee { overflow-x: auto; }
