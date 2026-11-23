@@ -16,4 +16,4 @@
   font-size: 0.875rem;
   color: var(--grey);
 }
-.meta a:hover { color: var(--white); }
+@media (hover: hover) { .meta a:hover { color: var(--white); } }

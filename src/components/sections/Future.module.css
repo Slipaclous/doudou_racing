@@ -90,4 +90,4 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
   transition: background-color 0.15s, color 0.15s;
 }
-.cta:hover { background: var(--white); color: var(--black); }
+@media (hover: hover) { .cta:hover { background: var(--white); color: var(--black); } }

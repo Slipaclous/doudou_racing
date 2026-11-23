@@ -6,6 +6,10 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// Tablets and phones: the browser bar showing/hiding resizes the viewport. Without this, every pinned
+// section recalculates mid-scroll and the page jumps.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 export { gsap, ScrollTrigger, useGSAP };
 
 /** Resolves a CSS color variable to a value GSAP can tween (it can't tween var() or color-mix()). */

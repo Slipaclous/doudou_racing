@@ -59,6 +59,7 @@ export function Gallery({ events, number, texts, alts }: { events: SiteEvent[]; 
     { scope: root },
   );
 
+  const swipeX = useRef<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const step = useCallback((d: number) => setOpen((i) => (i === null ? i : (i + d + shots.length) % shots.length)), [shots.length]);
 
@@ -142,7 +143,20 @@ export function Gallery({ events, number, texts, alts }: { events: SiteEvent[]; 
 
       {current && (
         <div className={s.viewer} role="dialog" aria-modal="true" aria-label={`Photo de « ${current.event.title} »`} onClick={close}>
-          <div className={s.viewerImg} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={s.viewerImg}
+            onClick={(e) => e.stopPropagation()}
+            // Touch: swipe left/right for the next/previous photo.
+            onTouchStart={(e) => {
+              swipeX.current = e.touches[0].clientX;
+            }}
+            onTouchEnd={(e) => {
+              if (swipeX.current === null) return;
+              const dx = e.changedTouches[0].clientX - swipeX.current;
+              swipeX.current = null;
+              if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+            }}
+          >
             <Image key={current.src} src={current.src} alt={alts[current.src] ?? ""} fill sizes="100vw" unoptimized={current.src.endsWith(".svg")} />
           </div>
           <p className={`${s.viewerCaption} mono`}>

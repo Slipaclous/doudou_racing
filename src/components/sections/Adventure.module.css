@@ -178,6 +178,6 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
   transition: background-color 0.15s, color 0.15s;
 }
-.cta:hover { background: var(--white); color: var(--black); }
+@media (hover: hover) { .cta:hover { background: var(--white); color: var(--black); } }
 .link { font-size: 0.75rem; color: var(--white); border-bottom: 1px solid var(--touch); padding-bottom: 2px; }
-.link:hover { color: var(--touch); }
+@media (hover: hover) { .link:hover { color: var(--touch); } }

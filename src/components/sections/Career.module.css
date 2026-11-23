@@ -59,7 +59,8 @@
 /* Tablets (and short landscape screens): photo and text side by side, still scrolling vertically. */
 @media (min-width: 600px) {
   .panel { grid-template-columns: 1fr 1fr; column-gap: var(--s-4); align-items: end; padding-block: var(--s-8); }
-  .year { grid-column: 1 / -1; margin-bottom: -0.35em; }
+  /* Tablets: the year sits above the photo, never on it (black outline was lost on the dark image). */
+  .year { grid-column: 1 / -1; margin-bottom: 0; }
   .headline { font-size: clamp(1.75rem, 3.6vw, 2.75rem); }
 }
 
@@ -119,7 +120,8 @@
     cursor: pointer;
     transition: color 0.2s, transform 0.2s;
   }
-  .yearBtn:hover, .yearBtn[data-active] { color: var(--black); }
+  .yearBtn[data-active] { color: var(--black); }
+  @media (hover: hover) { .yearBtn:hover { color: var(--black); } }
   .yearBtn[data-active] { transform: scale(1.25); font-weight: 700; }
   .yearBtn:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
 }

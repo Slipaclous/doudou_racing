@@ -43,7 +43,7 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - var(--s-4)) 100%, 0 100%);
   transition: padding-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.15s;
 }
-.submit:hover { padding-left: var(--s-8); background: var(--white); color: var(--black); }
+@media (hover: hover) { .submit:hover { padding-left: var(--s-8); background: var(--white); color: var(--black); } }
 .submit:focus-visible { outline: 3px solid var(--on-red); outline-offset: 4px; }
 .submit:disabled { cursor: wait; }
 

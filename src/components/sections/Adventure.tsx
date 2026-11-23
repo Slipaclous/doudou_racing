@@ -130,6 +130,18 @@ export function Adventure({
         );
       });
 
+      // Touch (tablets): no pointer to follow, so a tap flicks the pass and it swings back on its lanyard.
+      mm.add("(pointer: coarse) and (prefers-reduced-motion: no-preference)", () => {
+        const pass = root.current!.querySelector<HTMLElement>(`.${s.pass}`)!;
+        const tap = (e: PointerEvent) => {
+          const r = pass.getBoundingClientRect();
+          const side = (e.clientX - r.left) / r.width - 0.5;
+          gsap.fromTo(pass, { rotateY: side * -40, rotateX: 8 }, { rotateY: 0, rotateX: 0, duration: 1.4, ease: "elastic.out(1, 0.35)", overwrite: true });
+        };
+        pass.addEventListener("pointerdown", tap);
+        return () => pass.removeEventListener("pointerdown", tap);
+      });
+
       // Mouse: the pass tilts in 3D under the pointer.
       mm.add("(pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
         const pass = root.current!.querySelector<HTMLElement>(`.${s.pass}`)!;

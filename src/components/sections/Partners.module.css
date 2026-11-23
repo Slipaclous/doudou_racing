@@ -30,10 +30,11 @@
 .trackLogo, .rowLogo { filter: grayscale(1) invert(1) contrast(1.4); mix-blend-mode: screen; object-fit: contain; }
 /* Hover: a light plate slides in and the logo gets its real colours back (multiply drops the white box). */
 .trackItem, .rowLogo, .trackLogo { transition: filter 0.3s, background-color 0.3s, opacity 0.2s; }
-.trackItem:hover { background: var(--white); }
-.trackItem:hover .trackLogo { filter: none; mix-blend-mode: multiply; }
+@media (hover: hover) { .trackItem:hover { background: var(--white); } }
+@media (hover: hover) { .trackItem:hover .trackLogo { filter: none; mix-blend-mode: multiply; } }
 /* In a row the plate is the image's own background, so no blend: the logo shows as-is on white. */
-.rowInner:hover .rowLogo, .rowInner:focus-visible .rowLogo { filter: none; mix-blend-mode: normal; background: #fff; }
+.rowInner:focus-visible .rowLogo { filter: none; mix-blend-mode: normal; background: #fff; }
+@media (hover: hover) { .rowInner:hover .rowLogo { filter: none; mix-blend-mode: normal; background: #fff; } }
 .logoText { filter: none; mix-blend-mode: normal; font-family: var(--font-display), sans-serif; text-transform: uppercase; color: var(--white); }
 
 /* Edge fade as overlays: a mask would isolate the strip and break the logos' screen blend. */
@@ -42,7 +43,7 @@
 .marquee::before { left: 0; background: linear-gradient(90deg, var(--black-2), transparent); }
 .marquee::after { right: 0; background: linear-gradient(-90deg, var(--black-2), transparent); }
 .track { list-style: none; display: flex; flex-shrink: 0; align-items: center; animation: marquee 60s linear infinite; }
-.marquee:hover .track { animation-play-state: paused; }
+@media (hover: hover) { .marquee:hover .track { animation-play-state: paused; } }
 .trackItem { display: grid; place-items: center; width: clamp(9rem, 16vw, 15rem); aspect-ratio: 244 / 110; padding-inline: var(--s-3); }
 .trackLogo { width: 100%; height: 100%; }
 .trackLogo.logoText { height: auto; font-size: clamp(1.25rem, 2vw, 2rem); text-align: center; }
@@ -60,7 +61,7 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
   transition: background-color 0.2s, transform 0.2s;
 }
-.cta:hover { background: var(--red-deep); transform: translateX(0.25rem); }
+@media (hover: hover) { .cta:hover { background: var(--red-deep); transform: translateX(0.25rem); } }
 
 .roster { display: grid; gap: var(--s-4); padding-inline: var(--gutter); }
 .rosterLabel { font-size: 0.875rem; text-transform: uppercase; color: var(--grey); }
@@ -100,8 +101,9 @@
 .rowLogo { grid-area: logo; width: clamp(5rem, 10vw, 9rem); height: clamp(3rem, 5vw, 4.5rem); padding: 0.4rem; opacity: 0.35; }
 .rowLogo.logoText { display: none; }
 .rowArrow { position: absolute; top: var(--s-3); right: 0; color: var(--touch); font-size: 1.25rem; }
-a.rowInner:hover .rowName, a.rowInner:focus-visible .rowName { color: var(--touch); transform: translateX(0.5rem); }
-.rowInner:hover .rowLogo { opacity: 1; }
+a.rowInner:focus-visible .rowName { color: var(--touch); transform: translateX(0.5rem); }
+@media (hover: hover) { a.rowInner:hover .rowName { color: var(--touch); transform: translateX(0.5rem); } }
+@media (hover: hover) { .rowInner:hover .rowLogo { opacity: 1; } }
 a.rowInner:focus-visible { outline: 3px solid var(--touch); outline-offset: 4px; }
 
 @media (min-width: 1024px) {

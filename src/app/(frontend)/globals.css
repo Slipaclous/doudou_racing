@@ -71,6 +71,8 @@ h3 {
 .mono { font-family: var(--font-mono), monospace; letter-spacing: 0.05em; text-transform: uppercase; }
 
 a { color: inherit; text-decoration: none; }
+/* No grey flash on tap (tablets, phones): every control already has its own pressed/active look. */
+html { -webkit-tap-highlight-color: transparent; }
 img, video { display: block; max-width: 100%; }
 
 /* Film grain over the whole site: gives the flat colours some texture, like printed race posters.
@@ -97,5 +99,17 @@ body::after {
 .roll { position: relative; display: inline-block; overflow: hidden; vertical-align: bottom; }
 .roll-a, .roll-b { display: block; transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1); }
 .roll-b { position: absolute; inset: 0; transform: translateY(105%); }
-:is(a, button):is(:hover, :focus-visible) .roll-a { transform: translateY(-105%); }
-:is(a, button):is(:hover, :focus-visible) .roll-b { transform: translateY(0); }
+:is(a, button):focus-visible .roll-a { transform: translateY(-105%); }
+:is(a, button):focus-visible .roll-b { transform: translateY(0); }
+/* Touch screens have no real hover: a tap would leave the roll stuck halfway. */
+@media (hover: hover) {
+  :is(a, button):hover .roll-a { transform: translateY(-105%); }
+  :is(a, button):hover .roll-b { transform: translateY(0); }
+}
+
+/* Touch screens (tablets): small controls get a finger-sized hit area (44px, Apple/WCAG guidance). */
+@media (pointer: coarse) {
+  :where(button, [role="tab"]) { min-height: 44px; }
+  /* Long-press on giant titles or photos must not open the iOS callout / selection during a demo. */
+  h1, h2, .display, img { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+}

@@ -10,7 +10,7 @@
 .brand span { color: var(--touch); }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); font-size: 0.875rem; }
 .nav a, .linkButton { color: var(--white); }
-.nav a:hover, .linkButton:hover { color: var(--touch); }
+@media (hover: hover) { .nav a:hover, .linkButton:hover { color: var(--touch); } }
 .linkButton { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
 
 .main { width: 100%; max-width: 72rem; margin: 0 auto; padding: var(--s-8) var(--gutter); display: grid; gap: var(--s-6); align-content: start; }
@@ -36,7 +36,7 @@
   color: var(--on-red); background: var(--red); border: 0; padding: 0.875rem var(--s-4); cursor: pointer;
   transition: background-color 0.15s;
 }
-.button:hover { background: var(--red-deep); }
+@media (hover: hover) { .button:hover { background: var(--red-deep); } }
 .button:disabled { opacity: 0.6; cursor: wait; }
 .button:focus-visible { outline: 2px solid var(--touch); outline-offset: 3px; }
 .notice { color: var(--touch); font-size: 0.9rem; }

@@ -14,7 +14,7 @@
 }
 .logo { font-family: var(--font-display), sans-serif; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1; }
 .back { font-size: 0.8rem; }
-.back:hover { color: var(--touch); }
+@media (hover: hover) { .back:hover { color: var(--touch); } }
 
 .head { display: grid; gap: var(--s-3); padding-block: var(--s-12) var(--s-8); }
 .kicker { color: var(--touch); font-size: 0.875rem; }
@@ -47,6 +47,8 @@
   grid-auto-rows: clamp(9rem, 22vw, 16rem);
   grid-auto-flow: dense;
 }
+/* Tablets in portrait: three columns instead of two, so the wall does not turn into a long strip. */
+@media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 .tile { position: relative; overflow: hidden; background: var(--black-2); }
 .big { grid-column: span 2; grid-row: span 2; }
@@ -54,7 +56,8 @@
 .wide { grid-column: span 2; }
 .open { position: absolute; inset: 0; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .open img { object-fit: cover; transition: filter 0.3s; }
-.open:hover img, .open:focus-visible img { filter: brightness(1.1); }
+.open:focus-visible img { filter: brightness(1.1); }
+@media (hover: hover) { .open:hover img { filter: brightness(1.1); } }
 .open:focus-visible { outline: 3px solid var(--touch); outline-offset: -3px; }
 
 /* ---------- Closing ---------- */
@@ -79,7 +82,7 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
   transition: background-color 0.15s, color 0.15s;
 }
-.cta:hover { background: var(--white); color: var(--black); }
+@media (hover: hover) { .cta:hover { background: var(--white); color: var(--black); } }
 
 /* ---------- Full-screen viewer ---------- */
 .viewer {
@@ -103,10 +106,12 @@
   cursor: pointer;
 }
 .nav { top: 50%; translate: 0 -50%; font-family: var(--font-display), sans-serif; font-size: 2.5rem; padding: var(--s-2); }
-.nav:hover, .close:hover { color: var(--touch); }
+@media (hover: hover) { .nav:hover, .close:hover { color: var(--touch); } }
 .prev { left: var(--s-1); }
 .next { right: var(--s-1); }
-.close { top: var(--s-3); right: var(--gutter); font-size: 0.8rem; }
+.close { top: var(--s-3); right: var(--gutter); font-size: 0.8rem; padding: var(--s-1); }
+/* Swipe is the gesture on touch screens; the image follows the finger. */
+.viewerImg { touch-action: pan-y pinch-zoom; }
 .nav:focus-visible, .close:focus-visible { outline: 2px solid var(--touch); }
 
 @keyframes fade { from { opacity: 0; } }

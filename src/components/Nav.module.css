@@ -34,7 +34,7 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%);
   transition: background-color 0.15s, color 0.15s;
 }
-.cta:hover { background: var(--white); color: var(--black); }
+@media (hover: hover) { .cta:hover { background: var(--white); color: var(--black); } }
 
 .end { display: flex; align-items: center; gap: var(--s-3); }
 /* Sponsors already on board: discreet, outlined, next to the main call to action. */
@@ -45,9 +45,10 @@
   border: 1px solid var(--touch);
   transition: background-color 0.15s, color 0.15s;
 }
-.member:hover { background: var(--touch); color: var(--black); }
+@media (hover: hover) { .member:hover { background: var(--touch); color: var(--black); } }
 .member:focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
 /* Phones: only the logo and the menu button; both calls to action live in the menu. */
+@media (pointer: coarse) { .member, .cta { display: inline-flex; align-items: center; min-height: 44px; } }
 @media (max-width: 599px) { .end > .member, .end > .cta { display: none; } }
 .logo:focus-visible, .cta:focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
 
@@ -120,7 +121,8 @@
   transition-delay: 0s;
 }
 .menu[data-open="true"] .menuLink { transform: translateY(0); transition-delay: calc(0.25s + var(--i) * 0.05s), 0s; }
-.menuLink:hover, .menuLink:focus-visible { color: var(--touch); outline: none; }
+.menuLink:focus-visible { color: var(--touch); outline: none; }
+@media (hover: hover) { .menuLink:hover { color: var(--touch); outline: none; } }
 .menuIndex { font-size: 0.8rem; color: var(--touch); transform: translateY(-0.4em); }
 
 .menuFoot { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
